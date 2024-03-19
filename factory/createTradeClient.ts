@@ -1,57 +1,14 @@
-type Method = "GET" | "POST" | "PATCH" | "DELETE";
+import Template from "../template/trade.ts";
 
-interface Endpoint<Response> {
-  method: Method;
-  url: string;
-}
-
-interface AccountResponse {
-  id: string;
-  status: string;
-}
-
-interface OrderResponse {
-  id: string;
-  symbol: string;
-  qty: number;
-}
-
-interface OrdersResponse {
-  orders: OrderResponse[];
-}
-
-interface NestedEndpoint {
-  [operation: string]: Endpoint<any> | NestedEndpoint | DynamicEndpoint;
-}
-
-type DynamicEndpoint = (...args: any[]) => NestedEndpoint;
-
-interface APIEndpointTemplate {
-  [key: string]: Endpoint<any> | NestedEndpoint | DynamicEndpoint;
-}
-
-const apiTemplate: APIEndpointTemplate = {
-  v2: {
-    account: { method: "GET", url: "/account" },
-    orders: {
-      method: "GET",
-      url: "/orders",
-      post: { method: "POST", url: "/orders" },
-      delete: { method: "DELETE", url: "/orders" },
-      orderId: (id: string): NestedEndpoint => ({
-        get: { method: "GET", url: `/orders/${id}` },
-        patch: { method: "PATCH", url: `/orders/${id}` },
-        delete: { method: "DELETE", url: `/orders/${id}` },
-      }),
-    },
-  },
-};
+import { Endpoint, Method } from "../template/_shared.ts";
+import { TradeTemplate } from "../template/trade.ts";
 
 type EndpointFunction<Response> = (data?: object) => Promise<Response>;
+
 type InferAPITemplateFunctions<Template> = {
   [K in keyof Template]: Template[K] extends Endpoint<infer R>
     ? EndpointFunction<R>
-    : Template[K] extends (...args: any[]) => APIEndpointTemplate
+    : Template[K] extends (...args: any[]) => TradeTemplate
     ? (...args: any[]) => InferAPITemplateFunctions<ReturnType<Template[K]>>
     : InferAPITemplateFunctions<Template[K]>;
 };
@@ -66,12 +23,12 @@ function createTradeClient({
   keyId,
   secretKey,
   paper = true,
-}: CreateTradeClientOptions): InferAPITemplateFunctions<typeof apiTemplate> {
-  async function request<Response>(
+}: CreateTradeClientOptions): InferAPITemplateFunctions<typeof Template> {
+  const request = async <Response>(
     method: Method,
     url: string,
     data: object = {}
-  ): Promise<Response> {
+  ): Promise<Response> => {
     const fullUrl = `https://paper-api.alpaca.markets${url}`;
     const headers = new Headers({
       "APCA-API-KEY-ID": keyId,
@@ -86,12 +43,12 @@ function createTradeClient({
     });
 
     return response.json() as Promise<Response>;
-  }
+  };
 
-  function buildEndpoints<Config extends APIEndpointTemplate>(
+  const buildEndpoints = <Config extends TradeTemplate>(
     config: Config,
     basePath = ""
-  ): InferAPITemplateFunctions<Config> {
+  ): InferAPITemplateFunctions<Config> => {
     const result: any = {};
     Object.keys(config).forEach((key) => {
       const value = config[key];
@@ -110,11 +67,11 @@ function createTradeClient({
       }
 
       if (typeof value === "object") {
-        result[key] = buildEndpoints(value as APIEndpointTemplate, basePath);
+        result[key] = buildEndpoints(value as TradeTemplate, basePath);
       }
     });
     return result as InferAPITemplateFunctions<Config>;
-  }
+  };
 
-  return buildEndpoints(apiTemplate);
+  return buildEndpoints(Template);
 }
