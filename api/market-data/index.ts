@@ -1,3 +1,5 @@
+// @todo fix type conflicts with crypto and stocks
+
 import { ClientContext } from "../../factory/client.ts";
 import {
   CorporateActionsResponse,
@@ -24,6 +26,19 @@ import {
   SnapshotsResponse,
 } from "./types/options.ts";
 import { MarketMoversResponse, MostActivesResponse } from "./types/screener.ts";
+import {
+  ConditionCodesResponse,
+  ExchangeCodesResponse,
+  HistoricalAuctionsResponse,
+  HistoricalQuotesParams,
+  LatestQuotesParams,
+  LatestTradeParams,
+  LatestTradeResponse,
+  SnapshotParams,
+  SnapshotResponse,
+  TradeParams,
+  TradeResponse,
+} from "./types/stocks.ts";
 
 export const MarketData = (context: ClientContext) => ({
   v1beta1: {
@@ -290,6 +305,109 @@ export const MarketData = (context: ClientContext) => ({
             page_token,
             sort,
           },
+        }),
+    },
+  },
+  v2: {
+    stocks: {
+      getHistoricalAuctions: (
+        symbols: string,
+        start?: string,
+        end?: string,
+        limit?: number,
+        asof?: string,
+        feed?: string,
+        page_token?: string,
+        sort?: string
+      ) =>
+        context.request<HistoricalAuctionsResponse>({
+          path: `/v2/stocks/auctions`,
+          method: "GET",
+          params: {
+            symbols,
+            start,
+            end,
+            limit,
+            asof,
+            feed,
+            page_token,
+            sort,
+          },
+        }),
+      getHistoricalBars: (
+        symbols: string,
+        timeframe: string,
+        start?: string,
+        end?: string,
+        limit?: number,
+        adjustment?: string,
+        asof?: string,
+        feed?: string,
+        page_token?: string,
+        sort?: string
+      ) =>
+        context.request<HistoricalBarsResponse>({
+          path: `/v2/stocks/bars`,
+          method: "GET",
+          params: {
+            symbols,
+            timeframe,
+            start,
+            end,
+            limit,
+            adjustment,
+            asof,
+            feed,
+            page_token,
+            sort,
+          },
+        }),
+      getLatestBars: (symbols: string, feed?: string, currency?: string) =>
+        context.request<LatestBarsResponse>({
+          path: `/v2/stocks/bars/latest`,
+          method: "GET",
+          params: { symbols, feed, currency },
+        }),
+      getConditionCodes: (tickType: string, tape: string) =>
+        context.request<ConditionCodesResponse>({
+          path: `/v2/stocks/meta/conditions/${tickType}`,
+          method: "GET",
+          params: { tape },
+        }),
+      getExchangeCodes: () =>
+        context.request<ExchangeCodesResponse>({
+          path: "/v2/stocks/meta/exchanges",
+          method: "GET",
+        }),
+      getHistoricalQuotes: (params: HistoricalQuotesParams) =>
+        context.request<HistoricalQuotesResponse>({
+          path: "/v2/stocks/quotes",
+          method: "GET",
+          params,
+        }),
+      getLatestQuotes: (params: LatestQuotesParams) =>
+        context.request<LatestQuotesResponse>({
+          path: "/v2/stocks/quotes/latest",
+          method: "GET",
+          params,
+        }),
+      getSnapshots: (params: SnapshotParams) =>
+        context.request<SnapshotResponse>({
+          path: "/v2/stocks/snapshots",
+          method: "GET",
+          params,
+        }),
+      getTrades: (params: TradeParams) =>
+        context.request<TradeResponse>({
+          path: "/v2/stocks/trades",
+          method: "GET",
+          params,
+        }),
+      getLatestTrades: (params: LatestTradeParams) =>
+        context.request<LatestTradeResponse>({
+          path: "/v2/stocks/trades/latest",
+          method: "GET",
+          params,
         }),
     },
   },
