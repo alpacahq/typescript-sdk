@@ -1,4 +1,5 @@
 # typescript-sdk
+
 ![version](https://img.shields.io/github/package-json/v/alpacahq/typescript-sdk?color=196DFF&style=flat-square)
 ![code](https://img.shields.io/github/languages/code-size/alpacahq/typescript-sdk?color=F1A42E&style=flat-square&label=size)
 ![build](https://img.shields.io/github/workflow/status/alpacahq/typescript-sdk/test?style=flat-square)
@@ -20,12 +21,11 @@ If however, you are using Deno, you can use the following import statement.
 import { createClient } from "https://deno.land/x/typescript_sdk/mod.ts";
 ```
 
-## Usage
+## Getting Started
 
-1. Create a client using `createClient` function.
-2. Use the client to make requests to the Alpaca Trade API.
+### REST
 
-### Example
+For REST, you can use the `createClient` function. This function takes an API class and an options object. The options object should contain the `keyId` and `secretKey` for the API. The client will then have methods for each endpoint in the API.
 
 ```ts
 import { createClient } from "@alpacahq/typescript-sdk";
@@ -40,3 +40,22 @@ const client = createClient(TradeAPI, {
 // https://paper-api.alpaca.markets/v2/account GET
 client.v2.account.get().then(console.log);
 ```
+
+### WebSocket
+
+For streaming, you can use the `createStream` function. This function takes a stream class and an options object. The options object should contain the `keyId` and `secretKey` for the API. The stream will then have methods for each endpoint in the API.
+
+```ts
+import { createStream } from "@alpacahq/typescript-sdk";
+
+// Create a stream
+const stream = createStream(TradeStream, {
+  keyId: "YOUR_API_KEY_ID",
+  secretKey,
+});
+
+// Use the stream to subscribe to events
+stream.v2.account().subscribe(console.log);
+```
+
+> You can find the API classes in the `src/apis` directory. Each class is a collection of methods that correspond to the endpoints in the API. The methods are organized by the HTTP method they use.
