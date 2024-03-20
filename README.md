@@ -10,6 +10,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [Install](#install)
 - [Getting Started](#getting-started)
   - [REST](#rest)
+    - [Rate Limiting](#rate-limiting)
   - [WebSocket](#websocket)
 - [APIs and Streams](#apis-and-streams)
 - [Methods](#methods)
@@ -70,6 +71,19 @@ const client = createClient(API.Trade, {
 // Use the client to make requests
 // https://paper-api.alpaca.markets/v2/account GET
 client.v2.account.get().then(console.log);
+```
+
+#### Rate Limiting
+
+The client will automatically handle rate limiting. If you exceed the rate limit, the client will wait for the rate limit to reset and then make the request.
+
+To customize the rate limiting, you can pass a `rateLimiterOptions` object to the `createClient` function. This object should contain the `tokensPerInterval` and `interval` for the rate limiter.
+
+```ts
+rateLimiterOptions: {
+  tokensPerInterval: 1,
+  interval: 1000,
+}
 ```
 
 ### WebSocket
