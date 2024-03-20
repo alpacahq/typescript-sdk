@@ -1,10 +1,5 @@
-type CreateClientOptions = {
-  keyId: string;
-  secretKey: string;
-  baseURL: string;
-};
-
 type EndpointFunction = () => { method: string; url: string };
+
 type PromiseReturnType<T extends EndpointFunction> = () => Promise<
   ReturnType<T>
 >;
@@ -15,6 +10,12 @@ type DynamicApiFunctions<T> = {
     : T[P] extends object
     ? DynamicApiFunctions<T[P]>
     : never;
+};
+
+type CreateClientOptions = {
+  keyId: string;
+  secretKey: string;
+  baseURL: string;
 };
 
 export function createClient<T>(

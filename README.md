@@ -10,10 +10,10 @@ const client = createClient(TradeAPI, {
   secretKey: "YOUR_API_SECRET_KEY",
 });
 
-// https://paper-api.alpaca.markets/v2/account GET
-// https://paper-api.alpaca.markets/v2/orders POST
-// https://paper-api.alpaca.markets/v2/orders GET
-// https://paper-api.alpaca.markets/v2/orders DELETE
+// https://paper-api.alpaca.markets/v2/account           GET
+// https://paper-api.alpaca.markets/v2/orders            POST
+// https://paper-api.alpaca.markets/v2/orders            GET
+// https://paper-api.alpaca.markets/v2/orders            DELETE
 // https://paper-api.alpaca.markets/v2/orders/{order_id} GET
 // https://paper-api.alpaca.markets/v2/orders/{order_id} PATCH
 // https://paper-api.alpaca.markets/v2/orders/{order_id} DELETE
