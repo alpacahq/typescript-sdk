@@ -1,5 +1,5 @@
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
-import { createTradeClient } from "./createTradeClient.ts";
+import { createTradeClient } from "./createClient.ts";
 
 const client = createTradeClient({
   keyId: "PK1OHDJBZQ6J5HQJZBXX",

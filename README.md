@@ -3,9 +3,9 @@
 typescript sdk for alpaca trade api
 
 ```ts
-import { createTradeClient } from "@alpacahq/typescript-sdk";
+import { createClient } from "@alpacahq/typescript-sdk";
 
-const client = createTradeClient({
+const client = createClient(TradeAPI, {
   keyId: "YOUR_API_KEY_ID",
   secretKey: "YOUR_API_SECRET_KEY",
 });
