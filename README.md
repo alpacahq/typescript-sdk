@@ -20,6 +20,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
   - [Order](#order)
   - [Position](#position)
   - [Watchlist](#watchlist)
+- [Need Help?](#need-help)
 
 ## Install
 
@@ -123,3 +124,7 @@ Each API and Stream has methods for each endpoint in the API. The methods return
 | ------------- | --------------------------- |
 | `get`         | https://docs.alpaca.markets |
 | `getBySymbol` | https://docs.alpaca.markets |
+
+## Need Help?
+
+meow
