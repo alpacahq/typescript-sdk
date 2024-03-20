@@ -28,6 +28,12 @@ import { createClient } from "https://deno.land/x/typescript_sdk/mod.ts";
 
 ## Getting Started
 
+There are two ways to use this SDK, REST and WebSocket. Both are created using the `createClient` and `createStream` functions. These functions take an API class and an options object. The options object should contain the `keyId` and `secretKey` for the API. The client or stream will then have methods for each endpoint in the API.
+
+### Possible APIs and Streams
+
+todo
+
 ### REST
 
 For REST, you can use the `createClient` function. This function takes an API class and an options object. The options object should contain the `keyId` and `secretKey` for the API. The client will then have methods for each endpoint in the API.
