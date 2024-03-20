@@ -17,13 +17,13 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 While this project is written in Deno/Typescript, it can be used in Node.js as well. This is the most common way to use it.
 
 ```sh
-npm install @alpacahq/typescript-sdk
+> npm install @alpacahq/typescript-sdk
 ```
 
-If however, you are using Deno, you can use the following import statement.
+If however, you are using Deno, you can do the following:
 
-```ts
-import { createClient } from "https://deno.land/x/typescript_sdk/mod.ts";
+```sh
+> deno install https://deno.land/x/typescript_sdk/mod.ts
 ```
 
 ## Getting Started
