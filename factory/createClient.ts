@@ -1,3 +1,5 @@
+import { createRateLimiter } from "./createRateLimiter.ts";
+
 export type Client<T> = T;
 
 export type ClientFactory<T> = (context: ClientContext) => T;
@@ -20,10 +22,23 @@ type RequestOptions = {
   data?: object;
 };
 
+export type RateLimiterOptions = {
+  tokensPerInterval?: number;
+  interval?: number;
+};
+
+export type ExtendedCreateClientOptions = CreateClientOptions & {
+  rateLimiterOptions?: RateLimiterOptions;
+};
+
 export function createClient<T>(
   factory: ClientFactory<T>,
-  options: CreateClientOptions
+  options: ExtendedCreateClientOptions
 ): Client<T> {
+  const { tokensPerInterval = 200, interval = 60 } =
+    options.rateLimiterOptions || {};
+  const rateLimiter = createRateLimiter(tokensPerInterval, interval);
+
   const context: ClientContext = {
     options,
     request: async <T>({
@@ -32,6 +47,10 @@ export function createClient<T>(
       params,
       data,
     }: RequestOptions): Promise<T> => {
+      while (!rateLimiter.consume()) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+
       let finalPath = path;
       if (params) {
         for (const [key, value] of Object.entries(params)) {

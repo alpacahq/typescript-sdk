@@ -1,5 +1,5 @@
 import { Trade } from "../api/trade/index.ts";
-import { createClient } from "./client.ts";
+import { createClient } from "./createClient.ts";
 
 Deno.test("generic", () => {
   // do whatever you want

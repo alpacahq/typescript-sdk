@@ -1,6 +1,6 @@
 // @todo fix type conflicts with crypto and stocks
 
-import { ClientContext } from "../../factory/client.ts";
+import { ClientContext } from "../../factory/createClient.ts";
 import {
   CorporateActionsResponse,
   HistoricalForexRatesResponse,

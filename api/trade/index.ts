@@ -21,7 +21,7 @@ import {
   UpdatedAccountConfigurations,
 } from "./types/account.ts";
 
-import { ClientContext } from "../../factory/client.ts";
+import { ClientContext } from "../../factory/createClient.ts";
 import { Asset } from "./types/asset.ts";
 import { MarketCalendar } from "./types/calendar.ts";
 import { MarketClock } from "./types/clock.ts";
