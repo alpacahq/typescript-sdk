@@ -39,6 +39,17 @@ If however, you are using Deno, you can do the following:
 
 There are two ways to use this SDK, REST and WebSocket. Both are created using the `createClient` and `createStream` functions. These functions take an API class and an options object. The options object should contain the `keyId` and `secretKey` for the API. The client or stream will then have methods for each endpoint in the API.
 
+### APIs and Streams
+
+The SDK is split into two parts, APIs and Streams. The APIs are for making REST requests and the Streams are for subscribing to WebSocket events. Each API and Stream is a class that has methods for each endpoint in the API. The methods return a promise for the response of the request or a subscription to the event.
+
+| API/Stream       | Reference                   |
+| ---------------- | --------------------------- |
+| `API.Trade`      | https://docs.alpaca.markets |
+| `API.MarketData` | https://docs.alpaca.markets |
+| `Stream.Trade`   | https://docs.alpaca.markets |
+| `Stream.Account` | https://docs.alpaca.markets |
+
 ### REST
 
 For REST, you can use the `createClient` function. This function takes an API class and an options object. The options object should contain the `keyId` and `secretKey` for the API. The client will then have methods for each endpoint in the API.
@@ -74,13 +85,41 @@ const stream = createStream(Stream.Trade, {
 stream.v2.account().subscribe(console.log);
 ```
 
-### APIs and Streams
+## Methods
 
-The SDK is split into two parts, APIs and Streams. The APIs are for making REST requests and the Streams are for subscribing to WebSocket events. Each API and Stream is a class that has methods for each endpoint in the API. The methods return a promise for the response of the request or a subscription to the event.
+Each API and Stream has methods for each endpoint in the API. The methods return a promise for the response of the request or a subscription to the event.
 
-| API/Stream       | Reference                   |
-| ---------------- | --------------------------- |
-| `API.Trade`      | https://docs.alpaca.markets |
-| `API.MarketData` | https://docs.alpaca.markets |
-| `Stream.Trade`   | https://docs.alpaca.markets |
-| `Stream.Account` | https://docs.alpaca.markets |
+### Account
+
+| Method                  | Reference                   |
+| ----------------------- | --------------------------- |
+| `get`                   | https://docs.alpaca.markets |
+| `update`                | https://docs.alpaca.markets |
+| `activities`            | https://docs.alpaca.markets |
+| `portfolio`             | https://docs.alpaca.markets |
+| `positions`             | https://docs.alpaca.markets |
+| `orders`                | https://docs.alpaca.markets |
+| `order`                 | https://docs.alpaca.markets |
+| `cancelOrder`           | https://docs.alpaca.markets |
+| `cancelOrders`          | https://docs.alpaca.markets |
+| `closePosition`         | https://docs.alpaca.markets |
+| `closePositions`        | https://docs.alpaca.markets |
+| `watchlist`             | https://docs.alpaca.markets |
+| `watchlists`            | https://docs.alpaca.markets |
+| `watchlistAdd`          | https://docs.alpaca.markets |
+| `watchlistRemove`       | https://docs.alpaca.markets |
+| `watchlistUpdate`       | https://docs.alpaca.markets |
+| `watchlistDelete`       | https://docs.alpaca.markets |
+| `watchlistSymbols`      | https://docs.alpaca.markets |
+| `watchlistSymbol`       | https://docs.alpaca.markets |
+| `watchlistSymbolAdd`    | https://docs.alpaca.markets |
+| `watchlistSymbolRemove` | https://docs.alpaca.markets |
+| `watchlistSymbolUpdate` | https://docs.alpaca.markets |
+| `watchlistSymbolDelete` | https://docs.alpaca.markets |
+
+### Asset
+
+| Method        | Reference                   |
+| ------------- | --------------------------- |
+| `get`         | https://docs.alpaca.markets |
+| `getBySymbol` | https://docs.alpaca.markets |
