@@ -78,7 +78,9 @@ stream.v2.account().subscribe(console.log);
 
 The SDK is split into two parts, APIs and Streams. The APIs are for making REST requests and the Streams are for subscribing to WebSocket events. Each API and Stream is a class that has methods for each endpoint in the API. The methods return a promise for the response of the request or a subscription to the event.
 
-| API/Stream        | Reference                   |
-| ----------------- | --------------------------- |
-| `API.TRADE`       | https://docs.alpaca.markets |
-| `API.MARKET_DATA` | https://docs.alpaca.markets |
+| API/Stream       | Reference                   |
+| ---------------- | --------------------------- |
+| `API.Trade`      | https://docs.alpaca.markets |
+| `API.MarketData` | https://docs.alpaca.markets |
+| `Stream.Trade`   | https://docs.alpaca.markets |
+| `Stream.Account` | https://docs.alpaca.markets |
