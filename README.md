@@ -13,7 +13,6 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
   - [WebSocket](#websocket)
 - [APIs and Streams](#apis-and-streams)
 - [Methods](#methods)
-  - [REST](#rest-1)
   - [Account](#account)
   - [Asset](#asset)
   - [Calendar](#calendar)
