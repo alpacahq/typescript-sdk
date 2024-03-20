@@ -6,6 +6,14 @@ import {
 } from "./types/corporateActions.ts";
 
 import { CorporateActionsQueryParams } from "./types/corporateActions.ts";
+import {
+  CryptoHistoricalTradesResponse,
+  CryptoSnapshotsResponse,
+  HistoricalBarsResponse,
+  HistoricalQuotesResponse,
+  LatestBarsResponse,
+  LatestOrderbooksResponse,
+} from "./types/crypto.ts";
 import { NewsResponse } from "./types/news.ts";
 import {
   HistoricalOptionBarsResponse,
@@ -173,6 +181,115 @@ export const MarketData = (context: ClientContext) => ({
           path: `/v1beta1/screener/${marketType}/movers`,
           method: "GET",
           params: { top },
+        }),
+    },
+  },
+  v1beta3: {
+    crypto: {
+      getHistoricalBars: (
+        loc: string,
+        symbols: string,
+        timeframe: string,
+        start?: string,
+        end?: string,
+        limit: number = 1000,
+        page_token?: string,
+        sort?: string
+      ) =>
+        context.request<HistoricalBarsResponse>({
+          path: `/v1beta3/crypto/${loc}/bars`,
+          method: "GET",
+          params: {
+            symbols,
+            timeframe,
+            start,
+            end,
+            limit,
+            page_token,
+            sort,
+          },
+        }),
+      getLatestBars: (loc: string, symbols: string) =>
+        context.request<LatestBarsResponse>({
+          path: `/v1beta3/crypto/${loc}/latest/bars`,
+          method: "GET",
+          params: {
+            symbols,
+          },
+        }),
+      getLatestOrderbooks: (loc: string, symbols: string) =>
+        context.request<LatestOrderbooksResponse>({
+          path: `/v1beta3/crypto/${loc}/latest/orderbooks`,
+          method: "GET",
+          params: {
+            symbols,
+          },
+        }),
+      getLatestQuotes: (loc: string, symbols: string) =>
+        context.request<LatestQuotesResponse>({
+          path: `/v1beta3/crypto/${loc}/latest/quotes`,
+          method: "GET",
+          params: {
+            symbols,
+          },
+        }),
+      getLatestTrades: (loc: string, symbols: string) =>
+        context.request<LatestTradesResponse>({
+          path: `/v1beta3/crypto/${loc}/latest/trades`,
+          method: "GET",
+          params: {
+            symbols,
+          },
+        }),
+      getHistoricalQuotes: (
+        loc: string,
+        symbols: string,
+        start?: string,
+        end?: string,
+        limit?: number,
+        pageToken?: string,
+        sort?: string
+      ) =>
+        context.request<HistoricalQuotesResponse>({
+          path: `/v1beta3/crypto/${loc}/quotes`,
+          method: "GET",
+          params: {
+            symbols,
+            start,
+            end,
+            limit,
+            page_token: pageToken,
+            sort,
+          },
+        }),
+      getSnapshots: (loc: string, symbols: string) =>
+        context.request<CryptoSnapshotsResponse>({
+          path: `/v1beta3/crypto/${loc}/snapshots`,
+          method: "GET",
+          params: {
+            symbols,
+          },
+        }),
+      getHistoricalTrades: (
+        loc: string,
+        symbols: string,
+        start?: string,
+        end?: string,
+        limit?: number,
+        page_token?: string,
+        sort?: string
+      ) =>
+        context.request<CryptoHistoricalTradesResponse>({
+          path: `/v1beta3/crypto/${loc}/trades`,
+          method: "GET",
+          params: {
+            symbols,
+            start,
+            end,
+            limit,
+            page_token,
+            sort,
+          },
         }),
     },
   },
