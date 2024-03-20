@@ -47,7 +47,7 @@ For REST, you can use the `createClient` function. This function takes an API cl
 import { API, createClient } from "@alpacahq/typescript-sdk";
 
 // Create a client
-const client = createClient(API.TRADE, {
+const client = createClient(API.Trade, {
   keyId: "YOUR_API_KEY_ID",
   secretKey: "YOUR_API_SECRET_KEY",
 });
@@ -65,7 +65,7 @@ For streaming, you can use the `createStream` function. This function takes a st
 import { createStream } from "@alpacahq/typescript-sdk";
 
 // Create a stream
-const stream = createStream(TradeStream, {
+const stream = createStream(Stream.Trade, {
   keyId: "YOUR_API_KEY_ID",
   secretKey,
 });
