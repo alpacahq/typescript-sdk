@@ -14,7 +14,8 @@ Deno.test("should return a client with an expected endpoint", () =>
 
 Deno.test("client should make a successful request", async () => {
   try {
-    assert((await client.v2.account.get()).id);
+    const account = await client.v2.account.get();
+    assert(account.id);
   } catch (error) {
     console.error(error);
     assert(false, "Request failed");

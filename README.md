@@ -18,7 +18,7 @@ const client = createClient(TradeAPI, {
 // https://paper-api.alpaca.markets/v2/orders/{order_id} PATCH
 // https://paper-api.alpaca.markets/v2/orders/{order_id} DELETE
 
-await client.v2.account();
+await client.v2.account.get();
 await client.v2.orders.post({
   symbol: "AAPL",
   qty: 1,
@@ -29,10 +29,11 @@ await client.v2.orders.post({
 
 await client.v2.orders.get();
 await client.v2.orders.delete();
-await client.v2.orders.orderId("order_id").get();
-await client.v2.orders.orderId("order_id").patch({
+await client.v2.orders.get({ order_id: "ok" });
+await client.v2.orders.patch({
+  order_id: "ok",
   qty: 2,
 });
 
-await client.v2.orders.orderId("order_id").delete();
+await client.v2.orders.delete({ order_id: "ok" });
 ```
