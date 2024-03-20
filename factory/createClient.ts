@@ -1,54 +1,37 @@
-interface AccountResponse {
-  id: string;
-  status: string;
-}
-
-interface Endpoint {
-  method: string;
-  path: string;
-}
-
-interface APITemplate {
-  account: {
-    get: Endpoint;
-  };
-}
-
-interface TradeAPIClient {
-  v2: {
-    account: {
-      get: () => Promise<AccountResponse>;
-    };
-  };
-}
-
-const TradeAPITemplate: APITemplate = {
-  account: {
-    get: {
-      method: "GET",
-      path: "/v2/account",
-    },
-  },
-};
-
-type CreateTradeClientOptions = {
+type CreateClientOptions = {
   keyId: string;
   secretKey: string;
-  paper?: boolean;
+  baseURL: string;
 };
 
-export const createTradeClient = ({
-  keyId,
-  secretKey,
-  paper = true,
-}: CreateTradeClientOptions): TradeAPIClient => {
-  const request = async <ResponseType>(
-    method: string,
-    path: string,
-    data?: object
-  ): Promise<ResponseType> => {
-    const baseUrl = "https://paper-api.alpaca.markets";
-    const url = `${baseUrl}${path}`;
+type EndpointFunction = () => { method: string; url: string };
+type PromiseReturnType<T extends EndpointFunction> = () => Promise<
+  ReturnType<T>
+>;
+
+type DynamicApiFunctions<T> = {
+  [P in keyof T]: T[P] extends EndpointFunction
+    ? PromiseReturnType<T[P]>
+    : T[P] extends object
+    ? DynamicApiFunctions<T[P]>
+    : never;
+};
+
+export function createClient<T>(
+  api: T,
+  { keyId, secretKey, baseURL }: CreateClientOptions
+): DynamicApiFunctions<T> {
+  const request = async ({
+    method,
+    path,
+    data,
+  }: {
+    method: string;
+    path: string;
+    data?: object;
+  }): Promise<any> => {
+    // Consider specifying a more detailed type than 'any'.
+    const url = `${baseURL}${path}`;
     const headers = new Headers({
       "APCA-API-KEY-ID": keyId,
       "APCA-API-SECRET-KEY": secretKey,
@@ -58,21 +41,36 @@ export const createTradeClient = ({
     const response = await fetch(url, {
       method,
       headers,
-      body: data ? JSON.stringify(data) : null,
+      body: JSON.stringify(data),
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `API call failed: ${response.status} ${response.statusText}`
+      );
+    }
 
     return response.json();
   };
 
-  return {
-    v2: {
-      account: {
-        get: () =>
-          request<AccountResponse>(
-            TradeAPITemplate.account.get.method,
-            TradeAPITemplate.account.get.path
-          ),
-      },
-    },
-  };
-};
+  function constructEndpoint(endpoint: { method: string; url: string }) {
+    return async () => request({ method: endpoint.method, path: endpoint.url });
+  }
+
+  function buildApiObject(apiStructure: any): any {
+    return Object.keys(apiStructure).reduce((acc, key) => {
+      const value = apiStructure[key];
+      if (typeof value === "function") {
+        const endpoint = value();
+        //@ts-ignore
+        acc[key] = constructEndpoint(endpoint);
+      } else if (typeof value === "object" && value !== null) {
+        //@ts-ignore
+        acc[key] = buildApiObject(value);
+      }
+      return acc;
+    }, {});
+  }
+
+  return buildApiObject(api) as DynamicApiFunctions<T>;
+}
