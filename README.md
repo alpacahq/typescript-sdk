@@ -1,4 +1,8 @@
 # typescript-sdk
+![version](https://img.shields.io/github/package-json/v/alpacahq/typescript-sdk?color=196DFF&style=flat-square)
+![code](https://img.shields.io/github/languages/code-size/alpacahq/typescript-sdk?color=F1A42E&style=flat-square&label=size)
+![build](https://img.shields.io/github/workflow/status/alpacahq/typescript-sdk/test?style=flat-square)
+![prettier](https://img.shields.io/static/v1?label=style&message=prettier&color=ff51bc&style=flat-square)
 
 A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 
