@@ -30,7 +30,6 @@ export function createClient<T>(
     path: string;
     data?: object;
   }): Promise<any> => {
-    // Consider specifying a more detailed type than 'any'.
     const url = `${baseURL}${path}`;
     const headers = new Headers({
       "APCA-API-KEY-ID": keyId,
