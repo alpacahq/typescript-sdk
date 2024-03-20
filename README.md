@@ -7,6 +7,11 @@
 
 A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 
+- [Install](#install)
+- [Getting Started](#getting-started)
+  - [REST](#rest)
+  - [WebSocket](#websocket)
+
 ## Install
 
 While this project is written in Deno/Typescript, it can be used in Node.js as well. This is the most common way to use it.
@@ -57,5 +62,3 @@ const stream = createStream(TradeStream, {
 // Use the stream to subscribe to events
 stream.v2.account().subscribe(console.log);
 ```
-
-> You can find the API classes in the `src/apis` directory. Each class is a collection of methods that correspond to the endpoints in the API. The methods are organized by the HTTP method they use.
