@@ -42,7 +42,7 @@ import { OptionContract, OptionContractsQueryParams } from "./types/options.ts";
 import { CreateOrderOptions, Order, PatchOrderOptions } from "./types/order.ts";
 import { ClosePositionOptions, Position } from "./types/position.ts";
 
-export const TradeAPI = (context: ClientContext) => ({
+export const Trade = (context: ClientContext) => ({
   v2: {
     account: {
       get: () =>

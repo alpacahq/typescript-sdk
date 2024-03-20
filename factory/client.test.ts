@@ -1,8 +1,8 @@
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
-import { TradeAPI } from "../api/trade/index.ts";
+import { Trade } from "../api/trade/index.ts";
 import { createClient } from "./client.ts";
 
-const client = createClient(TradeAPI, {
+const client = createClient(Trade, {
   keyId: "PK1OHDJBZQ6J5HQJZBXX",
   secretKey: "7ntdrZayazQkRxINbLWcn4ib0Nv58AlTQH0IqzbQ",
   baseURL: "https://paper-api.alpaca.markets",
