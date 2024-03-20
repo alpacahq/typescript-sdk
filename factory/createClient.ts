@@ -1,76 +1,65 @@
-type EndpointFunction = () => { method: string; url: string };
-
-type PromiseReturnType<T extends EndpointFunction> = () => Promise<
-  ReturnType<T>
->;
-
-type DynamicApiFunctions<T> = {
-  [P in keyof T]: T[P] extends EndpointFunction
-    ? PromiseReturnType<T[P]>
-    : T[P] extends object
-    ? DynamicApiFunctions<T[P]>
-    : never;
+export type ClientContext = {
+  options: CreateClientOptions;
+  request: (options: RequestOptions) => Promise<unknown>;
 };
 
-type CreateClientOptions = {
+type RequestOptions = {
+  method: string;
+  path: string;
+  params?: Record<string, any>;
+  data?: object;
+};
+
+export type CreateClientOptions = {
   keyId: string;
   secretKey: string;
   baseURL: string;
 };
 
+export type Client<T> = T;
+
+export type ClientFactory<T> = (ctx: ClientContext) => T;
+
 export function createClient<T>(
-  api: T,
-  { keyId, secretKey, baseURL }: CreateClientOptions
-): DynamicApiFunctions<T> {
-  const request = async ({
-    method,
-    path,
-    data,
-  }: {
-    method: string;
-    path: string;
-    data?: object;
-  }): Promise<any> => {
-    const url = `${baseURL}${path}`;
-    const headers = new Headers({
-      "APCA-API-KEY-ID": keyId,
-      "APCA-API-SECRET-KEY": secretKey,
-      "Content-Type": "application/json",
-    });
-
-    const response = await fetch(url, {
+  factory: ClientFactory<T>,
+  options: CreateClientOptions
+): Client<T> {
+  const context: ClientContext = {
+    options,
+    request: async ({
       method,
-      headers,
-      body: JSON.stringify(data),
-    });
+      path,
+      params,
+      data,
+    }: RequestOptions): Promise<any> => {
+      let finalPath = path;
+      if (params) {
+        for (const [key, value] of Object.entries(params)) {
+          finalPath = finalPath.replace(`{${key}}`, encodeURIComponent(value));
+        }
+      }
+      const url = `${options.baseURL}${finalPath}`;
+      const headers = new Headers({
+        "APCA-API-KEY-ID": options.keyId,
+        "APCA-API-SECRET-KEY": options.secretKey,
+        "Content-Type": "application/json",
+      });
 
-    if (!response.ok) {
-      throw new Error(
-        `API call failed: ${response.status} ${response.statusText}`
-      );
-    }
+      const response = await fetch(url, {
+        method,
+        headers,
+        body: data ? JSON.stringify(data) : null,
+      });
 
-    return response.json();
+      if (!response.ok) {
+        throw new Error(
+          `API call failed: ${response.status} ${response.statusText}`
+        );
+      }
+
+      return response.json();
+    },
   };
 
-  function constructEndpoint(endpoint: { method: string; url: string }) {
-    return async () => request({ method: endpoint.method, path: endpoint.url });
-  }
-
-  function buildApiObject(apiStructure: any): any {
-    return Object.keys(apiStructure).reduce((acc, key) => {
-      const value = apiStructure[key];
-      if (typeof value === "function") {
-        const endpoint = value();
-        //@ts-ignore
-        acc[key] = constructEndpoint(endpoint);
-      } else if (typeof value === "object" && value !== null) {
-        //@ts-ignore
-        acc[key] = buildApiObject(value);
-      }
-      return acc;
-    }, {});
-  }
-
-  return buildApiObject(api) as DynamicApiFunctions<T>;
+  return factory(context);
 }

@@ -1,12 +1,9 @@
-// Template used to generate the API client,
-// see: https://docs.alpaca.markets/reference
-export default {
+import { ClientContext } from "../factory/createClient.ts";
+
+export const tradeAPI = (ctx: ClientContext) => ({
   v2: {
     account: {
-      get: () => ({
-        method: "GET",
-        url: "/v2/account",
-      }),
+      get: () => ctx.request({ method: "GET", path: "/v2/account" }),
     },
   },
-};
+});
