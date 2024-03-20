@@ -1,13 +1,10 @@
+export type Client<T> = T;
+
+export type ClientFactory<T> = (context: ClientContext) => T;
+
 export type ClientContext = {
   options: CreateClientOptions;
-  request: (options: RequestOptions) => Promise<unknown>;
-};
-
-type RequestOptions = {
-  method: string;
-  path: string;
-  params?: Record<string, any>;
-  data?: object;
+  request: <T>(options: RequestOptions) => Promise<T>;
 };
 
 export type CreateClientOptions = {
@@ -16,9 +13,12 @@ export type CreateClientOptions = {
   baseURL: string;
 };
 
-export type Client<T> = T;
-
-export type ClientFactory<T> = (ctx: ClientContext) => T;
+type RequestOptions = {
+  method?: string;
+  path: string;
+  params?: Record<string, any>;
+  data?: object;
+};
 
 export function createClient<T>(
   factory: ClientFactory<T>,
@@ -26,12 +26,12 @@ export function createClient<T>(
 ): Client<T> {
   const context: ClientContext = {
     options,
-    request: async ({
-      method,
+    request: async <T>({
+      method = "GET",
       path,
       params,
       data,
-    }: RequestOptions): Promise<any> => {
+    }: RequestOptions): Promise<T> => {
       let finalPath = path;
       if (params) {
         for (const [key, value] of Object.entries(params)) {
