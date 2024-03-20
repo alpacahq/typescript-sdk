@@ -36,10 +36,10 @@ There are two ways to use this SDK, REST and WebSocket. Both are created using t
 For REST, you can use the `createClient` function. This function takes an API class and an options object. The options object should contain the `keyId` and `secretKey` for the API. The client will then have methods for each endpoint in the API.
 
 ```ts
-import { createClient } from "@alpacahq/typescript-sdk";
+import { API, createClient } from "@alpacahq/typescript-sdk";
 
 // Create a client
-const client = createClient(TradeAPI, {
+const client = createClient(API.TRADE, {
   keyId: "YOUR_API_KEY_ID",
   secretKey: "YOUR_API_SECRET_KEY",
 });
@@ -70,7 +70,7 @@ stream.v2.account().subscribe(console.log);
 
 The SDK is split into two parts, APIs and Streams. The APIs are for making REST requests and the Streams are for subscribing to WebSocket events. Each API and Stream is a class that has methods for each endpoint in the API. The methods return a promise for the response of the request or a subscription to the event.
 
-| API/Stream       | Description |
-| ---------------- | ----------- |
-| `api.trade`      |             |
-| `api.marketData` |             |
+| API/Stream        | Description |
+| ----------------- | ----------- |
+| `API.TRADE`       |             |
+| `API.MARKET_DATA` |             |
