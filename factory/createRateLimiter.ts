@@ -1,4 +1,12 @@
-export function createRateLimiter(tokensPerInterval: number, interval: number) {
+export type CreateRateLimiterOptions = {
+  tokensPerInterval: number;
+  interval: number;
+};
+
+export function createRateLimiter({
+  tokensPerInterval,
+  interval,
+}: CreateRateLimiterOptions) {
   let lastCheck = Date.now();
   let tokens = tokensPerInterval;
 
@@ -6,6 +14,7 @@ export function createRateLimiter(tokensPerInterval: number, interval: number) {
     const now = Date.now();
     const delta = (now - lastCheck) / 1000;
     const refillTokens = delta * (tokensPerInterval / interval);
+
     tokens = Math.min(tokens + refillTokens, tokensPerInterval);
     lastCheck = now;
   }

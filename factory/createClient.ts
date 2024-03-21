@@ -37,7 +37,11 @@ export function createClient<T>(
 ): Client<T> {
   const { tokensPerInterval = 200, interval = 60 } =
     options.rateLimiterOptions || {};
-  const rateLimiter = createRateLimiter(tokensPerInterval, interval);
+
+  const rateLimiter = createRateLimiter({
+    tokensPerInterval,
+    interval,
+  });
 
   const context: ClientContext = {
     options,
