@@ -1,10 +1,13 @@
-import { MarketData } from "../spec/market-data/rest.ts";
-import { TradeAPIRest } from "../spec/trade/rest.ts";
-import { createRateLimiter } from "./createRateLimiter.ts";
+import { methods } from "../api/marketData/methods.ts";
+import { methods as methods2 } from "../api/trade/methods.ts";
+import {
+  createBottleneck,
+  CreateBottleneckOptions,
+} from "./createBottleneck.ts";
 
 export type Client = {
-  trade: ReturnType<typeof TradeAPIRest>;
-  marketData: ReturnType<typeof MarketData>;
+  trade: ReturnType<typeof methods>;
+  marketData: ReturnType<typeof methods2>;
 };
 
 export type ClientFactory = (context: ClientContext) => any;
@@ -27,20 +30,15 @@ type RequestOptions = {
   data?: object;
 };
 
-export type RateLimiterOptions = {
-  tokensPerInterval?: number;
-  interval?: number;
-};
-
 export type ExtendedCreateClientOptions = CreateClientOptions & {
-  rateLimiterOptions?: RateLimiterOptions;
+  rateLimiterOptions?: CreateBottleneckOptions;
 };
 
 export function createClient(options: ExtendedCreateClientOptions): Client {
   const { tokensPerInterval = 200, interval = 60 } =
     options.rateLimiterOptions || {};
 
-  const rateLimiter = createRateLimiter({
+  const bottleneck = createBottleneck({
     tokensPerInterval,
     interval,
   });
@@ -53,7 +51,7 @@ export function createClient(options: ExtendedCreateClientOptions): Client {
       params,
       data,
     }: RequestOptions): Promise<T> => {
-      while (!rateLimiter.consume()) {
+      while (!bottleneck.consume()) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
@@ -86,12 +84,8 @@ export function createClient(options: ExtendedCreateClientOptions): Client {
     },
   };
 
-  const apis = [TradeAPIRest, MarketData];
-
   return {
-    //@ts-ignore
-    trade: apis[0](context),
-    //@ts-ignore
-    marketData: apis[1](context),
+    trade: methods(context),
+    marketData: methods2(context),
   };
 }

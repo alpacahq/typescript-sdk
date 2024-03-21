@@ -1,12 +1,12 @@
-export type CreateRateLimiterOptions = {
+export type CreateBottleneckOptions = {
   tokensPerInterval: number;
   interval: number;
 };
 
-export function createRateLimiter({
+export function createBottleneck({
   tokensPerInterval,
   interval,
-}: CreateRateLimiterOptions) {
+}: CreateBottleneckOptions) {
   let lastCheck = Date.now();
   let tokens = tokensPerInterval;
 
