@@ -44,17 +44,17 @@ import { OptionContract, OptionContractsQueryParams } from "./types/options.ts";
 import { CreateOrderOptions, Order, PatchOrderOptions } from "./types/order.ts";
 import { ClosePositionOptions, Position } from "./types/position.ts";
 
-export const methods = (context: ClientContext) => ({
+export const methods = ({ request }: ClientContext) => ({
   v2: {
     account: {
       get: () =>
-        context.request<Account>({
+        request<Account>({
           path: "/v2/account",
         }),
     },
     orders: {
       post: (options: CreateOrderOptions) =>
-        context.request<Order>({
+        request<Order>({
           path: "/v2/orders",
           method: "POST",
           data: options,
@@ -73,7 +73,7 @@ export const methods = (context: ClientContext) => ({
           params = options;
         }
 
-        return context.request<Order | Order[]>({
+        return request<Order | Order[]>({
           path,
           method: "GET",
           params,
@@ -86,13 +86,13 @@ export const methods = (context: ClientContext) => ({
           path += `/${orderId}`;
         }
 
-        return context.request<{ id?: string; status?: string }[] | void>({
+        return request<{ id?: string; status?: string }[] | void>({
           path,
           method: "DELETE",
         });
       },
       patch: (orderId: string, options: PatchOrderOptions) =>
-        context.request<Order>({
+        request<Order>({
           path: `/v2/orders/${orderId}`,
           method: "PATCH",
           data: options,
@@ -100,14 +100,14 @@ export const methods = (context: ClientContext) => ({
     },
     positions: {
       get: (symbol_or_asset_id?: string) =>
-        context.request<Position | Position[]>({
+        request<Position | Position[]>({
           path: symbol_or_asset_id
             ? `/v2/positions/${symbol_or_asset_id}`
             : "/v2/positions",
           method: "GET",
         }),
       delete: (params: ClosePositionOptions) =>
-        context.request<Order[]>({
+        request<Order[]>({
           path: params.symbol_or_asset_id
             ? `/v2/positions/${params.symbol_or_asset_id}`
             : "/v2/positions",
@@ -117,14 +117,14 @@ export const methods = (context: ClientContext) => ({
             : { cancel_orders: params.cancel_orders },
         }),
       post: (symbol_or_contract_id: string) =>
-        context.request<void>({
+        request<void>({
           path: `/v2/positions/${symbol_or_contract_id}/exercise`,
           method: "POST",
         }),
     },
     portfolioHistory: {
       get: (params?: PortfolioHistoryParams) =>
-        context.request<PortfolioHistoryResponse>({
+        request<PortfolioHistoryResponse>({
           path: "/v2/account/portfolio/history",
           method: "GET",
           params,
@@ -132,14 +132,14 @@ export const methods = (context: ClientContext) => ({
     },
     watchlists: {
       get: (watchlist_id?: string) =>
-        context.request<Watchlist | Watchlist[]>({
+        request<Watchlist | Watchlist[]>({
           path: watchlist_id
             ? `/v2/watchlists/${watchlist_id}`
             : "/v2/watchlists",
           method: "GET",
         }),
       post: ({ name, symbols }: CreateWatchlistParams) =>
-        context.request<Watchlist>({
+        request<Watchlist>({
           path: "/v2/watchlists",
           method: "POST",
           data: { name, symbols },
@@ -149,13 +149,13 @@ export const methods = (context: ClientContext) => ({
         name,
         symbols,
       }: { watchlist_id: string } & UpdateWatchlistParams) =>
-        context.request<Watchlist>({
+        request<Watchlist>({
           path: `/v2/watchlists/${watchlist_id}`,
           method: "PUT",
           data: { name, symbols },
         }),
       deleteById: ({ watchlist_id }: { watchlist_id: string }) =>
-        context.request<void>({
+        request<void>({
           path: `/v2/watchlists/${watchlist_id}`,
           method: "DELETE",
         }),
@@ -166,33 +166,33 @@ export const methods = (context: ClientContext) => ({
         watchlist_id: string;
         symbol: string;
       }) =>
-        context.request<Watchlist>({
+        request<Watchlist>({
           path: `/v2/watchlists/${watchlist_id}`,
           method: "POST",
           data: { symbol },
         }),
       getByName: ({ name }: GetWatchlistByNameParams) =>
-        context.request<Watchlist>({
+        request<Watchlist>({
           path: "/v2/watchlists:by_name",
           method: "GET",
           params: { name },
         }),
       updateByName: ({ name, newName, symbols }: UpdateWatchlistByNameParams) =>
-        context.request<Watchlist>({
+        request<Watchlist>({
           path: "/v2/watchlists:by_name",
           method: "PUT",
           params: { name },
           data: { name: newName, symbols },
         }),
       addAssetByName: ({ name, symbol }: AddAssetToWatchlistParams) =>
-        context.request<void>({
+        request<void>({
           path: "/v2/watchlists:by_name",
           method: "POST",
           params: { name },
           data: { symbol },
         }),
       deleteByName: ({ name }: DeleteWatchlistByNameParams) =>
-        context.request<void>({
+        request<void>({
           path: "/v2/watchlists:by_name",
           method: "DELETE",
           params: { name },
@@ -201,19 +201,19 @@ export const methods = (context: ClientContext) => ({
         watchlistId,
         symbol,
       }: DeleteSymbolFromWatchlistParams) =>
-        context.request<Watchlist>({
+        request<Watchlist>({
           path: `/v2/watchlists/${watchlistId}/${symbol}`,
           method: "DELETE",
         }),
     },
     accountConfigurations: {
       get: () =>
-        context.request<AccountConfigurations>({
+        request<AccountConfigurations>({
           path: "/v2/account/configurations",
           method: "GET",
         }),
       patch: (updatedConfig: UpdatedAccountConfigurations) =>
-        context.request<void>({
+        request<void>({
           path: "/v2/account/configurations",
           method: "PATCH",
           data: updatedConfig,
@@ -232,7 +232,7 @@ export const methods = (context: ClientContext) => ({
           category?: string;
         }
       ) =>
-        context.request<AccountActivity[]>({
+        request<AccountActivity[]>({
           path: `/v2/account/activities${
             activityType ? `/${activityType}` : ""
           }`,
@@ -254,7 +254,7 @@ export const methods = (context: ClientContext) => ({
         end?: string;
         dateType?: "TRADING" | "SETTLEMENT";
       }) =>
-        context.request<MarketCalendar[]>({
+        request<MarketCalendar[]>({
           path: "/v2/calendar",
           method: "GET",
           params: {
@@ -266,7 +266,7 @@ export const methods = (context: ClientContext) => ({
     },
     clock: {
       get: () =>
-        context.request<MarketClock>({
+        request<MarketClock>({
           path: "/v2/clock",
           method: "GET",
         }),
@@ -278,7 +278,7 @@ export const methods = (context: ClientContext) => ({
         exchange?: string;
         attributes?: string[];
       }) =>
-        context.request<Asset[]>({
+        request<Asset[]>({
           path: "/v2/assets",
           method: "GET",
           params: {
@@ -289,7 +289,7 @@ export const methods = (context: ClientContext) => ({
           },
         }),
       getAsset: (symbolOrAssetId: string) =>
-        context.request<Asset>({
+        request<Asset>({
           path: `/v2/assets/${symbolOrAssetId}`,
           method: "GET",
         }),
@@ -300,7 +300,7 @@ export const methods = (context: ClientContext) => ({
         if (symbolOrId) {
           path += `/${symbolOrId}`;
         }
-        return context.request<OptionContract | OptionContract[]>({
+        return request<OptionContract | OptionContract[]>({
           path,
           method: "GET",
           params: queryParams,
@@ -314,12 +314,12 @@ export const methods = (context: ClientContext) => ({
           announcementId?: string
         ) => {
           if (announcementId) {
-            return context.request<CorporateActionAnnouncement>({
+            return request<CorporateActionAnnouncement>({
               path: `/v2/corporate_actions/announcements/${announcementId}`,
               method: "GET",
             });
           } else {
-            return context.request<CorporateActionAnnouncement[]>({
+            return request<CorporateActionAnnouncement[]>({
               path: "/v2/corporate_actions/announcements",
               method: "GET",
               params: queryParams,
@@ -330,51 +330,51 @@ export const methods = (context: ClientContext) => ({
     },
     cryptoFunding: {
       getWallets: (asset?: string) =>
-        context.request<CryptoFundingWallet | CryptoFundingWallet[]>({
+        request<CryptoFundingWallet | CryptoFundingWallet[]>({
           path: "/v2/wallets",
           method: "GET",
           params: { asset },
         }),
 
       requestWithdrawal: (withdrawalParams: WithdrawalParams) =>
-        context.request<CryptoFundingTransfer>({
+        request<CryptoFundingTransfer>({
           path: "/v2/wallets/transfers",
           method: "POST",
           data: withdrawalParams,
         }),
       getTransfers: (transferId?: string) => {
         if (transferId) {
-          return context.request<CryptoFundingTransfer>({
+          return request<CryptoFundingTransfer>({
             path: `/v2/wallets/transfers/${transferId}`,
             method: "GET",
           });
         } else {
-          return context.request<CryptoFundingTransfer[]>({
+          return request<CryptoFundingTransfer[]>({
             path: "/v2/wallets/transfers",
             method: "GET",
           });
         }
       },
       getWhitelistedAddresses: () =>
-        context.request<WhitelistedAddress[]>({
+        request<WhitelistedAddress[]>({
           path: "/v2/wallets/whitelists",
           method: "GET",
         }),
       requestWhitelistedAddress: (
         whitelistedAddressParams: WhitelistedAddressParams
       ) =>
-        context.request<WhitelistedAddress>({
+        request<WhitelistedAddress>({
           path: "/v2/wallets/whitelists",
           method: "POST",
           data: whitelistedAddressParams,
         }),
       deleteWhitelistedAddress: (whitelistedAddressId: string) =>
-        context.request<void>({
+        request<void>({
           path: `/v2/wallets/whitelists/${whitelistedAddressId}`,
           method: "DELETE",
         }),
       estimateTransactionFee: (transactionParams: TransactionParams) =>
-        context.request<TransactionFeeResponse>({
+        request<TransactionFeeResponse>({
           path: "/v2/wallets/fees/estimate",
           method: "GET",
           params: transactionParams,

@@ -1,13 +1,20 @@
-import { methods } from "../api/marketData/methods.ts";
-import { methods as methods2 } from "../api/trade/methods.ts";
 import {
   createBottleneck,
   CreateBottleneckOptions,
 } from "./createBottleneck.ts";
 
-type WebSocket = {
-  on: (handler: () => void) => void;
-  // when called, will open a connection to the server and authenticate, then subscribe to the given streams
+import { methods } from "../api/marketData/methods.ts";
+import { methods as methods2 } from "../api/trade/methods.ts";
+import { TradeWebSocket } from "../api/trade/types/websocket.ts";
+import { StockDataWebSocket } from "../api/trade/types/websocket_2.ts";
+
+interface EventMap {}
+
+export type WebSocket = {
+  on<E extends keyof EventMap>(
+    event: E,
+    handler: (data: EventMap[E]) => void
+  ): void;
   subscribe: (streams: string[]) => Promise<string[]>;
   unsubscribe: (streams: string[]) => Promise<string[]>;
 };
@@ -18,15 +25,17 @@ export type Client = {
     marketData: ReturnType<typeof methods2>;
   };
   websocket: {
-    trade: WebSocket;
+    trade: TradeWebSocket;
     marketData: {
-      stock: WebSocket;
+      stock: StockDataWebSocket;
       crypto: WebSocket;
       news: WebSocket;
       options: WebSocket;
     };
   };
 };
+
+const client = {} as Client;
 
 export type ClientFactory = (context: ClientContext) => any;
 
@@ -103,7 +112,38 @@ export function createClient(options: ExtendedCreateClientOptions): Client {
   };
 
   return {
-    trade: methods(context),
-    marketData: methods2(context),
+    rest: {
+      trade: methods(context),
+      marketData: methods2(context),
+    },
+    websocket: {
+      trade: {
+        on: () => {},
+        subscribe: () => Promise.resolve([]),
+        unsubscribe: () => Promise.resolve([]),
+      },
+      marketData: {
+        stock: {
+          on: () => {},
+          subscribe: () => Promise.resolve([]),
+          unsubscribe: () => Promise.resolve([]),
+        },
+        crypto: {
+          on: () => {},
+          subscribe: () => Promise.resolve([]),
+          unsubscribe: () => Promise.resolve([]),
+        },
+        news: {
+          on: () => {},
+          subscribe: () => Promise.resolve([]),
+          unsubscribe: () => Promise.resolve([]),
+        },
+        options: {
+          on: () => {},
+          subscribe: () => Promise.resolve([]),
+          unsubscribe: () => Promise.resolve([]),
+        },
+      },
+    },
   };
 }

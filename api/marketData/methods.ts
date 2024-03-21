@@ -40,17 +40,17 @@ import {
   TradeResponse,
 } from "./types/stocks.ts";
 
-export const methods = (context: ClientContext) => ({
+export const methods = ({ request }: ClientContext) => ({
   v1beta1: {
     corporateActions: (queryParams: CorporateActionsQueryParams) =>
-      context.request<CorporateActionsResponse>({
+      request<CorporateActionsResponse>({
         path: "/v1beta1/corporate-actions",
         method: "GET",
         params: queryParams,
       }),
     forex: {
       latestRates: (currencyPairs: string) =>
-        context.request<LatestForexRatesResponse>({
+        request<LatestForexRatesResponse>({
           path: "/v1beta1/forex/latest/rates",
           method: "GET",
           params: { currency_pairs: currencyPairs },
@@ -64,7 +64,7 @@ export const methods = (context: ClientContext) => ({
         sort?: string,
         pageToken?: string
       ) =>
-        context.request<HistoricalForexRatesResponse>({
+        request<HistoricalForexRatesResponse>({
           path: "/v1beta1/forex/rates",
           method: "GET",
           params: {
@@ -81,7 +81,7 @@ export const methods = (context: ClientContext) => ({
 
     logos: (symbol: string, placeholder?: boolean) =>
       // uhh, not sure yet how to handle this
-      context.request<unknown>({
+      request<unknown>({
         path: `/v1beta1/logos/${symbol}`,
         method: "GET",
         params: { placeholder: placeholder },
@@ -97,7 +97,7 @@ export const methods = (context: ClientContext) => ({
       excludeContentless?: boolean,
       pageToken?: string
     ) =>
-      context.request<NewsResponse>({
+      request<NewsResponse>({
         path: "/v1beta1/news",
         method: "GET",
         params: {
@@ -121,7 +121,7 @@ export const methods = (context: ClientContext) => ({
         pageToken?: string,
         sort?: string
       ) =>
-        context.request<HistoricalOptionBarsResponse>({
+        request<HistoricalOptionBarsResponse>({
           path: "/v1beta1/options/bars",
           method: "GET",
           params: {
@@ -136,14 +136,14 @@ export const methods = (context: ClientContext) => ({
         }),
       meta: {
         exchanges: () =>
-          context.request<OptionExchangeMapping>({
+          request<OptionExchangeMapping>({
             path: "/v1beta1/options/meta/exchanges",
             method: "GET",
           }),
       },
       quotes: {
         latest: (symbols: string, feed?: string) =>
-          context.request<LatestQuotesResponse>({
+          request<LatestQuotesResponse>({
             path: "/v1beta1/options/quotes/latest",
             method: "GET",
             params: { symbols, feed },
@@ -151,7 +151,7 @@ export const methods = (context: ClientContext) => ({
       },
       trades: {
         latest: (symbols: string, feed?: string) =>
-          context.request<LatestTradesResponse>({
+          request<LatestTradesResponse>({
             path: "/v1beta1/options/trades/latest",
             method: "GET",
             params: { symbols, feed },
@@ -164,21 +164,21 @@ export const methods = (context: ClientContext) => ({
           pageToken?: string,
           sort?: string
         ) =>
-          context.request<HistoricalTradesResponse>({
+          request<HistoricalTradesResponse>({
             path: "/v1beta1/options/trades",
             method: "GET",
             params: { symbols, start, end, limit, pageToken, sort },
           }),
       },
       snapshots: (symbols: string, feed?: string) =>
-        context.request<SnapshotsResponse>({
+        request<SnapshotsResponse>({
           path: "/v1beta1/options/snapshots",
           method: "GET",
           params: { symbols, feed },
         }),
       snapshotsByUnderlying: (underlyingSymbol: string, feed?: string) =>
         // uhh, not sure yet how to handle this
-        context.request<SnapshotsResponse>({
+        request<SnapshotsResponse>({
           path: `/v1beta1/options/snapshots/${underlyingSymbol}`,
           method: "GET",
           params: { feed },
@@ -186,13 +186,13 @@ export const methods = (context: ClientContext) => ({
     },
     screener: {
       getMostActives: (by = "volume", top = 10) =>
-        context.request<MostActivesResponse>({
+        request<MostActivesResponse>({
           path: "/v1beta1/screener/stocks/most-actives",
           method: "GET",
           params: { by, top },
         }),
       getMarketMovers: (marketType: string, top: number = 10) =>
-        context.request<MarketMoversResponse>({
+        request<MarketMoversResponse>({
           path: `/v1beta1/screener/${marketType}/movers`,
           method: "GET",
           params: { top },
@@ -211,7 +211,7 @@ export const methods = (context: ClientContext) => ({
         page_token?: string,
         sort?: string
       ) =>
-        context.request<HistoricalBarsResponse>({
+        request<HistoricalBarsResponse>({
           path: `/v1beta3/crypto/${loc}/bars`,
           method: "GET",
           params: {
@@ -225,7 +225,7 @@ export const methods = (context: ClientContext) => ({
           },
         }),
       getLatestBars: (loc: string, symbols: string) =>
-        context.request<LatestBarsResponse>({
+        request<LatestBarsResponse>({
           path: `/v1beta3/crypto/${loc}/latest/bars`,
           method: "GET",
           params: {
@@ -233,7 +233,7 @@ export const methods = (context: ClientContext) => ({
           },
         }),
       getLatestOrderbooks: (loc: string, symbols: string) =>
-        context.request<LatestOrderbooksResponse>({
+        request<LatestOrderbooksResponse>({
           path: `/v1beta3/crypto/${loc}/latest/orderbooks`,
           method: "GET",
           params: {
@@ -241,7 +241,7 @@ export const methods = (context: ClientContext) => ({
           },
         }),
       getLatestQuotes: (loc: string, symbols: string) =>
-        context.request<LatestQuotesResponse>({
+        request<LatestQuotesResponse>({
           path: `/v1beta3/crypto/${loc}/latest/quotes`,
           method: "GET",
           params: {
@@ -249,7 +249,7 @@ export const methods = (context: ClientContext) => ({
           },
         }),
       getLatestTrades: (loc: string, symbols: string) =>
-        context.request<LatestTradesResponse>({
+        request<LatestTradesResponse>({
           path: `/v1beta3/crypto/${loc}/latest/trades`,
           method: "GET",
           params: {
@@ -265,7 +265,7 @@ export const methods = (context: ClientContext) => ({
         pageToken?: string,
         sort?: string
       ) =>
-        context.request<HistoricalQuotesResponse>({
+        request<HistoricalQuotesResponse>({
           path: `/v1beta3/crypto/${loc}/quotes`,
           method: "GET",
           params: {
@@ -278,7 +278,7 @@ export const methods = (context: ClientContext) => ({
           },
         }),
       getSnapshots: (loc: string, symbols: string) =>
-        context.request<CryptoSnapshotsResponse>({
+        request<CryptoSnapshotsResponse>({
           path: `/v1beta3/crypto/${loc}/snapshots`,
           method: "GET",
           params: {
@@ -294,7 +294,7 @@ export const methods = (context: ClientContext) => ({
         page_token?: string,
         sort?: string
       ) =>
-        context.request<CryptoHistoricalTradesResponse>({
+        request<CryptoHistoricalTradesResponse>({
           path: `/v1beta3/crypto/${loc}/trades`,
           method: "GET",
           params: {
@@ -320,7 +320,7 @@ export const methods = (context: ClientContext) => ({
         page_token?: string,
         sort?: string
       ) =>
-        context.request<HistoricalAuctionsResponse>({
+        request<HistoricalAuctionsResponse>({
           path: `/v2/stocks/auctions`,
           method: "GET",
           params: {
@@ -346,7 +346,7 @@ export const methods = (context: ClientContext) => ({
         page_token?: string,
         sort?: string
       ) =>
-        context.request<HistoricalBarsResponse>({
+        request<HistoricalBarsResponse>({
           path: `/v2/stocks/bars`,
           method: "GET",
           params: {
@@ -363,48 +363,48 @@ export const methods = (context: ClientContext) => ({
           },
         }),
       getLatestBars: (symbols: string, feed?: string, currency?: string) =>
-        context.request<LatestBarsResponse>({
+        request<LatestBarsResponse>({
           path: `/v2/stocks/bars/latest`,
           method: "GET",
           params: { symbols, feed, currency },
         }),
       getConditionCodes: (tickType: string, tape: string) =>
-        context.request<ConditionCodesResponse>({
+        request<ConditionCodesResponse>({
           path: `/v2/stocks/meta/conditions/${tickType}`,
           method: "GET",
           params: { tape },
         }),
       getExchangeCodes: () =>
-        context.request<ExchangeCodesResponse>({
+        request<ExchangeCodesResponse>({
           path: "/v2/stocks/meta/exchanges",
           method: "GET",
         }),
       getHistoricalQuotes: (params: HistoricalQuotesParams) =>
-        context.request<HistoricalQuotesResponse>({
+        request<HistoricalQuotesResponse>({
           path: "/v2/stocks/quotes",
           method: "GET",
           params,
         }),
       getLatestQuotes: (params: LatestQuotesParams) =>
-        context.request<LatestQuotesResponse>({
+        request<LatestQuotesResponse>({
           path: "/v2/stocks/quotes/latest",
           method: "GET",
           params,
         }),
       getSnapshots: (params: SnapshotParams) =>
-        context.request<SnapshotResponse>({
+        request<SnapshotResponse>({
           path: "/v2/stocks/snapshots",
           method: "GET",
           params,
         }),
       getTrades: (params: TradeParams) =>
-        context.request<TradeResponse>({
+        request<TradeResponse>({
           path: "/v2/stocks/trades",
           method: "GET",
           params,
         }),
       getLatestTrades: (params: LatestTradeParams) =>
-        context.request<LatestTradeResponse>({
+        request<LatestTradeResponse>({
           path: "/v2/stocks/trades/latest",
           method: "GET",
           params,
