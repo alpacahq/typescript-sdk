@@ -1,6 +1,6 @@
 import { ClientContext } from "../../factory/createClient.ts";
 
-export const MarketData = (context: ClientContext) => ({
+export const TradeAPIWebsocket = (context: ClientContext) => ({
   connect: (
     onMessage: (data: any) => void,
     onError: (error: Event) => void

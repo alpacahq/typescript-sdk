@@ -1,5 +1,5 @@
-import { MarketData } from "../api/market-data/stream.ts";
 import { Trade } from "../api/trade/rest.ts";
+import { MarketData } from "../api/trade/websocket.ts";
 import { createClient } from "./createClient.ts";
 
 Deno.test("rest", () => {
