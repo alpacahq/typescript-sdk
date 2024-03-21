@@ -1,9 +1,9 @@
-import { Trade } from "../api/trade/rest.ts";
-import { MarketData } from "../api/trade/websocket.ts";
+import { TradeAPIRest } from "../api/trade/rest.ts";
+import { TradeAPIWebsocket } from "../api/trade/websocket.ts";
 import { createClient } from "./createClient.ts";
 
 Deno.test("rest", () => {
-  const client = createClient(Trade, {
+  const client = createClient(TradeAPIRest, {
     keyId: "PK1OHDJBZQ6J5HQJZBXX",
     secretKey: "7ntdrZayazQkRxINbLWcn4ib0Nv58AlTQH0IqzbQ",
     baseURL: "https://paper-api.alpaca.markets",
@@ -13,20 +13,11 @@ Deno.test("rest", () => {
 });
 
 Deno.test("stream", async () => {
-  const client = createClient(MarketData, {
+  const client = createClient(TradeAPIWebsocket, {
     keyId: "PK1OHDJBZQ6J5HQJZBXX",
     secretKey: "7ntdrZayazQkRxINbLWcn4ib0Nv58AlTQH0IqzbQ",
     baseURL: "wss://paper-api.alpaca.markets/stream",
   });
 
-  client.connect(
-    (message) => {
-      console.log("Received message:", message);
-    },
-    (error) => {
-      console.error("WebSocket error:", error);
-    }
-  );
-
-  await new Promise((resolve) => setTimeout(resolve, 10000000));
+  await new Promise((resolve) => setTimeout(resolve, 10000));
 });
