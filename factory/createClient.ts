@@ -7,17 +7,9 @@ import { methods } from "../api/marketData/methods.ts";
 import { methods as methods2 } from "../api/trade/methods.ts";
 import { TradeWebSocket } from "../api/trade/types/websocket.ts";
 import { StockDataWebSocket } from "../api/trade/types/websocket_2.ts";
-
-interface EventMap {}
-
-export type WebSocket = {
-  on<E extends keyof EventMap>(
-    event: E,
-    handler: (data: EventMap[E]) => void
-  ): void;
-  subscribe: (streams: string[]) => Promise<string[]>;
-  unsubscribe: (streams: string[]) => Promise<string[]>;
-};
+import { CryptoWebSocket } from "../api/trade/types/websocket_3.ts";
+import { NewsWebSocket } from "../api/trade/types/websocket_4.ts";
+import { OptionsWebSocket } from "../api/trade/types/websocket_5.ts";
 
 export type Client = {
   rest: {
@@ -28,14 +20,12 @@ export type Client = {
     trade: TradeWebSocket;
     marketData: {
       stock: StockDataWebSocket;
-      crypto: WebSocket;
-      news: WebSocket;
-      options: WebSocket;
+      crypto: CryptoWebSocket;
+      news: NewsWebSocket;
+      options: OptionsWebSocket;
     };
   };
 };
-
-const client = {} as Client;
 
 export type ClientFactory = (context: ClientContext) => any;
 
@@ -116,34 +106,6 @@ export function createClient(options: ExtendedCreateClientOptions): Client {
       trade: methods(context),
       marketData: methods2(context),
     },
-    websocket: {
-      trade: {
-        on: () => {},
-        subscribe: () => Promise.resolve([]),
-        unsubscribe: () => Promise.resolve([]),
-      },
-      marketData: {
-        stock: {
-          on: () => {},
-          subscribe: () => Promise.resolve([]),
-          unsubscribe: () => Promise.resolve([]),
-        },
-        crypto: {
-          on: () => {},
-          subscribe: () => Promise.resolve([]),
-          unsubscribe: () => Promise.resolve([]),
-        },
-        news: {
-          on: () => {},
-          subscribe: () => Promise.resolve([]),
-          unsubscribe: () => Promise.resolve([]),
-        },
-        options: {
-          on: () => {},
-          subscribe: () => Promise.resolve([]),
-          unsubscribe: () => Promise.resolve([]),
-        },
-      },
-    },
+    websocket: {} as any,
   };
 }
