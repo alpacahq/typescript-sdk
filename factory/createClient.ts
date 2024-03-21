@@ -5,9 +5,27 @@ import {
   CreateBottleneckOptions,
 } from "./createBottleneck.ts";
 
+type WebSocket = {
+  on: (handler: () => void) => void;
+  // when called, will open a connection to the server and authenticate, then subscribe to the given streams
+  subscribe: (streams: string[]) => Promise<string[]>;
+  unsubscribe: (streams: string[]) => Promise<string[]>;
+};
+
 export type Client = {
-  trade: ReturnType<typeof methods>;
-  marketData: ReturnType<typeof methods2>;
+  rest: {
+    trade: ReturnType<typeof methods>;
+    marketData: ReturnType<typeof methods2>;
+  };
+  websocket: {
+    trade: WebSocket;
+    marketData: {
+      stock: WebSocket;
+      crypto: WebSocket;
+      news: WebSocket;
+      options: WebSocket;
+    };
+  };
 };
 
 export type ClientFactory = (context: ClientContext) => any;
