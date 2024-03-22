@@ -3,11 +3,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "./**"
+      - "**/*.ts"
   pull_request:
     branches: [main]
     paths:
-      - "./**"
+      - "**/*.ts"
 jobs:
   test:
     runs-on: ubuntu-latest
