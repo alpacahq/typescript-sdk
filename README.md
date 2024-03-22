@@ -71,7 +71,7 @@ baseURL: "https://paper-api.alpaca.markets",
 
 ### Rate Limiting
 
-You can also customize the rate limiting by passing a `tokenBucket` object to the `createClient` function. This object should contain the `capacity` and `fillRate` for the rate limiter.
+You can customize the rate limiting by passing a `tokenBucket` object to the `createClient` function. This object should contain the `capacity` and `fillRate` for the rate limiter.
 
 ```ts
 // ...
@@ -111,7 +111,7 @@ await marketData.v2.lastTrade.get("symbol");
 await marketData.v2.lastQuote.get("symbol");
 ```
 
-You may notice a pattern in the method names 🤔. This pattern is consistent across all methods and mirrors the docs closely 😮.
+You may notice a pattern in the method names 🤔. This pattern is consistent across all methods and mirrors the docs closely.
 
 ```ts
 {version}.{resource}.{method}()
@@ -124,6 +124,18 @@ You may notice a pattern in the method names 🤔. This pattern is consistent ac
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
 
 ### WebSocket
+
+Below are some examples of how to use the WebSocket streams:
+
+```ts
+const {
+  WebSocket: {},
+} = createClient({
+  // ...
+});
+
+// working on it...
+```
 
 ## Need Help?
 
