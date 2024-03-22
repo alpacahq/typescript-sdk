@@ -1,4 +1,4 @@
-name: deno_test
+name: Deno Test
 on:
   push:
     branches: [main]
