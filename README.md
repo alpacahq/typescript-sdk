@@ -96,44 +96,6 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-| Method Path                       | Return Type                  |
-|-----------------------------------|------------------------------|
-| `client.trade.v2.account.get()`                        | `Account`                    |
-| `client.trade.v2.orders.post(options: CreateOrderOptions)` | `Order`                      |
-| `client.trade.v2.orders.get(options?: PatchOrderOptions | string, nested?: boolean)` | `Order | Order[]`            |
-| `client.trade.v2.orders.delete(orderId?: string)`        | `{ id?: string; status?: string }[] | void` |
-| `client.trade.v2.orders.patch(orderId: string, options: PatchOrderOptions)` | `Order`  |
-| `client.trade.v2.positions.get(symbol_or_asset_id?: string)` | `Position | Position[]` |
-| `client.trade.v2.positions.delete(params: ClosePositionOptions)` | `Order[]` |
-| `client.trade.v2.positions.post(symbol_or_contract_id: string)` | `void` |
-| `client.trade.v2.portfolioHistory.get(params?: PortfolioHistoryParams)` | `PortfolioHistoryResponse` |
-| `client.trade.v2.watchlists.get(watchlist_id?: string)` | `Watchlist | Watchlist[]` |
-| `client.trade.v2.watchlists.post({ name, symbols }: CreateWatchlistParams)` | `Watchlist` |
-| `client.trade.v2.watchlists.put({ watchlist_id, name, symbols }: { watchlist_id: string } & UpdateWatchlistParams)` | `Watchlist` |
-| `client.trade.v2.watchlists.deleteById({ watchlist_id }: { watchlist_id: string })` | `void` |
-| `client.trade.v2.watchlists.addAsset({ watchlist_id, symbol }: { watchlist_id: string; symbol: string; })` | `Watchlist` |
-| `client.trade.v2.watchlists.getByName({ name }: GetWatchlistByNameParams)` | `Watchlist` |
-| `client.trade.v2.watchlists.updateByName({ name, newName, symbols }: UpdateWatchlistByNameParams)` | `Watchlist` |
-| `client.trade.v2.watchlists.addAssetByName({ name, symbol }: AddAssetToWatchlistParams)` | `void` |
-| `client.trade.v2.watchlists.deleteByName({ name }: DeleteWatchlistByNameParams)` | `void` |
-| `client.trade.v2.watchlists.deleteSymbol({ watchlistId, symbol }: DeleteSymbolFromWatchlistParams)` | `Watchlist` |
-| `client.trade.v2.accountConfigurations.get()` | `AccountConfigurations` |
-| `client.trade.v2.accountConfigurations.patch(updatedConfig: UpdatedAccountConfigurations)` | `void` |
-| `client.trade.v2.activities.get(activityType?: string, options?: { date?: string; until?: string; after?: string; direction?: string; pageSize?: number; pageToken?: string; category?: string; })` | `AccountActivity[]` |
-| `client.trade.v2.calendar.get(options?: { start?: string; end?: string; dateType?: "TRADING" | "SETTLEMENT"; })` | `MarketCalendar[]` |
-| `client.trade.v2.clock.get()` | `MarketClock` |
-| `client.trade.v2.assets.getAll(options?: { status?: string; asset_class?: string; exchange?: string; attributes?: string[]; })` | `Asset[]` |
-| `client.trade.v2.assets.getAsset(symbolOrAssetId: string)` | `Asset` |
-| `client.trade.v2.options.get(queryParams: OptionContractsQueryParams, symbolOrId?: string)` | `OptionContract | OptionContract[]` |
-| `client.trade.v2.corporateActions.announcements.get(queryParams?: AnnouncementsQueryParams, announcementId?: string)` | `CorporateActionAnnouncement | CorporateActionAnnouncement[]` |
-| `client.trade.v2.cryptoFunding.getWallets(asset?: string)` | `CryptoFundingWallet | CryptoFundingWallet[]` |
-| `client.trade.v2.cryptoFunding.requestWithdrawal(withdrawalParams: WithdrawalParams)` | `CryptoFundingTransfer` |
-| `client.trade.v2.cryptoFunding.getTransfers(transferId?: string)` | `CryptoFundingTransfer | CryptoFundingTransfer[]` |
-| `client.trade.v2.cryptoFunding.getWhitelistedAddresses()` | `WhitelistedAddress[]` |
-| `client.trade.v2.cryptoFunding.requestWhitelistedAddress(whitelistedAddressParams: WhitelistedAddressParams)` | `WhitelistedAddress` |
-| `client.trade.v2.cryptoFunding.deleteWhitelistedAddress(whitelistedAddressId: string)` | `void` |
-| `client.trade.v2.cryptoFunding.estimateTransactionFee(transactionParams: TransactionParams)` | `TransactionFeeResponse` |
-
 ### WebSocket
 
 ## Methods
