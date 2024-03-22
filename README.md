@@ -105,7 +105,7 @@ client.trade.v2.positions.post("symbol_or_contract_id");
 client.trade.v2.portfolioHistory.get();
 ```
 
-Since the client is fully-typed, you can use your IDE to explore the available methods and their parameters 😁. The methods are also documented in the source code.
+Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
 
 ### WebSocket
 
