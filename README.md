@@ -111,4 +111,4 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 ## Need Help?
 
-The primary maintainer of this project is (myself) [@117](https://github.com/117) 🫡. Feel free to reach out on [Slack](https://alpaca-community.slack.com/join/shared_invite/zt-2ebgo7i1f-HbNoBjPWZ_bX72IVQTkcwg) or by opening an issue on this repository. I'm happy to help with any questions or issues you may have.
+The primary maintainer of this project is (myself) [@117](https://github.com/117) 🫡. Feel free to reach out on [Slack](https://alpaca-community.slack.com/join/shared_invite/zt-2ebgo7i1f-HbNoBjPWZ_bX72IVQTkcwg) or by opening an issue on this repo. I'm happy to help with any questions or issues you may have.
