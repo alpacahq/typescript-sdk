@@ -17,6 +17,9 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
       - [Environments](#environments)
       - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
+    - [Example](#example)
+    - [Pattern](#pattern)
+    - [Endpoints](#endpoints)
   - [WebSocket](#websocket)
 - [Need Help?](#need-help)
 
@@ -94,6 +97,8 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
+#### Example
+
 Below is an example of how to use the REST API methods.
 
 ```ts
@@ -110,6 +115,8 @@ await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
 ```
 
+#### Pattern
+
 You may notice a pattern in the method names. This is consistent across all methods and mirrors the docs closely.
 
 ```ts
@@ -121,6 +128,8 @@ You may notice a pattern in the method names. This is consistent across all meth
 - `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
+
+#### Endpoints
 
 ### WebSocket
 
