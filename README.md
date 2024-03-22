@@ -56,7 +56,7 @@ import { createClient } from "https://cdn.skypack.dev/@alpacahq/typescript-sdk";
 
 ### Create a Client
 
-First, you'll need to create an API key on the Alpaca website. You can do that [here](https://app.alpaca.markets). Once you have an API key, you can use it to create a client.
+First, you'll need to create an API key on the Alpaca website. You can do that [here](https://app.alpaca.markets). Once you have an API key, you can use it to create a client. Using OAuth? Simply pass an access_token in the credentials object.
 
 ```ts
 import { createClient } from "@alpacahq/typescript-sdk";
@@ -64,6 +64,7 @@ import { createClient } from "@alpacahq/typescript-sdk";
 const client = createClient({
   keyId: "YOUR_API_KEY_ID",
   secretKey: "YOUR_API_SECRET_KEY",
+  // accessToken: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
 });
 ```
 
