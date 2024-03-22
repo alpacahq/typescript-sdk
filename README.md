@@ -87,7 +87,7 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-Below are some examples of how to use the REST API methods.
+Below are some examples of how to use the REST API methods:
 
 ```ts
 const {
@@ -111,7 +111,7 @@ await marketData.v2.lastTrade.get("symbol");
 await marketData.v2.lastQuote.get("symbol");
 ```
 
-You may notice a pattern in the method names. This pattern is consistent across all methods and mirrors the docs closely.
+You may notice a pattern in the method names 🤔. This pattern is consistent across all methods and mirrors the docs closely 😮.
 
 ```ts
 {version}.{resource}.{method}()
