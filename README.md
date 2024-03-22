@@ -38,8 +38,8 @@ Feel free to contribute and PR to your 💖's content.
 
 From NPM:
 
-```sh
-> npm install @alpacahq/typescript-sdk
+```terminal
+npm install @alpacahq/typescript-sdk
 ```
 
 From Skypack (or any CDN that supports ESM):
