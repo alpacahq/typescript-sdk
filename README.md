@@ -89,7 +89,7 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-Below are some examples of how to use the REST API methods:
+Below is an example of how to use the REST API methods:
 
 ```ts
 const {
@@ -127,7 +127,7 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 ### WebSocket
 
-Below are some examples of how to use the WebSocket streams:
+Below is an example of how to use the WebSocket streams:
 
 ```ts
 const {
@@ -151,7 +151,7 @@ trade.on("trade_updates", "new", (data) => {
 })();
 ```
 
-What about auth? That's handled by the client during WebSocket subscription. So you can get back to building 😉.
+Auth is handled by the client during WebSocket subscription, so you can get back to code 😉.
 
 ## Need Help?
 
