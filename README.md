@@ -129,12 +129,10 @@ const {
   // ...
 });
 
-// Listen for new trade updates
 account.on("trade_updates", "new", (data) => {
   console.log("New Trade:", data);
 });
 
-// Subscribe to trade updates for AAPL and MSFT
 (async () => {
   await account.subscribe([
     { channel: "trade_updates", symbols: ["AAPL", "MSFT"] },
