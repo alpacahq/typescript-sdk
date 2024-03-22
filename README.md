@@ -1,5 +1,3 @@
-> ⚠️ This is a work in progress, DO NOT use it in production.
-
 # typescript-sdk
 
 [![Deno Test](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml/badge.svg)](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml)
