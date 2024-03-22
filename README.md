@@ -129,8 +129,6 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 Below is a list of the currently supported endpoints. If you don't see an endpoint you need, feel free to open an issue.
 
-##### Trade
-
 | Endpoint                                               | Method   |     |
 | :----------------------------------------------------- | :------- | :-: |
 | `/v2/account`                                          | `GET`    | ✅  |
@@ -168,8 +166,6 @@ Below is a list of the currently supported endpoints. If you don't see an endpoi
 | `/v2/wallets/whitelists`                               | `POST`   | ✅  |
 | `/v2/wallets/whitelists/{whitelistedAddressId}`        | `DELETE` | ✅  |
 | `/v2/wallets/fees/estimate`                            | `GET`    | ✅  |
-
-##### Market Data
 
 | Endpoint                                        | Method |     |
 | :---------------------------------------------- | :----- | --- |
