@@ -1,8 +1,8 @@
 # typescript-sdk
 
-![Deno Test](https://img.shields.io/github/actions/workflow/status/alpacahq/typescript-sdk/deno_test.yaml?style=flat-square&label=Deno%20Test)
-![Deno Test Coverage](https://img.shields.io/github/actions/workflow/status/alpacahq/typescript-sdk/deno_test_coverage.yaml?style=flat-square&label=Deno%20Test%20Coverage)
-![code](https://img.shields.io/github/languages/code-size/alpacahq/typescript-sdk?style=flat-square&label=Size)
+![size](https://img.shields.io/github/languages/code-size/alpacahq/typescript-sdk?style=flat&color=196DFF&label=size)
+![test](https://img.shields.io/github/actions/workflow/status/alpacahq/typescript-sdk/deno_test.yaml?style=flat&label=test)
+![coverage](https://img.shields.io/github/actions/workflow/status/alpacahq/typescript-sdk/deno_test_coverage.yaml?style=flat&label=coverage)
 
 A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams. _Note: This project is still in development and may not be fully stable. Please report any issues you encounter._
 
