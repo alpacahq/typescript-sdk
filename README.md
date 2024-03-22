@@ -27,6 +27,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 
 ## Features
 
+- [x] Zero Dependencies
 - [x] REST API
 - [x] WebSocket Streams
 - [x] Rate Limiting
@@ -43,21 +44,19 @@ Feel free to contribute and PR to your 💖's content.
 
 ## Install
 
-While this project is written in Deno/Typescript, it can be used in Node.js as well. This is the most common way to use it.
+From NPM:
 
 ```sh
 > npm install @alpacahq/typescript-sdk
 ```
 
-If however, you are using Deno, you can do the following:
+From Skypack (or any CDN that supports ESM):
 
-```sh
-> deno install https://deno.land/x/typescript_sdk/mod.ts
+```ts
+import { createClient } from "https://cdn.skypack.dev/@alpacahq/typescript-sdk";
 ```
 
 ## Getting Started
-
-There are two ways to use this SDK, REST and WebSocket. Both are created using the `createClient` and `createStream` functions. These functions take an API class and an options object. The options object should contain the `keyId` and `secretKey` for the API. The client or stream will then have methods for each endpoint in the API.
 
 ### APIs and Streams
 
