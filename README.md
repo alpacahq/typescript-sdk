@@ -106,15 +106,15 @@ await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
 ```
 
-You may notice a pattern in the method names 🤔. This pattern is consistent across all methods and mirrors the docs closely.
+You may notice a pattern in the method names. This is consistent across all methods and mirrors the docs closely.
 
 ```ts
 {version}.{resource}.{method}()
 ```
 
-- `version` is the API version (e.g. `v2`)
-- `resource` is the REST resource (e.g. `account`, `orders`, `assets`, etc.)
-- `method` is the HTTP method (e.g. `get`, `post`, `put`, `delete`)
+- `version` is the API version (ex. `v2`)
+- `resource` is the REST resource (ex. `account`, `orders`, `assets`, etc.)
+- `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
 
