@@ -129,7 +129,7 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 #### Endpoints
 
-New endpoints are being added all the time. Below is a list of the currently supported endpoints. If you don't see an endpoint you need, feel free to open an issue.
+Below is a list of the currently supported endpoints. If you don't see an endpoint you need, feel free to open an issue.
 
 ##### Trade
 
