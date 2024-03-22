@@ -1,11 +1,9 @@
-> ⚠️ This is a work in progress, DO NOT use it in production.
-
 # typescript-sdk
 
 [![Deno Test](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml/badge.svg)](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml)
 [![Deno Test Coverage](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test_coverage.yaml/badge.svg)](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test_coverage.yaml)
 
-A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
+A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams. _Note: This project is still in development and may not be fully stable. Please report any issues you encounter._
 
 - [Features](#features)
 - [Install](#install)
