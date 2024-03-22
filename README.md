@@ -151,6 +151,8 @@ trade.on("trade_updates", "new", (data) => {
 })();
 ```
 
+What about auth? That's handled by the client during WebSocket subscription. So you can get back to building 😉.
+
 ## Need Help?
 
 The primary maintainer of this project is (myself) [@117](https://github.com/117) 🫡. Feel free to reach out on [Slack](https://alpaca-community.slack.com/join/shared_invite/zt-2ebgo7i1f-HbNoBjPWZ_bX72IVQTkcwg) or by opening an issue on this repo. I'm happy to help with any questions or issues you may have.
