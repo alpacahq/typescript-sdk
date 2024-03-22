@@ -39,7 +39,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [x] Minimal Dependencies
 - [x] Community Supported
 
-Contributions are welcome! If you have a feature request, bug report, or patch, please open an issue or pull request.
+Feel free to contribute and PR to your 💖's content.
 
 ## Install
 
