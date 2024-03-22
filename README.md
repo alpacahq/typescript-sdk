@@ -96,21 +96,30 @@ const {
   // ...
 });
 
-// The pattern below tries to mirror the REST API path structure.
-// For example, the path `/v2/account` is accessed by calling `trade.v2.account.get()`.
-
+// Trade API
 await trade.v2.account.get();
 await trade.v2.orders.get();
 await trade.v2.orders.get("order_id");
 await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
 
+// Market Data API
 await marketData.v2.assets.get();
 await marketData.v2.assets.get("symbol_or_asset_id");
 await marketData.v2.bars.get("symbol", { start: new Date(), end: new Date() });
 await marketData.v2.lastTrade.get("symbol");
 await marketData.v2.lastQuote.get("symbol");
 ```
+
+You may notice a pattern in the method names. This pattern is consistent across all REST API methods and mirrors the docs closely.
+
+```ts
+{version}.{resource}.{method}()
+```
+
+- `version` is the API version (e.g. `v2`)
+- `resource` is the REST resource (e.g. `account`, `orders`, `assets`, etc.)
+- `method` is the HTTP method (e.g. `get`, `post`, `put`, `delete`)
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
 
