@@ -91,7 +91,7 @@ Below are some examples of how to use the REST API methods.
 
 ```ts
 const {
-  REST: { trade },
+  REST: { trade, marketData },
 } = createClient({
   // ...
 });
@@ -104,14 +104,12 @@ await trade.v2.orders.get();
 await trade.v2.orders.get("order_id");
 await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
-await trade.v2.orders.delete("order_id");
-await trade.v2.orders.patch("order_id", { qty: "1" });
-await trade.v2.positions.get();
-await trade.v2.positions.get("symbol_or_asset_id");
-await trade.v2.positions.delete({ symbol_or_asset_id: "symbol" });
-await trade.v2.positions.delete({ cancel_orders: true });
-await trade.v2.positions.post("symbol_or_contract_id");
-await trade.v2.portfolioHistory.get();
+
+await marketData.v2.assets.get();
+await marketData.v2.assets.get("symbol_or_asset_id");
+await marketData.v2.bars.get("symbol", { start: new Date(), end: new Date() });
+await marketData.v2.lastTrade.get("symbol");
+await marketData.v2.lastQuote.get("symbol");
 ```
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
