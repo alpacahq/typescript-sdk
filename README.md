@@ -11,17 +11,8 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
   - [Create a Client](#create-a-client)
   - [Environments](#environments)
   - [Rate Limiting](#rate-limiting)
-- [Methods](#methods)
-  - [Account](#account)
-  - [Asset](#asset)
-  - [Calendar](#calendar)
-  - [Clock](#clock)
-  - [Order](#order)
-  - [Position](#position)
-  - [Watchlist](#watchlist)
-- [Subscriptions](#subscriptions)
-  - [Account](#account-1)
-  - [Trade](#trade)
+  - [REST](#rest)
+  - [WebSocket](#websocket)
 - [Need Help?](#need-help)
 
 ## Features
@@ -96,15 +87,25 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
+Below are some examples of how to use the REST API methods. The methods are organized by resource and version. For example, the `account` resource is in version `v2`, so the method is `client.trade.v2.account.get()`.
+
+```ts
+client.trade.v2.account.get();
+client.trade.v2.orders.get();
+client.trade.v2.orders.get("order_id");
+client.trade.v2.orders.get("order_id", true);
+client.trade.v2.orders.delete();
+client.trade.v2.orders.delete("order_id");
+client.trade.v2.orders.patch("order_id", { qty: "1" });
+client.trade.v2.positions.get();
+client.trade.v2.positions.get("symbol_or_asset_id");
+client.trade.v2.positions.delete({ symbol_or_asset_id: "symbol" });
+client.trade.v2.positions.delete({ cancel_orders: true });
+client.trade.v2.positions.post("symbol_or_contract_id");
+client.trade.v2.portfolioHistory.get();
+```
+
 ### WebSocket
-
-## Methods
-
-### Account
-
-### Asset
-
-## Subscriptions
 
 ## Need Help?
 
