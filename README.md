@@ -154,6 +154,6 @@ account.on("trade_updates", "new", (data) => {
 
 Authentication is handled for you by the client on first subscription. The client will automatically reconnect if the connection is lost. If you want to manually reconnect, you can access the WebSocket instance directly.
 
-## Need Help?
+## Need Help 😞?
 
 The primary maintainer of this project is (myself) [@117](https://github.com/117) 🫡. Feel free to reach out on [Slack](https://alpaca-community.slack.com/join/shared_invite/zt-2ebgo7i1f-HbNoBjPWZ_bX72IVQTkcwg) or by opening an issue on this repo. I'm happy to help with any questions or issues you may have.
