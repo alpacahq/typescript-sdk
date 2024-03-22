@@ -1,8 +1,8 @@
-**WORK IN PROGRESS: _DO NOT USE_**
+**WORK IN PROGRESS: DO NOT USE**
 
 # typescript-sdk
 
-![version](https://img.shields.io/github/package-json/v/alpacahq/typescript-sdk?color=F1A42E&style=flat-square)
+![version](https://img.shields.io/github/package-json/v/alpacahq/typescript-sdk?color=FF33A0&style=flat-square)
 ![size](https://img.shields.io/github/languages/code-size/alpacahq/typescript-sdk?style=flat-square&color=196DFF&label=size)
 ![test](https://img.shields.io/github/actions/workflow/status/alpacahq/typescript-sdk/deno_test.yaml?style=flat-square&label=test)
 ![coverage](https://img.shields.io/github/actions/workflow/status/alpacahq/typescript-sdk/deno_test_coverage.yaml?style=flat-square&label=coverage)
