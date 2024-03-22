@@ -96,7 +96,7 @@ Below is an example of how to use the REST API methods.
 
 ```ts
 const {
-  rest: { trade, data },
+  rest: { trade },
 } = createClient({
   // ...
 });
@@ -106,12 +106,6 @@ await trade.v2.orders.get();
 await trade.v2.orders.get("order_id");
 await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
-
-await data.v2.assets.get();
-await data.v2.assets.get("symbol_or_asset_id");
-await data.v2.bars.get("symbol", { start: new Date(), end: new Date() });
-await data.v2.lastTrade.get("symbol");
-await data.v2.lastQuote.get("symbol");
 ```
 
 You may notice a pattern in the method names 🤔. This pattern is consistent across all methods and mirrors the docs closely.
