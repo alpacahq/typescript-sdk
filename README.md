@@ -75,7 +75,6 @@ const client = createClient({
 The environment (paper or live) is determined by the API key you use. If you use a paper key, the client will make requests to the paper environment. If you use a live key, the client will make requests to the live environment. You can also specify the environment explicitly by passing the `baseURL` option to the `createClient` function.
 
 ```ts
-// ...
 baseURL: "https://paper-api.alpaca.markets",
 ```
 
@@ -84,7 +83,6 @@ baseURL: "https://paper-api.alpaca.markets",
 You can customize the rate limiting by passing a `tokenBucket` object to the `createClient` function. This object should contain the `capacity` and `fillRate` for the rate limiter.
 
 ```ts
-// ...
 tokenBucket: {
   // Maximum number of tokens that can be stored
   capacity: 200,
