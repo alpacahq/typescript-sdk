@@ -151,7 +151,7 @@ trade.on("trade_updates", "new", (data) => {
 })();
 ```
 
-Authentication is handled for you by the client on first subscription, so you can get back to code 😉.
+Authentication is handled for you by the client on first subscription. The client will automatically reconnect if the connection is lost. If you want to manually reconnect, you can access the WebSocket instance directly.
 
 ## Need Help?
 
