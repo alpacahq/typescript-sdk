@@ -3,7 +3,7 @@
 # typescript-sdk
 
 ![version](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Falpacahq%2Ftypescript-sdk%2Fmain%2F.github%2Fbadges%2Fversion.json&color=FF33A0&style=flat)
-![code size](https://img.shields.io/github/languages/code-size/alpacahq/typescript-sdk?style=flat&color=196DFF&label=code%20size)
+![code](https://img.shields.io/github/languages/code-size/alpacahq/typescript-sdk?style=flat&color=196DFF&label=code)
 ![test](https://img.shields.io/github/actions/workflow/status/alpacahq/typescript-sdk/deno_test.yaml?style=flat&label=test)
 ![coverage](https://img.shields.io/github/actions/workflow/status/alpacahq/typescript-sdk/deno_test_coverage.yaml?style=flat&label=coverage)
 
