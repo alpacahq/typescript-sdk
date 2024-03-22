@@ -7,7 +7,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 
 - [Features](#features)
 - [Install](#install)
-- [Getting Started](#getting-started)
+- [Usage](#getting-started)
   - [Create a Client](#create-a-client)
   - [Environments](#environments)
   - [Rate Limiting](#rate-limiting)
@@ -54,7 +54,7 @@ From Skypack (or any CDN that supports ESM):
 import { createClient } from "https://cdn.skypack.dev/@alpacahq/typescript-sdk";
 ```
 
-## Getting Started
+## Usage
 
 ### Create a Client
 
@@ -75,7 +75,7 @@ The environment (paper or live) is determined by the API key you use. If you use
 
 ```ts
 {
-  // See https://docs.alpaca.markets for more base URLs
+  // ...
   baseURL: "https://paper-api.alpaca.markets",
 }
 ```
@@ -86,12 +86,17 @@ You can also customize the rate limiting by passing a `tokenBucket` object to th
 
 ```ts
 {
-  // Maximum number of tokens that can be stored
-  capacity: 200,
-  // Number of tokens refilled per second
-  fillRate: 60,
+  // ...
+  tokenBucket: {
+    // Maximum number of tokens that can be stored
+    capacity: 200,
+    // Number of tokens refilled per second
+    fillRate: 60,
+  }
 }
 ```
+
+Bursting is allowed, but the client will block requests if the token bucket is empty. The token bucket is shared across all requests. If you have multiple clients they will not share the same token bucket.
 
 ### REST
 
