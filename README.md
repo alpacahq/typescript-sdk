@@ -1,5 +1,5 @@
 # typescript-sdk
-[![Deno Test](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml/badge.svg?branch=main)](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml)
+[![deno_test](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml/badge.svg?branch=main)](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml)
 
 A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 
