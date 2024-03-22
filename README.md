@@ -91,7 +91,7 @@ Below are some examples of how to use the REST API methods.
 
 ```ts
 const {
-  rest: { trade },
+  REST: { trade },
 } = createClient({
   // ...
 });
