@@ -29,5 +29,4 @@ jobs:
             echo "test coverage is below 50%"
             exit 1
           fi
-        working-directory: ./deno
         shell: bash

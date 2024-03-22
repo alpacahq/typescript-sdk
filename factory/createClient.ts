@@ -7,6 +7,7 @@ import { NewsWebSocket } from "../api/trade/types/websocket_4.ts";
 import { OptionsWebSocket } from "../api/trade/types/websocket_5.ts";
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
+// hi
 export type Client = {
   rest: {
     trade: ReturnType<typeof methods2>;
