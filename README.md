@@ -32,13 +32,14 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [x] Rate Limiting
 - [x] TypeScript
 - [x] Deno
-- [x] Node.js
-- [x] Browser
+- [x] Node
 - [x] > 50% Test Coverage
 - [x] Tree-shakable
 - [x] ESM and CJS
 - [x] Minimal Dependencies
 - [x] Community Supported
+
+Contributions are welcome! If you have a feature request, bug report, or patch, please open an issue or pull request.
 
 ## Install
 
