@@ -36,7 +36,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [x] > 50% Test Coverage
 - [x] Tree-shakable
 - [x] ESM and CJS
-- [x] Zero Dependencies 🤯
+- [x] Zero Dependencies 🤯 (you read that right)
 - [x] Community Supported
 
 Feel free to contribute and PR to your 💖's content.
