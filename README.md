@@ -29,7 +29,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 
 - [x] REST API
 - [x] WebSocket Streams
-- [x] Rate Limiting
+- [x] Built-in Rate Limiting
 - [x] TypeScript
 - [x] Deno
 - [x] Node
