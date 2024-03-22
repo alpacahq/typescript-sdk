@@ -129,43 +129,43 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 #### Endpoints
 
-| Endpoint                                               | Method   | Status |
-| :----------------------------------------------------- | :------- | :----- |
-| `/v2/account`                                          | `GET`    | ✅     |
-| `/v2/orders`                                           | `POST`   | ✅     |
-| `/v2/orders`                                           | `GET`    | ✅     |
-| `/v2/orders/{orderId}`                                 | `DELETE` | ✅     |
-| `/v2/orders/{orderId}`                                 | `PATCH`  | ✅     |
-| `/v2/positions`                                        | `GET`    | ✅     |
-| `/v2/positions/{symbol_or_asset_id}`                   | `DELETE` | ✅     |
-| `/v2/positions/{symbol_or_contract_id}/exercise`       | `POST`   | ✅     |
-| `/v2/account/portfolio/history`                        | `GET`    | ✅     |
-| `/v2/watchlists`                                       | `GET`    | ✅     |
-| `/v2/watchlists`                                       | `POST`   | ✅     |
-| `/v2/watchlists/{watchlist_id}`                        | `PUT`    | ✅     |
-| `/v2/watchlists/{watchlist_id}`                        | `DELETE` | ✅     |
-| `/v2/watchlists/{watchlist_id}/{symbol}`               | `POST`   | ✅     |
-| `/v2/watchlists:by_name`                               | `GET`    | ✅     |
-| `/v2/watchlists:by_name`                               | `PUT`    | ✅     |
-| `/v2/watchlists:by_name`                               | `POST`   | ✅     |
-| `/v2/watchlists:by_name`                               | `DELETE` | ✅     |
-| `/v2/watchlists/{watchlistId}/{symbol}`                | `DELETE` | ✅     |
-| `/v2/account/configurations`                           | `GET`    | ✅     |
-| `/v2/account/configurations`                           | `PATCH`  | ✅     |
-| `/v2/account/activities/{activityType}`                | `GET`    | ✅     |
-| `/v2/calendar`                                         | `GET`    | ✅     |
-| `/v2/clock`                                            | `GET`    | ✅     |
-| `/v2/assets`                                           | `GET`    | ✅     |
-| `/v2/assets/{symbolOrAssetId}`                         | `GET`    | ✅     |
-| `/v2/options/contracts/{symbolOrId}`                   | `GET`    | ✅     |
-| `/v2/corporate_actions/announcements/{announcementId}` | `GET`    | ✅     |
-| `/v2/wallets`                                          | `GET`    | ✅     |
-| `/v2/wallets/transfers`                                | `POST`   | ✅     |
-| `/v2/wallets/transfers/{transferId}`                   | `GET`    | ✅     |
-| `/v2/wallets/whitelists`                               | `GET`    | ✅     |
-| `/v2/wallets/whitelists`                               | `POST`   | ✅     |
-| `/v2/wallets/whitelists/{whitelistedAddressId}`        | `DELETE` | ✅     |
-| `/v2/wallets/fees/estimate`                            | `GET`    | ✅     |
+| Endpoint                                               | Method   | Status | Ref |
+| :----------------------------------------------------- | :------- | :----: | --- |
+| `/v2/account`                                          | `GET`    |   ✅   |     |
+| `/v2/orders`                                           | `POST`   |   ✅   |     |
+| `/v2/orders`                                           | `GET`    |   ✅   |     |
+| `/v2/orders/{orderId}`                                 | `DELETE` |   ✅   |     |
+| `/v2/orders/{orderId}`                                 | `PATCH`  |   ✅   |     |
+| `/v2/positions`                                        | `GET`    |   ✅   |     |
+| `/v2/positions/{symbol_or_asset_id}`                   | `DELETE` |   ✅   |     |
+| `/v2/positions/{symbol_or_contract_id}/exercise`       | `POST`   |   ✅   |     |
+| `/v2/account/portfolio/history`                        | `GET`    |   ✅   |     |
+| `/v2/watchlists`                                       | `GET`    |   ✅   |     |
+| `/v2/watchlists`                                       | `POST`   |   ✅   |     |
+| `/v2/watchlists/{watchlist_id}`                        | `PUT`    |   ✅   |     |
+| `/v2/watchlists/{watchlist_id}`                        | `DELETE` |   ✅   |     |
+| `/v2/watchlists/{watchlist_id}/{symbol}`               | `POST`   |   ✅   |     |
+| `/v2/watchlists:by_name`                               | `GET`    |   ✅   |     |
+| `/v2/watchlists:by_name`                               | `PUT`    |   ✅   |     |
+| `/v2/watchlists:by_name`                               | `POST`   |   ✅   |     |
+| `/v2/watchlists:by_name`                               | `DELETE` |   ✅   |     |
+| `/v2/watchlists/{watchlistId}/{symbol}`                | `DELETE` |   ✅   |     |
+| `/v2/account/configurations`                           | `GET`    |   ✅   |     |
+| `/v2/account/configurations`                           | `PATCH`  |   ✅   |     |
+| `/v2/account/activities/{activityType}`                | `GET`    |   ✅   |     |
+| `/v2/calendar`                                         | `GET`    |   ✅   |     |
+| `/v2/clock`                                            | `GET`    |   ✅   |     |
+| `/v2/assets`                                           | `GET`    |   ✅   |     |
+| `/v2/assets/{symbolOrAssetId}`                         | `GET`    |   ✅   |     |
+| `/v2/options/contracts/{symbolOrId}`                   | `GET`    |   ✅   |     |
+| `/v2/corporate_actions/announcements/{announcementId}` | `GET`    |   ✅   |     |
+| `/v2/wallets`                                          | `GET`    |   ✅   |     |
+| `/v2/wallets/transfers`                                | `POST`   |   ✅   |     |
+| `/v2/wallets/transfers/{transferId}`                   | `GET`    |   ✅   |     |
+| `/v2/wallets/whitelists`                               | `GET`    |   ✅   |     |
+| `/v2/wallets/whitelists`                               | `POST`   |   ✅   |     |
+| `/v2/wallets/whitelists/{whitelistedAddressId}`        | `DELETE` |   ✅   |     |
+| `/v2/wallets/fees/estimate`                            | `GET`    |   ✅   |     |
 
 ### WebSocket
 
