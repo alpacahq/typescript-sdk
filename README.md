@@ -87,7 +87,7 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-Below are some examples of how to use the REST API methods. The methods are organized by resource and version. For example, the `account` resource is in version `v2`, so the method is `client.trade.v2.account.get()`.
+Below are some examples of how to use the REST API methods. The pattern is `client.<resource>.<version>.<method>()`. This helps to keep the methods organized and easy to find.
 
 ```ts
 client.trade.v2.account.get();
