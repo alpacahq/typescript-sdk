@@ -11,8 +11,9 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [Install](#install)
 - [Usage](#getting-started)
   - [Create a Client](#create-a-client)
-  - [Environments](#environments)
-  - [Rate Limiting](#rate-limiting)
+    - [Configuration](#configuration)
+      - [Environments](#environments)
+      - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
   - [WebSocket](#websocket)
 - [Need Help?](#need-help)
@@ -95,24 +96,22 @@ Below is an example of how to use the REST API methods.
 
 ```ts
 const {
-  rest: { trade, marketData },
+  rest: { trade, data },
 } = createClient({
   // ...
 });
 
-// Some trading api methods
 await trade.v2.account.get();
 await trade.v2.orders.get();
 await trade.v2.orders.get("order_id");
 await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
 
-// Some market data api methods
-await marketData.v2.assets.get();
-await marketData.v2.assets.get("symbol_or_asset_id");
-await marketData.v2.bars.get("symbol", { start: new Date(), end: new Date() });
-await marketData.v2.lastTrade.get("symbol");
-await marketData.v2.lastQuote.get("symbol");
+await data.v2.assets.get();
+await data.v2.assets.get("symbol_or_asset_id");
+await data.v2.bars.get("symbol", { start: new Date(), end: new Date() });
+await data.v2.lastTrade.get("symbol");
+await data.v2.lastQuote.get("symbol");
 ```
 
 You may notice a pattern in the method names 🤔. This pattern is consistent across all methods and mirrors the docs closely.
@@ -133,19 +132,19 @@ Below is an example of how to use the WebSocket streams.
 
 ```ts
 const {
-  websocket: { trade },
+  websocket: { account },
 } = createClient({
   // ...
 });
 
 // Listen for new trade updates
-trade.on("trade_updates", "new", (data) => {
+account.on("trade_updates", "new", (data) => {
   console.log("New Trade:", data);
 });
 
 // Subscribe to trade updates for AAPL and MSFT
 (async () => {
-  await trade.subscribe([
+  await account.subscribe([
     { channel: "trade_updates", symbols: ["AAPL", "MSFT"] },
   ]);
 
