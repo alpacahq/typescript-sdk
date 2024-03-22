@@ -1,3 +1,5 @@
+> ⚠️ This is a work in progress, DO NOT use it in production.
+
 # typescript-sdk
 
 [![Deno Test](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml/badge.svg)](https://github.com/alpacahq/typescript-sdk/actions/workflows/deno_test.yaml)
@@ -65,8 +67,10 @@ const client = createClient({
 The environment (paper or live) is determined by the API key you use. If you use a paper key, the client will make requests to the paper environment. If you use a live key, the client will make requests to the live environment. You can also specify the environment explicitly by passing the `baseURL` option to the `createClient` function.
 
 ```ts
-// ...
-baseURL: "https://paper-api.alpaca.markets",
+{
+  // ...
+  baseURL: "https://paper-api.alpaca.markets",
+}
 ```
 
 ### Rate Limiting
@@ -74,12 +78,14 @@ baseURL: "https://paper-api.alpaca.markets",
 You can customize the rate limiting by passing a `tokenBucket` object to the `createClient` function. This object should contain the `capacity` and `fillRate` for the rate limiter.
 
 ```ts
-// ...
-tokenBucket: {
-  // Maximum number of tokens that can be stored
-  capacity: 200,
-  // Number of tokens refilled per second
-  fillRate: 60,
+{
+  // ...
+  tokenBucket: {
+    // Maximum number of tokens that can be stored
+    capacity: 200,
+    // Number of tokens refilled per second
+    fillRate: 60,
+  }
 }
 ```
 
@@ -87,23 +93,23 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-Below is an example of how to use the REST API methods:
+Below is an example of how to use the REST API methods.
 
 ```ts
 const {
-  REST: { trade, marketData },
+  rest: { trade, marketData },
 } = createClient({
   // ...
 });
 
-// Trade API
+// Some trading api methods
 await trade.v2.account.get();
 await trade.v2.orders.get();
 await trade.v2.orders.get("order_id");
 await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
 
-// Market Data API
+// Some market data api methods
 await marketData.v2.assets.get();
 await marketData.v2.assets.get("symbol_or_asset_id");
 await marketData.v2.bars.get("symbol", { start: new Date(), end: new Date() });
@@ -125,21 +131,21 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 ### WebSocket
 
-Below is an example of how to use the WebSocket streams:
+Below is an example of how to use the WebSocket streams.
 
 ```ts
 const {
-  WebSocket: { trade },
+  websocket: { trade },
 } = createClient({
   // ...
 });
 
-// Subscribe to trade updates
+// Listen for new trade updates
 trade.on("trade_updates", "new", (data) => {
   console.log("New Trade:", data);
 });
 
-// Connect and subscribe
+// Subscribe to trade updates for AAPL and MSFT
 (async () => {
   await trade.subscribe([
     { channel: "trade_updates", symbols: ["AAPL", "MSFT"] },
