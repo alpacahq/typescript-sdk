@@ -8,10 +8,9 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [Features](#features)
 - [Install](#install)
 - [Getting Started](#getting-started)
-  - [REST](#rest)
-    - [Rate Limiting](#rate-limiting)
-  - [WebSocket](#websocket)
-- [APIs and Streams](#apis-and-streams)
+  - [Create a Client](#create-a-client)
+  - [Environments](#environments)
+  - [Rate Limiting](#rate-limiting)
 - [Methods](#methods)
   - [Account](#account)
   - [Asset](#asset)
@@ -57,6 +56,8 @@ import { createClient } from "https://cdn.skypack.dev/@alpacahq/typescript-sdk";
 
 ## Getting Started
 
+### Create a Client
+
 First, you'll need to create an API key on the Alpaca website. You can do that [here](https://app.alpaca.markets). Once you have an API key, you can use it to create a client.
 
 ```ts
@@ -68,18 +69,29 @@ const client = createClient({
 });
 ```
 
+### Environments
+
 The environment (paper or live) is determined by the API key you use. If you use a paper key, the client will make requests to the paper environment. If you use a live key, the client will make requests to the live environment. You can also specify the environment explicitly by passing the `baseURL` option to the `createClient` function.
+
+```ts
+{
+  // See https://docs.alpaca.markets for more base URLs
+  baseURL: "https://paper-api.alpaca.markets",
+}
+```
+
+### Rate Limiting
 
 You can also customize the rate limiting by passing a `tokenBucket` object to the `createClient` function. This object should contain the `capacity` and `fillRate` for the rate limiter.
 
 ```ts
 {
-  capacity: 200, // Maximum number of requests that can be made at once
-  fillRate: 60, // Number of tokens refilled per second
+  // Maximum number of tokens that can be stored
+  capacity: 200,
+  // Number of tokens refilled per second
+  fillRate: 60,
 }
 ```
-
-### APIs and Streams
 
 ### REST
 
