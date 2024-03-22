@@ -18,7 +18,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
       - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
     - [Example](#example)
-    - [Endpoints](#endpoints)
+    - [Convention](#convention)
   - [WebSocket](#websocket)
 - [Need Help?](#need-help)
 
@@ -113,6 +113,8 @@ await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
 ```
 
+#### Convention
+
 You may notice a pattern in the method names. This is consistent across all methods and mirrors the docs closely.
 
 ```ts
@@ -124,83 +126,6 @@ You may notice a pattern in the method names. This is consistent across all meth
 - `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
-
-#### Endpoints
-
-Below is a list of the currently supported endpoints. If you don't see an endpoint you need, feel free to open an issue.
-
-| Endpoint                                               | Method   |     |
-| :----------------------------------------------------- | :------- | :-: |
-| `/v2/account`                                          | `GET`    | ✅  |
-| `/v2/orders`                                           | `POST`   | ✅  |
-| `/v2/orders`                                           | `GET`    | ✅  |
-| `/v2/orders/{orderId}`                                 | `DELETE` | ✅  |
-| `/v2/orders/{orderId}`                                 | `PATCH`  | ✅  |
-| `/v2/positions`                                        | `GET`    | ✅  |
-| `/v2/positions/{symbol_or_asset_id}`                   | `DELETE` | ✅  |
-| `/v2/positions/{symbol_or_contract_id}/exercise`       | `POST`   | ✅  |
-| `/v2/account/portfolio/history`                        | `GET`    | ✅  |
-| `/v2/watchlists`                                       | `GET`    | ✅  |
-| `/v2/watchlists`                                       | `POST`   | ✅  |
-| `/v2/watchlists/{watchlist_id}`                        | `PUT`    | ✅  |
-| `/v2/watchlists/{watchlist_id}`                        | `DELETE` | ✅  |
-| `/v2/watchlists/{watchlist_id}/{symbol}`               | `POST`   | ✅  |
-| `/v2/watchlists:by_name`                               | `GET`    | ✅  |
-| `/v2/watchlists:by_name`                               | `PUT`    | ✅  |
-| `/v2/watchlists:by_name`                               | `POST`   | ✅  |
-| `/v2/watchlists:by_name`                               | `DELETE` | ✅  |
-| `/v2/watchlists/{watchlistId}/{symbol}`                | `DELETE` | ✅  |
-| `/v2/account/configurations`                           | `GET`    | ✅  |
-| `/v2/account/configurations`                           | `PATCH`  | ✅  |
-| `/v2/account/activities/{activityType}`                | `GET`    | ✅  |
-| `/v2/calendar`                                         | `GET`    | ✅  |
-| `/v2/clock`                                            | `GET`    | ✅  |
-| `/v2/assets`                                           | `GET`    | ✅  |
-| `/v2/assets/{symbolOrAssetId}`                         | `GET`    | ✅  |
-| `/v2/options/contracts/{symbolOrId}`                   | `GET`    | ✅  |
-| `/v2/corporate_actions/announcements/{announcementId}` | `GET`    | ✅  |
-| `/v2/wallets`                                          | `GET`    | ✅  |
-| `/v2/wallets/transfers`                                | `POST`   | ✅  |
-| `/v2/wallets/transfers/{transferId}`                   | `GET`    | ✅  |
-| `/v2/wallets/whitelists`                               | `GET`    | ✅  |
-| `/v2/wallets/whitelists`                               | `POST`   | ✅  |
-| `/v2/wallets/whitelists/{whitelistedAddressId}`        | `DELETE` | ✅  |
-| `/v2/wallets/fees/estimate`                            | `GET`    | ✅  |
-
-| Endpoint                                        | Method |     |
-| :---------------------------------------------- | :----- | --- |
-| `/v1beta1/corporate-actions`                    | `GET`  | ✅  |
-| `/v1beta1/forex/latest/rates`                   | `GET`  | ✅  |
-| `/v1beta1/forex/rates`                          | `GET`  | ✅  |
-| `/v1beta1/logos/{symbol}`                       | `GET`  | ✅  |
-| `/v1beta1/news`                                 | `GET`  | ✅  |
-| `/v1beta1/options/bars`                         | `GET`  | ✅  |
-| `/v1beta1/options/meta/exchanges`               | `GET`  | ✅  |
-| `/v1beta1/options/quotes/latest`                | `GET`  | ✅  |
-| `/v1beta1/options/trades/latest`                | `GET`  | ✅  |
-| `/v1beta1/options/trades`                       | `GET`  | ✅  |
-| `/v1beta1/options/snapshots`                    | `GET`  | ✅  |
-| `/v1beta1/options/snapshots/{underlyingSymbol}` | `GET`  | ✅  |
-| `/v1beta1/screener/stocks/most-actives`         | `GET`  | ✅  |
-| `/v1beta1/screener/{marketType}/movers`         | `GET`  | ✅  |
-| `/v1beta3/crypto/{loc}/bars`                    | `GET`  | ✅  |
-| `/v1beta3/crypto/{loc}/latest/bars`             | `GET`  | ✅  |
-| `/v1beta3/crypto/{loc}/latest/orderbooks`       | `GET`  | ✅  |
-| `/v1beta3/crypto/{loc}/latest/quotes`           | `GET`  | ✅  |
-| `/v1beta3/crypto/{loc}/latest/trades`           | `GET`  | ✅  |
-| `/v1beta3/crypto/{loc}/quotes`                  | `GET`  | ✅  |
-| `/v1beta3/crypto/{loc}/snapshots`               | `GET`  | ✅  |
-| `/v1beta3/crypto/{loc}/trades`                  | `GET`  | ✅  |
-| `/v2/stocks/auctions`                           | `GET`  | ✅  |
-| `/v2/stocks/bars`                               | `GET`  | ✅  |
-| `/v2/stocks/bars/latest`                        | `GET`  | ✅  |
-| `/v2/stocks/meta/conditions/{tickType}`         | `GET`  | ✅  |
-| `/v2/stocks/meta/exchanges`                     | `GET`  | ✅  |
-| `/v2/stocks/quotes`                             | `GET`  | ✅  |
-| `/v2/stocks/quotes/latest`                      | `GET`  | ✅  |
-| `/v2/stocks/snapshots`                          | `GET`  | ✅  |
-| `/v2/stocks/trades`                             | `GET`  | ✅  |
-| `/v2/stocks/trades/latest`                      | `GET`  | ✅  |
 
 ### WebSocket
 
