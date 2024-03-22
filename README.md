@@ -131,12 +131,24 @@ Below are some examples of how to use the WebSocket streams:
 
 ```ts
 const {
-  WebSocket: {},
+  WebSocket: { trade },
 } = createClient({
   // ...
 });
 
-// working on it...
+// Subscribe to trade updates
+trade.on("trade_updates", "new", (data) => {
+  console.log("New Trade:", data);
+});
+
+// Connect and subscribe
+(async () => {
+  await trade.subscribe([
+    { channel: "trade_updates", symbols: ["AAPL", "MSFT"] },
+  ]);
+
+  console.log("Subscribed to trade updates.");
+})();
 ```
 
 ## Need Help?
