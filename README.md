@@ -87,22 +87,33 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-Below are some examples of how to use the REST API methods. The pattern is `client.<resource>.<version>.<method>()`. This helps to keep the methods organized and easy to find.
+Below are some examples of how to use the REST API methods.
 
 ```ts
-client.trade.v2.account.get();
-client.trade.v2.orders.get();
-client.trade.v2.orders.get("order_id");
-client.trade.v2.orders.get("order_id", true);
-client.trade.v2.orders.delete();
-client.trade.v2.orders.delete("order_id");
-client.trade.v2.orders.patch("order_id", { qty: "1" });
-client.trade.v2.positions.get();
-client.trade.v2.positions.get("symbol_or_asset_id");
-client.trade.v2.positions.delete({ symbol_or_asset_id: "symbol" });
-client.trade.v2.positions.delete({ cancel_orders: true });
-client.trade.v2.positions.post("symbol_or_contract_id");
-client.trade.v2.portfolioHistory.get();
+const {
+  client: {
+    rest: { trade },
+  },
+} = createClient({
+  // ...
+});
+
+// The pattern below tries to mirror the REST API path structure.
+// For example, the path `/v2/account` is accessed by calling `trade.v2.account.get()`.
+
+await trade.v2.account.get();
+await trade.v2.orders.get();
+await trade.v2.orders.get("order_id");
+await trade.v2.orders.get("order_id", true);
+await trade.v2.orders.delete();
+await trade.v2.orders.delete("order_id");
+await trade.v2.orders.patch("order_id", { qty: "1" });
+await trade.v2.positions.get();
+await trade.v2.positions.get("symbol_or_asset_id");
+await trade.v2.positions.delete({ symbol_or_asset_id: "symbol" });
+await trade.v2.positions.delete({ cancel_orders: true });
+await trade.v2.positions.post("symbol_or_contract_id");
+await trade.v2.portfolioHistory.get();
 ```
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
