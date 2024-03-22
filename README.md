@@ -111,7 +111,7 @@ await marketData.v2.lastTrade.get("symbol");
 await marketData.v2.lastQuote.get("symbol");
 ```
 
-You may notice a pattern in the method names. This pattern is consistent across all REST API methods and mirrors the docs closely.
+You may notice a pattern in the method names. This pattern is consistent across all methods and mirrors the docs closely.
 
 ```ts
 {version}.{resource}.{method}()
