@@ -18,7 +18,6 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
       - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
     - [Example](#example)
-    - [Pattern](#pattern)
     - [Endpoints](#endpoints)
   - [WebSocket](#websocket)
 - [Need Help?](#need-help)
@@ -114,8 +113,6 @@ await trade.v2.orders.get("order_id");
 await trade.v2.orders.get("order_id", true);
 await trade.v2.orders.delete();
 ```
-
-#### Pattern
 
 You may notice a pattern in the method names. This is consistent across all methods and mirrors the docs closely.
 
