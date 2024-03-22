@@ -151,7 +151,7 @@ trade.on("trade_updates", "new", (data) => {
 })();
 ```
 
-Auth is handled for you by the client during WebSocket subscription, so you can get back to code 😉.
+Authentication is handled for you by the client on first subscription, so you can get back to code 😉.
 
 ## Need Help?
 
