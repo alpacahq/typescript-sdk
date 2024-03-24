@@ -1,21 +1,22 @@
 import { assert } from "https://deno.land/std@0.220.0/assert/mod.ts";
+import { websocket } from "../api/marketData.ts";
 import { createClient } from "./createClient.ts";
 
-Deno.test("createClient - returns valid client structure", () => {
-  const { rest, websocket } = createClient({
+Deno.test("creates a client with trade and marketData APIs", () => {
+  const { trade, marketData } = createClient({
     keyId: "test",
     secretKey: "test",
     baseURL: "https://paper-api.alpaca.markets",
   });
 
-  assert(rest !== undefined, "rest");
-  assert(websocket !== undefined, "websocket");
+  assert(trade !== undefined, "trade");
+  assert(websocket !== undefined, "marketData");
   assert(
-    typeof rest.trade.v2.account.get === "function",
+    typeof trade.rest.v2.account.get === "function",
     "trade.v2.account.get"
   );
   assert(
-    typeof rest.marketData.v2.stocks.getConditionCodes === "function",
+    typeof marketData.rest.v2.stocks.getConditionCodes === "function",
     "marketData.v2.stocks.getConditionCodes"
   );
 });

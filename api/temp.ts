@@ -1,11 +1,9 @@
-import { TradingAPI } from "../api/trading.ts";
-import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
+import { TradingAPI } from "./trading.ts";
 
 type ClientOptions = {
   apiKey: string;
   apiSecret: string;
   baseURL: string;
-  tokenBucket?: TokenBucketOptions;
 };
 
 type Endpoint = keyof TradingAPI;
@@ -14,19 +12,11 @@ type Params<E extends Endpoint> = TradingAPI[E]["params"];
 type Response<E extends Endpoint> = TradingAPI[E]["response"];
 
 function createClient(options: ClientOptions) {
-  const tokenBucket = options.tokenBucket
-    ? createTokenBucket(options.tokenBucket)
-    : undefined;
-
   const call = async <E extends Endpoint>(
     method: Method,
     endpoint: E,
     params?: Params<E>
   ): Promise<Response<E>> => {
-    if (tokenBucket && !tokenBucket.take(1)) {
-      throw new Error("Rate limit exceeded");
-    }
-
     const url = new URL(`${options.baseURL}${endpoint}`);
     if (params && method === "GET") {
       Object.entries(params as Record<string, string>).forEach(
@@ -35,7 +25,6 @@ function createClient(options: ClientOptions) {
         }
       );
     }
-
     const response = await fetch(url.toString(), {
       method,
       headers: {
@@ -56,16 +45,8 @@ function createClient(options: ClientOptions) {
   return { call };
 }
 
-const client = createClient({
-  apiKey: "your-api-key",
-  apiSecret: "your-api-secret",
-  baseURL: "https://api.example.com",
-  tokenBucket: {
-    capacity: 200,
-    fillRate: 3,
-  },
-});
+const client = createClient({} as any);
 
-client.call("GET", "/v2/account/activities").then((response) => {
+client.call("GET", "/v2/account/activities", {}).then((response) => {
   console.log(response);
 });
