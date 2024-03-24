@@ -26,19 +26,21 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 
 - [x] REST API
 - [x] WebSocket Streams
-- [x] Built-in Rate Limiting
+- [x] Built-in Rate Limiting (Token Bucket)
 - [x] TypeScript
 - [x] Deno
-- [x] Node
-- [x] > 50% Test Coverage
+- [x] Node (ESM)
+- [x] > 50% Test Coverage (and growing)
 - [x] Tree-shakable
-- [x] ESM and CJS
+- [x] Both ESM and CJS Support
 - [x] Zero Dependencies 🤯 (you read that right)
-- [x] Community Supported
+- [x] Community Driven 🚀
 
 Feel free to contribute and PR to your 💖's content.
 
 ## Install
+
+While the SDK is developed with Deno, it can be used in Node as well. The SDK is published as an ESM package on NPM and Skypack.
 
 From NPM:
 
