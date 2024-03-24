@@ -2,8 +2,9 @@ name: Update Version Badge
 on:
   workflow_run:
     workflows: ["Bump Tag"]
-    types:
-      - completed
+    types: [completed]
+    branches:
+      - main
 jobs:
   update-version-badge:
     runs-on: ubuntu-latest
