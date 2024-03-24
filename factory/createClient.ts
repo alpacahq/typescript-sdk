@@ -1,9 +1,12 @@
+import {
+  CryptoWebSocket,
+  NewsWebSocket,
+  OptionsWebSocket,
+  StockDataWebSocket,
+  TradeWebSocket,
+} from "../api/trade/types.ts";
+
 import { marketData, trade } from "../api/index.ts";
-import { TradeWebSocket } from "../api/trade/types/websocket.ts";
-import { StockDataWebSocket } from "../api/trade/types/websocket_2.ts";
-import { CryptoWebSocket } from "../api/trade/types/websocket_3.ts";
-import { NewsWebSocket } from "../api/trade/types/websocket_4.ts";
-import { OptionsWebSocket } from "../api/trade/types/websocket_5.ts";
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
 // The options required to make a request
@@ -29,27 +32,27 @@ export type CreateClientOptions = {
   tokenBucket?: TokenBucketOptions;
 };
 
-// Infer the return type of an API method by looking at the return type of the function
-export type ExtractedClientMethodReturn<T> = T extends (
+// Infer the return type of a client method
+export type ClientMethodsReturn<T> = T extends (
   // deno-lint-ignore no-explicit-any
   ...args: any[]
 ) => infer R
   ? R
   : T;
 
-// The expected type of a client method
-export type ClientMethod<T> = (context: ClientContext) => T;
+// Used to enforce the client context consumer type
+export type ClientContextConsumer<T> = (context: ClientContext) => T;
 
-// The return type of a client method
-export type ClientMethodReturnType<T> = ExtractedClientMethodReturn<
-  ReturnType<ClientMethod<T>>
+// deno-lint-ignore no-explicit-any
+type ClientMethods<T extends (...args: any[]) => any> = ReturnType<
+  ClientContextConsumer<ClientMethodsReturn<T>>
 >;
 
 // The object returned by createClient
 export type Client = {
   rest: {
-    trade: ClientMethodReturnType<typeof trade>;
-    marketData: ClientMethodReturnType<typeof marketData>;
+    trade: ClientMethods<typeof trade>;
+    marketData: ClientMethods<typeof marketData>;
   };
   websocket: {
     trade: TradeWebSocket;

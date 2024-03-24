@@ -1,50 +1,42 @@
 import {
-  PortfolioHistoryParams,
-  PortfolioHistoryResponse,
-} from "./types/portfolio.ts";
-
-import {
-  AnnouncementsQueryParams,
-  CorporateActionAnnouncement,
-} from "./types/corporate.ts";
-
-import {
   Account,
   AccountActivity,
   AccountConfigurations,
-  UpdatedAccountConfigurations,
-} from "./types/account.ts";
-
-import {
+  AddAssetToWatchlistParams,
+  AnnouncementsQueryParams,
+  Asset,
+  ClosePositionOptions,
+  CorporateActionAnnouncement,
+  CreateOrderOptions,
+  CreateWatchlistParams,
   CryptoFundingTransfer,
   CryptoFundingWallet,
-  TransactionFeeResponse,
-  TransactionParams,
-  WhitelistedAddress,
-  WhitelistedAddressParams,
-  WithdrawalParams,
-} from "./types/cryptoFunding.ts";
-
-import {
-  AddAssetToWatchlistParams,
-  CreateWatchlistParams,
   DeleteSymbolFromWatchlistParams,
   DeleteWatchlistByNameParams,
   GetWatchlistByNameParams,
+  MarketCalendar,
+  MarketClock,
+  OptionContract,
+  OptionContractsQueryParams,
+  Order,
+  PatchOrderOptions,
+  PortfolioHistoryParams,
+  PortfolioHistoryResponse,
+  Position,
+  TransactionFeeResponse,
+  TransactionParams,
   UpdateWatchlistByNameParams,
   UpdateWatchlistParams,
+  UpdatedAccountConfigurations,
   Watchlist,
-} from "./types/watchlist.ts";
+  WhitelistedAddress,
+  WhitelistedAddressParams,
+  WithdrawalParams,
+} from "./types.ts";
 
 import { ClientContext } from "../../factory/createClient.ts";
-import { Asset } from "./types/asset.ts";
-import { MarketCalendar } from "./types/calendar.ts";
-import { MarketClock } from "./types/clock.ts";
-import { OptionContract, OptionContractsQueryParams } from "./types/options.ts";
-import { CreateOrderOptions, Order, PatchOrderOptions } from "./types/order.ts";
-import { ClosePositionOptions, Position } from "./types/position.ts";
 
-export const methods = ({ request }: ClientContext) => ({
+export default ({ request }: ClientContext) => ({
   v2: {
     account: {
       get: () =>
@@ -382,5 +374,3 @@ export const methods = ({ request }: ClientContext) => ({
     },
   },
 });
-
-export default (context: ClientContext) => methods(context);

@@ -1,46 +1,41 @@
 // @todo fix type conflicts with crypto and stocks
 
-import { ClientContext } from "../../factory/createClient.ts";
-import {
-  CorporateActionsResponse,
-  HistoricalForexRatesResponse,
-  LatestForexRatesResponse,
-} from "./types/corporateActions.ts";
-
-import { CorporateActionsQueryParams } from "./types/corporateActions.ts";
-import {
-  CryptoHistoricalTradesResponse,
-  CryptoSnapshotsResponse,
-  HistoricalBarsResponse,
-  HistoricalQuotesResponse,
-  LatestBarsResponse,
-  LatestOrderbooksResponse,
-} from "./types/crypto.ts";
-import { NewsResponse } from "./types/news.ts";
-import {
-  HistoricalOptionBarsResponse,
-  HistoricalTradesResponse,
-  LatestQuotesResponse,
-  LatestTradesResponse,
-  OptionExchangeMapping,
-  SnapshotsResponse,
-} from "./types/options.ts";
-import { MarketMoversResponse, MostActivesResponse } from "./types/screener.ts";
 import {
   ConditionCodesResponse,
+  CorporateActionsQueryParams,
+  CorporateActionsResponse,
+  CryptoHistoricalTradesResponse,
+  CryptoSnapshotsResponse,
   ExchangeCodesResponse,
   HistoricalAuctionsResponse,
+  HistoricalBarsResponse,
+  HistoricalForexRatesResponse,
+  HistoricalOptionBarsResponse,
   HistoricalQuotesParams,
+  HistoricalQuotesResponse,
+  HistoricalTradesResponse,
+  LatestBarsResponse,
+  LatestForexRatesResponse,
+  LatestOrderbooksResponse,
   LatestQuotesParams,
+  LatestQuotesResponse,
   LatestTradeParams,
   LatestTradeResponse,
+  LatestTradesResponse,
+  MarketMoversResponse,
+  MostActivesResponse,
+  NewsResponse,
+  OptionExchangeMapping,
   SnapshotParams,
   SnapshotResponse,
+  SnapshotsResponse,
   TradeParams,
   TradeResponse,
-} from "./types/stocks.ts";
+} from "./types.ts";
 
-const methods = ({ request }: ClientContext) => ({
+import { ClientContext } from "../../factory/createClient.ts";
+
+export default ({ request }: ClientContext) => ({
   v1beta1: {
     corporateActions: (queryParams: CorporateActionsQueryParams) =>
       request<CorporateActionsResponse>({
@@ -412,5 +407,3 @@ const methods = ({ request }: ClientContext) => ({
     },
   },
 });
-
-export default (context: ClientContext) => methods(context);

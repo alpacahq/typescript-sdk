@@ -1,2 +1,2 @@
-export { default as marketData } from "./marketData/endpoints.ts";
-export { default as trade } from "./trade/endpoints.ts";
+export { default as marketData } from "./marketData/index.ts";
+export { default as trade } from "./trade/index.ts";
