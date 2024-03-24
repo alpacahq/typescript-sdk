@@ -1,13 +1,3 @@
-import {
-  CryptoWebSocket,
-  NewsWebSocket,
-  OptionsWebSocket,
-  StockDataWebSocket,
-  TradeWebSocket,
-} from "../types/trade.ts";
-
-import { default as marketData } from "../methods/marketData.ts";
-import { default as trade } from "../methods/trade.ts";
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
 // The options required to make a request
@@ -49,20 +39,48 @@ type ClientMethods<T extends (...args: any[]) => any> = ReturnType<
   ClientContextConsumer<ClientMethodsReturn<T>>
 >;
 
+// The expected  type for an event map for a given channel
+export type EventMap = {
+  // deno-lint-ignore no-explicit-any
+  [EventKey: string]: { T: string; data: any };
+};
+
+// The expected type of a subscription request for a  channel event map
+export type SubscriptionRequest<ChannelEventMap extends EventMap> = {
+  channel: keyof ChannelEventMap;
+  symbols?: string[];
+};
+
+export type WebSocketWithEvents<ChannelEventMap extends EventMap> = {
+  on: <E extends keyof ChannelEventMap>(
+    channel: E,
+    event: ChannelEventMap[E]["T"],
+    handler: (
+      data: Extract<ChannelEventMap[E], { T: ChannelEventMap[E]["T"] }>
+    ) => void
+  ) => void;
+  subscribe: (
+    requests: SubscriptionRequest<ChannelEventMap>[]
+  ) => Promise<SubscriptionRequest<ChannelEventMap>[]>;
+  unsubscribe: (
+    requests: SubscriptionRequest<ChannelEventMap>[]
+  ) => Promise<SubscriptionRequest<ChannelEventMap>[]>;
+};
+
+export type ClientSub = {
+  rest: ClientMethods<any>;
+  websocket: WebSocketWithEvents<any>;
+};
+
 // The object returned by createClient
 export type Client = {
-  rest: {
-    trade: ClientMethods<typeof trade>;
-    marketData: ClientMethods<typeof marketData>;
+  trade: {
+    rest: {};
+    websocket: {};
   };
-  websocket: {
-    trade: TradeWebSocket;
-    marketData: {
-      stock: StockDataWebSocket;
-      crypto: CryptoWebSocket;
-      news: NewsWebSocket;
-      options: OptionsWebSocket;
-    };
+  marketData: {
+    rest: {};
+    websocket: {};
   };
 };
 
