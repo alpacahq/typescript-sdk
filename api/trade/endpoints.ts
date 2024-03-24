@@ -44,7 +44,7 @@ import { OptionContract, OptionContractsQueryParams } from "./types/options.ts";
 import { CreateOrderOptions, Order, PatchOrderOptions } from "./types/order.ts";
 import { ClosePositionOptions, Position } from "./types/position.ts";
 
-const methods = ({ request }: ClientContext) => ({
+export const methods = ({ request }: ClientContext) => ({
   v2: {
     account: {
       get: () =>
@@ -383,8 +383,4 @@ const methods = ({ request }: ClientContext) => ({
   },
 });
 
-export default <T extends ReturnType<typeof methods>>(
-  context: ClientContext
-): T => {
-  return methods(context) as T;
-};
+export default (context: ClientContext) => methods(context);

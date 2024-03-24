@@ -413,8 +413,4 @@ const methods = ({ request }: ClientContext) => ({
   },
 });
 
-export default <T extends ReturnType<typeof methods>>(
-  context: ClientContext
-): T => {
-  return methods(context) as T;
-};
+export default (context: ClientContext) => methods(context);

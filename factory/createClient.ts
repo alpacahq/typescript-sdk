@@ -4,8 +4,16 @@ import { StockDataWebSocket } from "../api/trade/types/websocket_2.ts";
 import { CryptoWebSocket } from "../api/trade/types/websocket_3.ts";
 import { NewsWebSocket } from "../api/trade/types/websocket_4.ts";
 import { OptionsWebSocket } from "../api/trade/types/websocket_5.ts";
-import { ClientContextConsumer } from "../api/types/shared.ts";
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
+
+// The options required to make a request
+export type RequestOptions = {
+  path: string;
+  data?: object;
+  method?: string;
+  // deno-lint-ignore no-explicit-any
+  params?: Record<string, any>;
+};
 
 // Used to share the client options and request function between the different API methods
 export type ClientContext = {
@@ -14,29 +22,34 @@ export type ClientContext = {
 };
 
 // The options required to create a client
-type CreateClientOptions = {
+export type CreateClientOptions = {
   keyId: string;
   secretKey: string;
   baseURL: string;
   tokenBucket?: TokenBucketOptions;
 };
 
-// The options required to make a request
-type RequestOptions = {
-  path: string;
-  data?: object;
-  method?: string;
+// Infer the return type of an API method by looking at the return type of the function
+export type ExtractedClientMethodReturn<T> = T extends (
   // deno-lint-ignore no-explicit-any
-  params?: Record<string, any>;
-};
+  ...args: any[]
+) => infer R
+  ? R
+  : T;
 
-// The client object that is returned by createClient
+// The expected type of a client method
+export type ClientMethod<T> = (context: ClientContext) => T;
+
+// The return type of a client method
+export type ClientMethodReturnType<T> = ExtractedClientMethodReturn<
+  ReturnType<ClientMethod<T>>
+>;
+
+// The object returned by createClient
 export type Client = {
   rest: {
-    trade: ReturnType<ClientContextConsumer<ReturnType<typeof trade>>>;
-    marketData: ReturnType<
-      ClientContextConsumer<ReturnType<typeof marketData>>
-    >;
+    trade: ClientMethodReturnType<typeof trade>;
+    marketData: ClientMethodReturnType<typeof marketData>;
   };
   websocket: {
     trade: TradeWebSocket;
@@ -128,11 +141,14 @@ export function createClient({
     );
   };
 
+  // Build the context object
   const context: ClientContext = { options, request };
 
   return {
     rest: {
+      // Instantiate the trade methods with the context
       trade: trade(context),
+      // Instantiate the market data methods with the context
       marketData: marketData(context),
     },
     websocket: {} as any,

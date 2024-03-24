@@ -1,3 +1,5 @@
+import { EventMap, WebSocketWithEvents } from "../../types/websocket.ts";
+
 type Trade = {
   T: "t";
   i: number;
@@ -120,38 +122,14 @@ type StockDataMessage =
   | ErrorMessage
   | SubscriptionMessage;
 
-interface StockChannelEventMap {
-  trades: Trade;
-  quotes: Quote;
-  bars: Bar;
-  dailyBars: Bar;
-  updatedBars: Bar;
-  statuses: TradingStatus;
-  lulds: LULD;
+interface StockChannelEventMap extends EventMap {
+  trades: { T: "trades"; data: Trade };
+  quotes: { T: "quotes"; data: Quote };
+  bars: { T: "bars"; data: Bar };
+  dailyBars: { T: "dailyBars"; data: Bar };
+  updatedBars: { T: "updatedBars"; data: Bar };
+  statuses: { T: "statuses"; data: TradingStatus };
+  lulds: { T: "lulds"; data: LULD };
 }
 
-type SubscriptionRequest = {
-  channel: keyof StockChannelEventMap;
-  symbols: string[];
-};
-
-export type StockDataWebSocket = {
-  on: <E extends keyof StockChannelEventMap>(
-    channel: E,
-    event: E extends keyof StockChannelEventMap
-      ? StockChannelEventMap[E]["T"]
-      : never,
-    handler: (
-      data: Extract<
-        StockChannelEventMap[E],
-        { T: StockChannelEventMap[E]["T"] }
-      >
-    ) => void
-  ) => void;
-  subscribe: (
-    requests: SubscriptionRequest[]
-  ) => Promise<SubscriptionRequest[]>;
-  unsubscribe: (
-    requests: SubscriptionRequest[]
-  ) => Promise<SubscriptionRequest[]>;
-};
+export type StockDataWebSocket = WebSocketWithEvents<StockChannelEventMap>;
