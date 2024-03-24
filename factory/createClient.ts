@@ -4,6 +4,7 @@ import { StockDataWebSocket } from "../api/trade/types/websocket_2.ts";
 import { CryptoWebSocket } from "../api/trade/types/websocket_3.ts";
 import { NewsWebSocket } from "../api/trade/types/websocket_4.ts";
 import { OptionsWebSocket } from "../api/trade/types/websocket_5.ts";
+import { ClientContextConsumer } from "../api/types/shared.ts";
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
 // Used to share the client options and request function between the different API methods
@@ -32,8 +33,10 @@ type RequestOptions = {
 // The client object that is returned by createClient
 export type Client = {
   rest: {
-    trade: ReturnType<typeof trade>;
-    marketData: ReturnType<typeof marketData>;
+    trade: ReturnType<ClientContextConsumer<ReturnType<typeof trade>>>;
+    marketData: ReturnType<
+      ClientContextConsumer<ReturnType<typeof marketData>>
+    >;
   };
   websocket: {
     trade: TradeWebSocket;

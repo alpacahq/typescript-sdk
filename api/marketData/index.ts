@@ -40,7 +40,7 @@ import {
   TradeResponse,
 } from "./types/stocks.ts";
 
-export default ({ request }: ClientContext) => ({
+const methods = ({ request }: ClientContext) => ({
   v1beta1: {
     corporateActions: (queryParams: CorporateActionsQueryParams) =>
       request<CorporateActionsResponse>({
@@ -412,3 +412,9 @@ export default ({ request }: ClientContext) => ({
     },
   },
 });
+
+export default <T extends ReturnType<typeof methods>>(
+  context: ClientContext
+): T => {
+  return methods(context) as T;
+};

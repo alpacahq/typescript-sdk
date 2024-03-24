@@ -4,15 +4,9 @@ import {
 } from "./types/portfolio.ts";
 
 import {
-  AddAssetToWatchlistParams,
-  CreateWatchlistParams,
-  DeleteSymbolFromWatchlistParams,
-  DeleteWatchlistByNameParams,
-  GetWatchlistByNameParams,
-  UpdateWatchlistByNameParams,
-  UpdateWatchlistParams,
-  Watchlist,
-} from "./types/watchlist.ts";
+  AnnouncementsQueryParams,
+  CorporateActionAnnouncement,
+} from "./types/corporate.ts";
 
 import {
   Account,
@@ -20,11 +14,6 @@ import {
   AccountConfigurations,
   UpdatedAccountConfigurations,
 } from "./types/account.ts";
-
-import {
-  AnnouncementsQueryParams,
-  CorporateActionAnnouncement,
-} from "./types/corporate.ts";
 
 import {
   CryptoFundingTransfer,
@@ -36,6 +25,17 @@ import {
   WithdrawalParams,
 } from "./types/cryptoFunding.ts";
 
+import {
+  AddAssetToWatchlistParams,
+  CreateWatchlistParams,
+  DeleteSymbolFromWatchlistParams,
+  DeleteWatchlistByNameParams,
+  GetWatchlistByNameParams,
+  UpdateWatchlistByNameParams,
+  UpdateWatchlistParams,
+  Watchlist,
+} from "./types/watchlist.ts";
+
 import { ClientContext } from "../../factory/createClient.ts";
 import { Asset } from "./types/asset.ts";
 import { MarketCalendar } from "./types/calendar.ts";
@@ -44,7 +44,7 @@ import { OptionContract, OptionContractsQueryParams } from "./types/options.ts";
 import { CreateOrderOptions, Order, PatchOrderOptions } from "./types/order.ts";
 import { ClosePositionOptions, Position } from "./types/position.ts";
 
-export default ({ request }: ClientContext) => ({
+const methods = ({ request }: ClientContext) => ({
   v2: {
     account: {
       get: () =>
@@ -382,3 +382,9 @@ export default ({ request }: ClientContext) => ({
     },
   },
 });
+
+export default <T extends ReturnType<typeof methods>>(
+  context: ClientContext
+): T => {
+  return methods(context) as T;
+};
