@@ -44,7 +44,7 @@ import { OptionContract, OptionContractsQueryParams } from "./types/options.ts";
 import { CreateOrderOptions, Order, PatchOrderOptions } from "./types/order.ts";
 import { ClosePositionOptions, Position } from "./types/position.ts";
 
-export const methods = ({ request }: ClientContext) => ({
+export default ({ request }: ClientContext) => ({
   v2: {
     account: {
       get: () =>

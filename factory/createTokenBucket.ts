@@ -1,7 +1,7 @@
 /**
  * Token Bucket
  * @see https://en.wikipedia.org/wiki/Token_bucket
- * @param {Object} options
+ * @param {Object} options - token bucket options
  * @param {number} options.capacity - maximum number of tokens
  * @param {number} options.fillRate - tokens per second
  */
@@ -12,7 +12,7 @@ export type TokenBucketOptions = {
 
 /**
  * Create a token bucket
- * @param {TokenBucketOptions} options
+ * @param {TokenBucketOptions} options - token bucket options
  * @returns {Object} token bucket
  * @returns {number} token bucket.tokens - current number of tokens
  * @returns {Function} token bucket.take - take tokens from the bucket

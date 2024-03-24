@@ -40,7 +40,7 @@ import {
   TradeResponse,
 } from "./types/stocks.ts";
 
-export const methods = ({ request }: ClientContext) => ({
+export default ({ request }: ClientContext) => ({
   v1beta1: {
     corporateActions: (queryParams: CorporateActionsQueryParams) =>
       request<CorporateActionsResponse>({
