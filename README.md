@@ -56,7 +56,7 @@ import { createClient } from "https://cdn.skypack.dev/@alpacahq/typescript-sdk";
 
 ### Create a Client
 
-First, you'll need to create an API key on the Alpaca website. You can do that [here](https://app.alpaca.markets). Once you have an API key, you can use it to create a client. Using OAuth? Simply pass an access_token in the credentials object.
+First, you'll need to create an API key on the Alpaca website. You can do that [here](https://app.alpaca.markets). Once you have an API key, you can use it to create a client. Using OAuth? Simply pass an `access_token` in the credentials object.
 
 ```ts
 import { createClient } from "@alpacahq/typescript-sdk";
@@ -97,7 +97,7 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 #### Example
 
-Below is an example of how to use the REST API methods.
+Below is an example of how to use the REST API.
 
 ```ts
 const {
@@ -106,11 +106,17 @@ const {
   // ...
 });
 
-await trade.v2.account.get();
-await trade.v2.orders.get();
-await trade.v2.orders.get("order_id");
-await trade.v2.orders.get("order_id", true);
-await trade.v2.orders.delete();
+console.log(await trade.v2.account.get());
+
+// {
+//   "id": "e6f8f4f3-3b6b-4b2f-8b2e-4b0e3b3d3e3e",
+//   "account_number": "XXXXXXXXX",
+//   "status": "ACTIVE",
+//   "currency": "USD",
+//   "cash": "1000000",
+//   "cash_withdrawable": "1000000",
+//   ...
+// }
 ```
 
 #### Convention
