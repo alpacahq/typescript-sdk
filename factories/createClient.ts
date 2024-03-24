@@ -6,8 +6,8 @@ import {
   TradeWebSocket,
 } from "../types/trade.ts";
 
-import { default as marketData } from "../api/marketData.ts";
-import { default as trade } from "../api/trade.ts";
+import { default as marketData } from "../methods/marketData.ts";
+import { default as trade } from "../methods/trade.ts";
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
 // The options required to make a request

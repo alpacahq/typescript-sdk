@@ -33,7 +33,7 @@ import {
   TradeResponse,
 } from "../types/marketData.ts";
 
-import { ClientContext } from "../factory/createClient.ts";
+import { ClientContext } from "../factories/createClient.ts";
 
 export default ({ request }: ClientContext) => ({
   v1beta1: {
