@@ -32,9 +32,9 @@ import {
   WhitelistedAddress,
   WhitelistedAddressParams,
   WithdrawalParams,
-} from "./types.ts";
+} from "../types/trade.ts";
 
-import { ClientContext } from "../../factory/createClient.ts";
+import { ClientContext } from "../factory/createClient.ts";
 
 export default ({ request }: ClientContext) => ({
   v2: {

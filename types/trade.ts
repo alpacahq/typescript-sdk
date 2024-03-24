@@ -1,4 +1,4 @@
-import { EventMap, WebSocketWithEvents } from "../types.ts";
+import { EventMap, WebSocketWithEvents } from "./websocket.ts";
 
 export type Account = {
   id: string;
