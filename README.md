@@ -106,10 +106,7 @@ const client = createClient({
   // ...
 });
 
-// The types will be inferred for you, by method and endpoint
-const account = await client.call("GET", "/v2/account");
-
-console.log(account);
+// not ready
 
 // {
 //   "id": "e6f8f4f3-3b6b-4b2f-8b2e-4b0e3b3d3e3e",
