@@ -1,71 +1,115 @@
-import { TradingAPI } from "../api/trading.ts";
+import marketData from "../api/marketData.ts";
+import trade from "../api/trade.ts";
+
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
-type ClientOptions = {
-  apiKey: string;
-  apiSecret: string;
+export type Trade = ReturnType<typeof trade>;
+
+export type MarketData = ReturnType<typeof marketData>;
+
+// Infer the client type based on the base URL
+type ClientFactoryMap = {
+  "https://paper-api.alpaca.markets": Trade;
+  "https://data.alpaca.markets": MarketData;
+};
+
+export type Client = Trade | MarketData;
+
+type RequestOptions = {
+  method?: string;
+  path: string;
+  params?: Record<string, any>;
+  data?: object;
+};
+
+type CreateClientOptions = {
+  keyId: string;
+  secretKey: string;
   baseURL: string;
   tokenBucket?: TokenBucketOptions;
 };
 
-type Endpoint = keyof TradingAPI;
-type Method = TradingAPI[Endpoint]["method"];
-type Params<E extends Endpoint> = TradingAPI[E]["params"];
-type Response<E extends Endpoint> = TradingAPI[E]["response"];
+export type ClientContext = {
+  options: CreateClientOptions;
+  request: <T>(options: RequestOptions) => Promise<T>;
+};
 
-function createClient(options: ClientOptions) {
-  const tokenBucket = options.tokenBucket
-    ? createTokenBucket(options.tokenBucket)
-    : undefined;
+export function createClient<T extends keyof ClientFactoryMap>(
+  options: CreateClientOptions & { baseURL: T }
+): ClientFactoryMap[T] {
+  // Create a token bucket for rate limiting
+  const bucket = createTokenBucket(options.tokenBucket);
 
-  const call = async <E extends Endpoint>(
-    method: Method,
-    endpoint: E,
-    params?: Params<E>
-  ): Promise<Response<E>> => {
-    if (tokenBucket && !tokenBucket.take(1)) {
-      throw new Error("Rate limit exceeded");
-    }
-
-    const url = new URL(`${options.baseURL}${endpoint}`);
-    if (params && method === "GET") {
-      Object.entries(params as Record<string, string>).forEach(
-        ([key, value]) => {
-          url.searchParams.append(key, value);
+  // Throttled request function that respects the token bucket
+  const request = async <T>({
+    method = "GET",
+    path,
+    params,
+    data,
+  }: RequestOptions): Promise<T> => {
+    await new Promise((resolve) => {
+      // Poll the token bucket every second
+      const timer = setInterval(() => {
+        // If a token is available, resolve the promise
+        if (bucket.take(1)) {
+          clearInterval(timer);
+          resolve(true);
         }
-      );
-    }
-
-    const response = await fetch(url.toString(), {
-      method,
-      headers: {
-        "APCA-API-KEY-ID": options.apiKey,
-        "APCA-API-SECRET-KEY": options.apiSecret,
-        "Content-Type": "application/json",
-      },
-      body: method !== "GET" ? JSON.stringify(params) : undefined,
+      }, 1000);
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // Hold the final path
+    let modified = path;
+
+    if (params) {
+      // Replace path parameters with actual values
+      for (const [key, value] of Object.entries(params)) {
+        modified = modified.replace(`{${key}}`, encodeURIComponent(value));
+      }
     }
 
-    return (await response.json()) as Response<E>;
+    // Construct the full URL
+    const url = `${options.baseURL}${modified}`;
+
+    // Construct the headers
+    const headers = new Headers({
+      "APCA-API-KEY-ID": options.keyId,
+      "APCA-API-SECRET-KEY": options.secretKey,
+      "Content-Type": "application/json",
+    });
+
+    // Make the request and parse the JSON response
+    return fetch(url, {
+      method,
+      headers,
+      body: data ? JSON.stringify(data) : null,
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `Failed to ${method} ${url}: ${response.status} ${response.statusText}`
+        );
+      }
+
+      return response.json();
+    });
   };
 
-  return { call };
+  // Create a context object to pass to the client factory
+  const context: ClientContext = {
+    options,
+    request,
+  };
+
+  // Conditonally return client based on the base URL
+  const factory = (context: ClientContext): ClientFactoryMap[T] => {
+    if (options.baseURL === "https://paper-api.alpaca.markets") {
+      return trade(context) as ClientFactoryMap[T];
+    } else if (options.baseURL === "https://data.alpaca.markets") {
+      return marketData(context) as ClientFactoryMap[T];
+    } else {
+      throw new Error("invalid base URL");
+    }
+  };
+
+  return factory(context);
 }
-
-const client = createClient({
-  apiKey: "your-api-key",
-  apiSecret: "your-api-secret",
-  baseURL: "https://api.example.com",
-  tokenBucket: {
-    capacity: 200,
-    fillRate: 3,
-  },
-});
-
-client.call("GET", "/v2/account/activities").then((response) => {
-  console.log(response);
-});
