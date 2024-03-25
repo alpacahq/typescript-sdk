@@ -1,4 +1,4 @@
-import { BaseAPI, ClientContext } from "../factory/createClient.ts";
+import { ClientContext } from "../factory/createClient.ts";
 
 export interface CorporateActionsQueryParams {
   symbols: string;
@@ -319,30 +319,30 @@ export interface OptionExchangeMapping {
 }
 
 export interface LatestQuotesResponse {
-  quotes: {
-    [symbol: string]: {
-      t: string; // Timestamp in RFC-3339 format
-      ax: string; // Ask exchange
-      ap: number; // Ask price
-      as: number; // Ask size
-      bx: string; // Bid exchange
-      bp: number; // Bid price
-      bs: number; // Bid size
-      c: string; // Condition
-    };
-  };
+  // quotes: {
+  //   [symbol: string]: {
+  //     t: string; // Timestamp in RFC-3339 format
+  //     ax: string; // Ask exchange
+  //     ap: number; // Ask price
+  //     as: number; // Ask size
+  //     bx: string; // Bid exchange
+  //     bp: number; // Bid price
+  //     bs: number; // Bid size
+  //     c: string; // Condition
+  //   };
+  // };
 }
 
 export interface LatestTradesResponse {
-  trades: {
-    [symbol: string]: {
-      t: string; // Timestamp in RFC-3339 format
-      x: string; // Exchange code
-      p: number; // Trade price
-      s: number; // Trade size
-      c: string; // Condition
-    };
-  };
+  // trades: {
+  //   [symbol: string]: {
+  //     t: string; // Timestamp in RFC-3339 format
+  //     x: string; // Exchange code
+  //     p: number; // Trade price
+  //     s: number; // Trade size
+  //     c: string; // Condition
+  //   };
+  // };
 }
 
 export interface HistoricalTradesResponse {
@@ -485,9 +485,9 @@ export interface LatestQuotesParams {
 }
 
 export interface LatestQuotesResponse {
-  quotes: {
-    [symbol: string]: LatestQuote;
-  };
+  // quotes: {
+  //   [symbol: string]: LatestQuote;
+  // };
 }
 
 export interface LatestQuote {
@@ -622,7 +622,7 @@ export interface HistoricalAuctionsParams {
 
 export type MarketDataEventMap = any;
 
-export default ({ request }: ClientContext): BaseAPI<any, any> => ({
+export default ({ request }: ClientContext) => ({
   rest: {
     v1beta1: {
       corporateActions: (queryParams: CorporateActionsQueryParams) =>
