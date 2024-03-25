@@ -1,5 +1,6 @@
 import marketData from "../api/marketData.ts";
 import trade from "../api/trade.ts";
+
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
 export type Trade = ReturnType<typeof trade>;
@@ -13,11 +14,13 @@ type ClientFactoryMap = {
 
 export type Client = Trade | MarketData;
 
-type RequestOptions = {
+type RequestOptions<T> = {
   method?: string;
   path: string;
+  // deno-lint-ignore no-explicit-any
   params?: Record<string, any>;
   data?: object;
+  responseType?: T;
 };
 
 type CreateClientOptions = {
@@ -29,7 +32,7 @@ type CreateClientOptions = {
 
 export type ClientContext = {
   options: CreateClientOptions;
-  request: <T>(options: RequestOptions) => Promise<T>;
+  request: <T>(options: RequestOptions<T>) => Promise<Response & { data: T }>;
 };
 
 export type ClientWithContext<T extends keyof ClientFactoryMap> =
@@ -49,7 +52,8 @@ export function createClient<T extends keyof ClientFactoryMap>(
     path,
     params,
     data,
-  }: RequestOptions): Promise<T> => {
+    responseType,
+  }: RequestOptions<T>): Promise<Response & { data: T }> => {
     await new Promise((resolve) => {
       // Poll the token bucket every second
       const timer = setInterval(() => {
@@ -80,18 +84,19 @@ export function createClient<T extends keyof ClientFactoryMap>(
       "Content-Type": "application/json",
     });
 
-    // Make the request and parse the JSON response
+    // Make the request and return the Response object
     return fetch(url, {
       method,
       headers,
       body: data ? JSON.stringify(data) : null,
-    }).then((response) => {
+    }).then(async (response) => {
       if (!response.ok) {
         throw new Error(
           `Failed to ${method} ${url}: ${response.status} ${response.statusText}`
         );
       }
-      return response.json();
+      const responseData = await response.json();
+      return Object.assign(response, { data: responseData as T });
     });
   };
 
