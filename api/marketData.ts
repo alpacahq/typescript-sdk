@@ -623,22 +623,28 @@ export interface HistoricalAuctionsParams {
 export type MarketDataEventMap = any;
 
 export default ({ request }: ClientContext) => ({
-  rest: {
-    v1beta1: {
-      corporateActions: (queryParams: CorporateActionsQueryParams) =>
+  v1beta1: {
+    corporate_actions: {
+      get: (queryParams: CorporateActionsQueryParams) =>
         request<CorporateActionsResponse>({
           path: "/v1beta1/corporate-actions",
           method: "GET",
           params: queryParams,
         }),
-      forex: {
-        latestRates: (currencyPairs: string) =>
-          request<LatestForexRatesResponse>({
-            path: "/v1beta1/forex/latest/rates",
-            method: "GET",
-            params: { currency_pairs: currencyPairs },
-          }),
-        historicalRates: (
+    },
+    forex: {
+      latest: {
+        rates: {
+          get: (currencyPairs: string) =>
+            request<LatestForexRatesResponse>({
+              path: "/v1beta1/forex/latest/rates",
+              method: "GET",
+              params: { currency_pairs: currencyPairs },
+            }),
+        },
+      },
+      rates: {
+        get: (
           currencyPairs: string,
           timeframe: string,
           start?: string,
@@ -661,16 +667,18 @@ export default ({ request }: ClientContext) => ({
             },
           }),
       },
-
-      logos: (symbol: string, placeholder?: boolean) =>
+    },
+    logos: {
+      get: (symbol: string, placeholder?: boolean) =>
         // uhh, not sure yet how to handle this
         request<unknown>({
           path: `/v1beta1/logos/${symbol}`,
           method: "GET",
           params: { placeholder: placeholder },
         }),
-
-      news: (
+    },
+    news: {
+      get: (
         start?: string,
         end?: string,
         sort?: string,
@@ -694,8 +702,10 @@ export default ({ request }: ClientContext) => ({
             page_token: pageToken,
           },
         }),
-      options: {
-        bars: (
+    },
+    options: {
+      bars: {
+        get: (
           symbols: string,
           timeframe: string,
           start?: string,
@@ -717,64 +727,76 @@ export default ({ request }: ClientContext) => ({
               sort: sort,
             },
           }),
-        meta: {
-          exchanges: () =>
+      },
+      meta: {
+        exchanges: {
+          get: () =>
             request<OptionExchangeMapping>({
               path: "/v1beta1/options/meta/exchanges",
               method: "GET",
             }),
         },
-        quotes: {
-          latest: (symbols: string, feed?: string) =>
+      },
+      quotes: {
+        latest: {
+          get: (symbols: string, feed?: string) =>
             request<LatestQuotesResponse>({
               path: "/v1beta1/options/quotes/latest",
               method: "GET",
               params: { symbols, feed },
             }),
         },
-        trades: {
-          latest: (symbols: string, feed?: string) =>
+      },
+      trades: {
+        latest: {
+          get: (symbols: string, feed?: string) =>
             request<LatestTradesResponse>({
               path: "/v1beta1/options/trades/latest",
               method: "GET",
               params: { symbols, feed },
             }),
-          historical: (
-            symbols: string,
-            start?: string,
-            end?: string,
-            limit?: number,
-            pageToken?: string,
-            sort?: string
-          ) =>
-            request<HistoricalTradesResponse>({
-              path: "/v1beta1/options/trades",
-              method: "GET",
-              params: { symbols, start, end, limit, pageToken, sort },
-            }),
         },
-        snapshots: (symbols: string, feed?: string) =>
+        get: (
+          symbols: string,
+          start?: string,
+          end?: string,
+          limit?: number,
+          pageToken?: string,
+          sort?: string
+        ) =>
+          request<HistoricalTradesResponse>({
+            path: "/v1beta1/options/trades",
+            method: "GET",
+            params: { symbols, start, end, limit, pageToken, sort },
+          }),
+      },
+      snapshots: {
+        get: (symbols: string, feed?: string) =>
           request<SnapshotsResponse>({
             path: "/v1beta1/options/snapshots",
             method: "GET",
             params: { symbols, feed },
           }),
-        snapshotsByUnderlying: (underlyingSymbol: string, feed?: string) =>
-          // uhh, not sure yet how to handle this
-          request<SnapshotsResponse>({
-            path: `/v1beta1/options/snapshots/${underlyingSymbol}`,
-            method: "GET",
-            params: { feed },
-          }),
+        // snapshotsByUnderlying: (underlyingSymbol: string, feed?: string) =>
+        //   // uhh, not sure yet how to handle this
+        //   request<SnapshotsResponse>({
+        //     path: `/v1beta1/options/snapshots/${underlyingSymbol}`,
+        //     method: "GET",
+        //     params: { feed },
+        //   }),
       },
-      screener: {
-        getMostActives: (by = "volume", top = 10) =>
+    },
+    screener: {
+      most_actives: {
+        get: (by = "volume", top = 10) =>
           request<MostActivesResponse>({
             path: "/v1beta1/screener/stocks/most-actives",
             method: "GET",
             params: { by, top },
           }),
-        getMarketMovers: (marketType: string, top: number = 10) =>
+      },
+      movers: {
+        get: (marketType: string, top: number = 10) =>
           request<MarketMoversResponse>({
             path: `/v1beta1/screener/${marketType}/movers`,
             method: "GET",
@@ -782,9 +804,11 @@ export default ({ request }: ClientContext) => ({
           }),
       },
     },
-    v1beta3: {
-      crypto: {
-        getHistoricalBars: (
+  },
+  v1beta3: {
+    crypto: {
+      bars: {
+        get: (
           loc: string,
           symbols: string,
           timeframe: string,
@@ -807,39 +831,51 @@ export default ({ request }: ClientContext) => ({
               sort,
             },
           }),
-        getLatestBars: (loc: string, symbols: string) =>
-          request<LatestBarsResponse>({
-            path: `/v1beta3/crypto/${loc}/latest/bars`,
-            method: "GET",
-            params: {
-              symbols,
-            },
-          }),
-        getLatestOrderbooks: (loc: string, symbols: string) =>
-          request<LatestOrderbooksResponse>({
-            path: `/v1beta3/crypto/${loc}/latest/orderbooks`,
-            method: "GET",
-            params: {
-              symbols,
-            },
-          }),
-        getLatestQuotes: (loc: string, symbols: string) =>
-          request<LatestQuotesResponse>({
-            path: `/v1beta3/crypto/${loc}/latest/quotes`,
-            method: "GET",
-            params: {
-              symbols,
-            },
-          }),
-        getLatestTrades: (loc: string, symbols: string) =>
-          request<LatestTradesResponse>({
-            path: `/v1beta3/crypto/${loc}/latest/trades`,
-            method: "GET",
-            params: {
-              symbols,
-            },
-          }),
-        getHistoricalQuotes: (
+      },
+      latest: {
+        bars: {
+          get: (loc: string, symbols: string) =>
+            request<LatestBarsResponse>({
+              path: `/v1beta3/crypto/${loc}/latest/bars`,
+              method: "GET",
+              params: {
+                symbols,
+              },
+            }),
+        },
+        orderbooks: {
+          get: (loc: string, symbols: string) =>
+            request<LatestOrderbooksResponse>({
+              path: `/v1beta3/crypto/${loc}/latest/orderbooks`,
+              method: "GET",
+              params: {
+                symbols,
+              },
+            }),
+        },
+        quotes: {
+          get: (loc: string, symbols: string) =>
+            request<LatestQuotesResponse>({
+              path: `/v1beta3/crypto/${loc}/latest/quotes`,
+              method: "GET",
+              params: {
+                symbols,
+              },
+            }),
+        },
+        trades: {
+          get: (loc: string, symbols: string) =>
+            request<LatestTradesResponse>({
+              path: `/v1beta3/crypto/${loc}/latest/trades`,
+              method: "GET",
+              params: {
+                symbols,
+              },
+            }),
+        },
+      },
+      quotes: {
+        get: (
           loc: string,
           symbols: string,
           start?: string,
@@ -860,7 +896,10 @@ export default ({ request }: ClientContext) => ({
               sort,
             },
           }),
-        getSnapshots: (loc: string, symbols: string) =>
+      },
+
+      snapshots: {
+        get: (loc: string, symbols: string) =>
           request<CryptoSnapshotsResponse>({
             path: `/v1beta3/crypto/${loc}/snapshots`,
             method: "GET",
@@ -868,7 +907,9 @@ export default ({ request }: ClientContext) => ({
               symbols,
             },
           }),
-        getHistoricalTrades: (
+      },
+      trades: {
+        get: (
           loc: string,
           symbols: string,
           start?: string,
@@ -891,9 +932,11 @@ export default ({ request }: ClientContext) => ({
           }),
       },
     },
-    v2: {
-      stocks: {
-        getHistoricalAuctions: (
+  },
+  v2: {
+    stocks: {
+      auctions: {
+        get: (
           symbols: string,
           start?: string,
           end?: string,
@@ -917,7 +960,9 @@ export default ({ request }: ClientContext) => ({
               sort,
             },
           }),
-        getHistoricalBars: (
+      },
+      bars: {
+        get: (
           symbols: string,
           timeframe: string,
           start?: string,
@@ -945,55 +990,72 @@ export default ({ request }: ClientContext) => ({
               sort,
             },
           }),
-        getLatestBars: (symbols: string, feed?: string, currency?: string) =>
-          request<LatestBarsResponse>({
-            path: `/v2/stocks/bars/latest`,
-            method: "GET",
-            params: { symbols, feed, currency },
-          }),
-        getConditionCodes: (tickType: string, tape: string) =>
-          request<ConditionCodesResponse>({
-            path: `/v2/stocks/meta/conditions/${tickType}`,
-            method: "GET",
-            params: { tape },
-          }),
-        getExchangeCodes: () =>
-          request<ExchangeCodesResponse>({
-            path: "/v2/stocks/meta/exchanges",
-            method: "GET",
-          }),
-        getHistoricalQuotes: (params: HistoricalQuotesParams) =>
-          request<HistoricalQuotesResponse>({
-            path: "/v2/stocks/quotes",
-            method: "GET",
-            params,
-          }),
-        getLatestQuotes: (params: LatestQuotesParams) =>
-          request<LatestQuotesResponse>({
-            path: "/v2/stocks/quotes/latest",
-            method: "GET",
-            params,
-          }),
-        getSnapshots: (params: SnapshotParams) =>
+        latest: {
+          get: (symbols: string, feed?: string, currency?: string) =>
+            request<LatestBarsResponse>({
+              path: `/v2/stocks/bars/latest`,
+              method: "GET",
+              params: { symbols, feed, currency },
+            }),
+        },
+      },
+      meta: {
+        conditions: {
+          get: (tickType: string, tape: string) =>
+            request<ConditionCodesResponse>({
+              path: `/v2/stocks/meta/conditions/${tickType}`,
+              method: "GET",
+              params: { tape },
+            }),
+        },
+        exchanges: {
+          get: () =>
+            request<ExchangeCodesResponse>({
+              path: "/v2/stocks/meta/exchanges",
+              method: "GET",
+            }),
+        },
+        quotes: {
+          get: (params: HistoricalQuotesParams) =>
+            request<HistoricalQuotesResponse>({
+              path: "/v2/stocks/quotes",
+              method: "GET",
+              params,
+            }),
+          latest: {
+            get: (params: LatestQuotesParams) =>
+              request<LatestQuotesResponse>({
+                path: "/v2/stocks/quotes/latest",
+                method: "GET",
+                params,
+              }),
+          },
+        },
+      },
+      snapshots: {
+        get: (params: SnapshotParams) =>
           request<SnapshotResponse>({
             path: "/v2/stocks/snapshots",
             method: "GET",
             params,
           }),
-        getTrades: (params: TradeParams) =>
+      },
+      trades: {
+        get: (params: TradeParams) =>
           request<TradeResponse>({
             path: "/v2/stocks/trades",
             method: "GET",
             params,
           }),
-        getLatestTrades: (params: LatestTradeParams) =>
-          request<LatestTradeResponse>({
-            path: "/v2/stocks/trades/latest",
-            method: "GET",
-            params,
-          }),
+        latest: {
+          get: (params: LatestTradeParams) =>
+            request<LatestTradeResponse>({
+              path: "/v2/stocks/trades/latest",
+              method: "GET",
+              params,
+            }),
+        },
       },
     },
   },
-  websocket: {} as any,
 });
