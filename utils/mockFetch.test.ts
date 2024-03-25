@@ -4,6 +4,7 @@ import { mockFetch } from "./mockFetch.ts";
 Deno.test("mockFetch should return a function", () => {
   const response = { data: "mocked response" };
   const result = mockFetch(response);
+
   assert(typeof result === "function");
 });
 
@@ -13,6 +14,7 @@ Deno.test(
     const response = { data: "mocked response" };
     const fetch = mockFetch(response);
     const result = await fetch("https://example.com");
+
     assert(result instanceof Response);
     assert(result.ok === true);
     assert(result.status === 200);
@@ -25,19 +27,23 @@ Deno.test("mockFetch should return the mocked response data", async () => {
   const fetch = mockFetch(response);
   const result = await fetch("https://example.com");
   const data = await result.json();
+
   assert(data.data === response.data);
 });
 
 Deno.test("mockFetch should ignore the url and init parameters", async () => {
   const response = { data: "mocked response" };
   const fetch = mockFetch(response);
-  const result1 = await fetch("https://example.com");
-  const result2 = await fetch("https://another-example.com", {
+
+  const a = await fetch("https://example.com");
+  const b = await fetch("https://example.com/other", {
     method: "POST",
     body: JSON.stringify({ key: "value" }),
   });
-  const data1 = await result1.json();
-  const data2 = await result2.json();
-  assert(data1.data === response.data);
-  assert(data2.data === response.data);
+
+  const c = await a.json();
+  const d = await b.json();
+
+  assert(c.data === response.data);
+  assert(d.data === response.data);
 });

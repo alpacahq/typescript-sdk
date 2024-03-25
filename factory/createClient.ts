@@ -26,7 +26,8 @@ type RequestOptions<T> = {
 type CreateClientOptions = {
   keyId: string;
   secretKey: string;
-  baseURL: string;
+  baseURL?: string;
+  accessToken?: string;
   tokenBucket?: TokenBucketOptions;
 };
 
@@ -108,6 +109,7 @@ export function createClient<T extends keyof ClientFactoryMap>(
   // Conditionally return client based on the base URL
   const factory = (context: ClientContext): ClientWithContext<T> => {
     let client: ClientFactoryMap[T];
+
     if (options.baseURL === "https://paper-api.alpaca.markets") {
       client = trade(context) as ClientFactoryMap[T];
     } else if (options.baseURL === "https://data.alpaca.markets") {
@@ -115,6 +117,7 @@ export function createClient<T extends keyof ClientFactoryMap>(
     } else {
       throw new Error("invalid base URL");
     }
+
     return Object.assign(client, { _context: context });
   };
 
