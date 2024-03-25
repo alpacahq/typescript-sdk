@@ -52,7 +52,6 @@ export function createClient<T extends keyof ClientFactoryMap>(
     path,
     params,
     data,
-    responseType,
   }: RequestOptions<T>): Promise<Response & { data: T }> => {
     await new Promise((resolve) => {
       // Poll the token bucket every second
