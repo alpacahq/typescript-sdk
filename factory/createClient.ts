@@ -1,10 +1,8 @@
 import marketData from "../api/marketData.ts";
 import trade from "../api/trade.ts";
-
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
 export type Trade = ReturnType<typeof trade>;
-
 export type MarketData = ReturnType<typeof marketData>;
 
 // Infer the client type based on the base URL
@@ -34,9 +32,14 @@ export type ClientContext = {
   request: <T>(options: RequestOptions) => Promise<T>;
 };
 
+export type ClientWithContext<T extends keyof ClientFactoryMap> =
+  ClientFactoryMap[T] & {
+    _context: ClientContext;
+  };
+
 export function createClient<T extends keyof ClientFactoryMap>(
   options: CreateClientOptions & { baseURL: T }
-): ClientFactoryMap[T] {
+): ClientWithContext<T> {
   // Create a token bucket for rate limiting
   const bucket = createTokenBucket(options.tokenBucket);
 
@@ -60,7 +63,6 @@ export function createClient<T extends keyof ClientFactoryMap>(
 
     // Hold the final path
     let modified = path;
-
     if (params) {
       // Replace path parameters with actual values
       for (const [key, value] of Object.entries(params)) {
@@ -89,7 +91,6 @@ export function createClient<T extends keyof ClientFactoryMap>(
           `Failed to ${method} ${url}: ${response.status} ${response.statusText}`
         );
       }
-
       return response.json();
     });
   };
@@ -100,15 +101,17 @@ export function createClient<T extends keyof ClientFactoryMap>(
     request,
   };
 
-  // Conditonally return client based on the base URL
-  const factory = (context: ClientContext): ClientFactoryMap[T] => {
+  // Conditionally return client based on the base URL
+  const factory = (context: ClientContext): ClientWithContext<T> => {
+    let client: ClientFactoryMap[T];
     if (options.baseURL === "https://paper-api.alpaca.markets") {
-      return trade(context) as ClientFactoryMap[T];
+      client = trade(context) as ClientFactoryMap[T];
     } else if (options.baseURL === "https://data.alpaca.markets") {
-      return marketData(context) as ClientFactoryMap[T];
+      client = marketData(context) as ClientFactoryMap[T];
     } else {
       throw new Error("invalid base URL");
     }
+    return Object.assign(client, { _context: context });
   };
 
   return factory(context);

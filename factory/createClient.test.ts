@@ -1,70 +1,124 @@
-import { assert } from "https://deno.land/std@0.220.0/assert/mod.ts";
-import { websocket } from "../api/marketData.ts";
+import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
+import { assertThrows } from "https://deno.land/std@0.220.0/assert/assert_throws.ts";
+import { mockFetch } from "../utils/mockFetch.ts";
 import { createClient } from "./createClient.ts";
 
-Deno.test("creates a client with trade and marketData APIs", () => {
-  const { trade, marketData } = createClient({
-    keyId: "test",
-    secretKey: "test",
+Deno.test("should create a trade client with valid options", () => {
+  const client = createClient({
     baseURL: "https://paper-api.alpaca.markets",
+    keyId: "EXAMPLE_KEY_ID",
+    secretKey: "EXAMPLE_KEY_SECRET",
   });
 
-  assert(trade !== undefined, "trade");
-  assert(websocket !== undefined, "marketData");
-  assert(
-    typeof trade.rest.v2.account.get === "function",
-    "trade.v2.account.get"
-  );
-  assert(
-    typeof marketData.rest.v2.stocks.getConditionCodes === "function",
-    "marketData.v2.stocks.getConditionCodes"
+  assert(client.account !== undefined);
+  assert(client.orders.create !== undefined);
+});
+
+Deno.test("should create a market data client with valid options", () => {
+  const client = createClient({
+    baseURL: "https://data.alpaca.markets",
+    keyId: "EXAMPLE_KEY_ID",
+    secretKey: "EXAMPLE_KEY_SECRET",
+  });
+
+  assert(client.rest.v1beta1 !== undefined);
+  assert(client.rest.v1beta3 !== undefined);
+});
+
+Deno.test("should throw an error with an invalid base URL", () => {
+  assertThrows(
+    () => {
+      createClient({
+        // deno-lint-ignore ban-ts-comment
+        // @ts-expect-error
+        baseURL: "https://invalid-url.com",
+        keyId: "EXAMPLE_KEY_ID",
+        secretKey: "EXAMPLE_KEY_SECRET",
+      });
+    },
+    Error,
+    "invalid base URL"
   );
 });
 
-// Deno.test("createClient - request handles parameters and data", async () => {
-//   const client = createClient({
-//     keyId: "testKeyId",
-//     secretKey: "testSecretKey",
-//     baseURL: "https://example.com",
-//   });
+Deno.test("should use the provided token bucket options", () => {
+  const tokenBucketOptions = {
+    capacity: 100,
+    fillRate: 2,
+  };
 
-//   const response = await client.rest.trade({
-//     path: "/test/{param}",
-//     params: { param: "value" },
-//     data: { test: "data" },
-//   });
+  const client = createClient({
+    baseURL: "https://paper-api.alpaca.markets",
+    keyId: "EXAMPLE_KEY_ID",
+    secretKey: "EXAMPLE_KEY_SECRET",
+    tokenBucket: tokenBucketOptions,
+  });
 
-//   assertEquals(response.finalPath, "/test/value");
-//   assertEquals(response.data, { test: "data" });
-// });
+  assert(client._context.options.tokenBucket === tokenBucketOptions);
+});
 
-// Deno.test("createClient - throws error on API call failure", async () => {
-//   const client = createClient({
-//     keyId: "testKeyId",
-//     secretKey: "testSecretKey",
-//     baseURL: "https://example.com",
-//   });
+Deno.test("should use default token bucket options if not provided", () => {
+  const client = createClient({
+    baseURL: "https://paper-api.alpaca.markets",
+    keyId: "EXAMPLE_KEY_ID",
+    secretKey: "EXAMPLE_KEY_SECRET",
+  });
 
-//   await assertRejects(
-//     () =>
-//       client.rest.trade({
-//         path: "/invalid-endpoint",
-//       }),
-//     Error,
-//     "API call failed"
-//   );
-// });
+  assert(client._context.options.tokenBucket === undefined);
+});
 
-// Deno.test("createClient - constructs websocket clients correctly", () => {
-//   const { websocket } = createClient({
-//     keyId: "PK1OHDJBZQ6J5HQJZBXX",
-//     secretKey: "7ntdrZayazQkRxINbLWcn4ib0Nv58AlTQH0IqzbQ",
-//     baseURL: "https://paper-api.alpaca.markets",
-//   });
+Deno.test("should make a request with the correct options", async () => {
+  const mockResponse = { mock: "data" };
+  const originalFetch = globalThis.fetch;
+  // deno-lint-ignore ban-ts-comment
+  // @ts-expect-error
+  globalThis.fetch = mockFetch(mockResponse);
 
-//   assert(websocket.trade instanceof TradeWebSocket);
-//   assert(websocket.marketData.stock instanceof StockDataWebSocket);
-//   assert(websocket.marketData.crypto instanceof CryptoWebSocket);
-//   assert(websocket.marketData.news instanceof NewsWebSocket);
-//   assert(websocket.marketData.options instanceof OptionsWebSocket);
-// });
+  const client = createClient({
+    baseURL: "https://paper-api.alpaca.markets",
+    keyId: "EXAMPLE_KEY_ID",
+    secretKey: "EXAMPLE_KEY_SECRET",
+  });
+
+  const response = await client._context.request({
+    path: "/v2/account",
+  });
+
+  assert(response === mockResponse);
+
+  globalThis.fetch = originalFetch;
+});
+
+Deno.test("should throttle requests based on token bucket", async () => {
+  const mockResponse = { mock: "data" };
+  const originalFetch = globalThis.fetch;
+
+  // deno-lint-ignore ban-ts-comment
+  // @ts-expect-error
+  globalThis.fetch = mockFetch(mockResponse);
+
+  const client = createClient({
+    baseURL: "https://paper-api.alpaca.markets",
+    keyId: "EXAMPLE_KEY_ID",
+    secretKey: "EXAMPLE_KEY_SECRET",
+    tokenBucket: {
+      capacity: 2,
+      fillRate: 1,
+    },
+  });
+
+  const startTime = Date.now();
+
+  await Promise.all([
+    client._context.request({ path: "/v2/account" }),
+    client._context.request({ path: "/v2/account" }),
+    client._context.request({ path: "/v2/account" }),
+  ]);
+
+  const endTime = Date.now();
+  const elapsedTime = endTime - startTime;
+
+  assert(elapsedTime >= 2000, "Requests should be throttled");
+
+  globalThis.fetch = originalFetch;
+});
