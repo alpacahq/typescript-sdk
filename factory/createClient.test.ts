@@ -1,7 +1,7 @@
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
 import { assertEquals } from "https://deno.land/std@0.220.0/assert/assert_equals.ts";
 import { assertThrows } from "https://deno.land/std@0.220.0/assert/assert_throws.ts";
-import { mockFetch } from "../utils/mockFetch.ts";
+import { mockFetch } from "../util/mockFetch.ts";
 import { createClient } from "./createClient.ts";
 
 Deno.test(
@@ -13,8 +13,8 @@ Deno.test(
       secretKey: "EXAMPLE_KEY_SECRET",
     });
 
-    assert(client.account !== undefined);
-    assert(client.orders.create !== undefined);
+    assert(client.getAccount !== undefined);
+    assert(client.createOrder !== undefined);
   }
 );
 
@@ -96,8 +96,7 @@ Deno.test(
       path: "/v2/account",
     });
 
-    assertEquals(response.ok, true);
-    assertEquals(response.data, mockResponse);
+    assertEquals(response, mockResponse);
 
     globalThis.fetch = originalFetch;
   }

@@ -1,5 +1,5 @@
 import marketData from "../api/marketData.ts";
-import trade from "../api/trade.ts";
+import trade from "../api/trading.ts";
 
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
@@ -14,7 +14,7 @@ type ClientFactoryMap = {
 
 export type Client = Trade | MarketData;
 
-type RequestOptions<T> = {
+export type RequestOptions<T> = {
   method?: string;
   path: string;
   // deno-lint-ignore no-explicit-any
@@ -33,7 +33,7 @@ type CreateClientOptions = {
 
 export type ClientContext = {
   options: CreateClientOptions;
-  request: <T>(options: RequestOptions<T>) => Promise<Response & { data: T }>;
+  request: <T>(options: RequestOptions<T>) => Promise<T>;
 };
 
 export type ClientWithContext<T extends keyof ClientFactoryMap> =
@@ -53,7 +53,7 @@ export function createClient<T extends keyof ClientFactoryMap>(
     path,
     params,
     data,
-  }: RequestOptions<T>): Promise<Response & { data: T }> => {
+  }: RequestOptions<T>): Promise<T> => {
     await new Promise((resolve) => {
       // Poll the token bucket every second
       const timer = setInterval(() => {
@@ -95,8 +95,10 @@ export function createClient<T extends keyof ClientFactoryMap>(
           `Failed to ${method} ${url}: ${response.status} ${response.statusText}`
         );
       }
+
       const responseData = await response.json();
-      return Object.assign(response, { data: responseData as T });
+
+      return Object.assign(response, { data: responseData as T }).data;
     });
   };
 
