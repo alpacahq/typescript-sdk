@@ -482,47 +482,6 @@ export type GetActivitiesOptions = {
 };
 
 /**
- * - [x] GET https://paper-api.alpaca.markets/v2/account
- * - [x] POST https://paper-api.alpaca.markets/v2/orders
- * - [x] GET https://paper-api.alpaca.markets/v2/orders
- * - [x] DELETE https://paper-api.alpaca.markets/v2/orders
- * - [x] GET https://paper-api.alpaca.markets/v2/orders/{order_id}
- * - [x] PATCH https://paper-api.alpaca.markets/v2/orders/{order_id}
- * - [x] DELETE https://paper-api.alpaca.markets/v2/orders/{order_id}
- * - [x] GET https://paper-api.alpaca.markets/v2/positions
- * - [x] DELETE https://paper-api.alpaca.markets/v2/positions
- * - [x] GET https://paper-api.alpaca.markets/v2/positions/{symbol_or_asset_id}
- * - [x] DELETE https://paper-api.alpaca.markets/v2/positions/{symbol_or_asset_id}
- * - [x] POST https://paper-api.alpaca.markets/v2/positions/{symbol_or_contract_id}/exercise
- * - [x] GET https://paper-api.alpaca.markets/v2/account/portfolio/history
- *
- *
- * - [] GET https://paper-api.alpaca.markets/v2/watchlists
- * - [] POST https://paper-api.alpaca.markets/v2/watchlists
- * - [] GET https://paper-api.alpaca.markets/v2/watchlists/{watchlist_id}
- * - [] PUT https://paper-api.alpaca.markets/v2/watchlists/{watchlist_id}
- * - [] POST https://paper-api.alpaca.markets/v2/watchlists/{watchlist_id}
- * - [] DELETE https://paper-api.alpaca.markets/v2/watchlists/{watchlist_id}
- * - [] GET https://paper-api.alpaca.markets/v2/watchlists:by_name
- * - [] PUT https://paper-api.alpaca.markets/v2/watchlists:by_name
- * - [] POST https://paper-api.alpaca.markets/v2/watchlists:by_name
- * - [] DELETE https://paper-api.alpaca.markets/v2/watchlists:by_name
- * - [] DELETE https://paper-api.alpaca.markets/v2/watchlists/{watchlist_id}/{symbol}
- *
- *
- *
- * - [] GET https://paper-api.alpaca.markets/v2/account/configurations
- * - [] PATCH https://paper-api.alpaca.markets/v2/account/configurations
- * - [] GET https://paper-api.alpaca.markets/v2/account/activities
- * - [] GET https://paper-api.alpaca.markets/v2/account/activities/{activity_type}
- * - [] GET https://paper-api.alpaca.markets/v2/calendar
- * - [] GET https://paper-api.alpaca.markets/v2/clock
- * - [] GET https://paper-api.alpaca.markets/v2/assets
- * - [] GET https://paper-api.alpaca.markets/v2/assets/{symbol_or_asset_id}
- * - [] GET https://paper-api.alpaca.markets/v2/options/contracts
- * - [] GET https://paper-api.alpaca.markets/v2/options/contracts/{symbol_or_id}
- * - [] GET https://paper-api.alpaca.markets/v2/corporate_actions/announcements/{id}
- * - [] GET https://paper-api.alpaca.markets/v2/corporate_actions/announcements
  * - [] GET https://paper-api.alpaca.markets/v2/wallets
  * - [] GET https://paper-api.alpaca.markets/v2/wallets/transfers
  * - [] POST https://paper-api.alpaca.markets/v2/wallets/transfers

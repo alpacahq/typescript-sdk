@@ -19,6 +19,8 @@ import {
   Asset,
   CorporateActionAnnouncement,
   CreateWatchlistParams,
+  CryptoFundingTransfer,
+  CryptoFundingWallet,
   GetActivitiesOptions,
   MarketCalendar,
   MarketClock,
@@ -26,8 +28,13 @@ import {
   OptionContractsQueryParams,
   PortfolioHistoryParams,
   PortfolioHistoryResponse,
+  TransactionFeeResponse,
+  TransactionParams,
   UpdatedAccountConfigurations,
   Watchlist,
+  WhitelistedAddress,
+  WhitelistedAddressParams,
+  WithdrawalParams,
 } from "./trading.ts";
 
 Deno.test(
@@ -1251,5 +1258,309 @@ Deno.test(
     );
     assert(requestedOptions?.method === "GET");
     assertEquals(requestedOptions?.params, queryParams);
+  }
+);
+
+Deno.test(
+  "getCryptoWallets should send a GET request with the correct path and params",
+  async () => {
+    let requestedOptions:
+      | RequestOptions<CryptoFundingWallet | CryptoFundingWallet[]>
+      | undefined;
+    const mockContext: ClientContext = {
+      options: {
+        keyId: "test_key",
+        secretKey: "test_secret",
+        baseURL: "https://paper-api.alpaca.markets",
+      },
+      request: <T>(options: RequestOptions<T>): Promise<T> => {
+        requestedOptions = options as RequestOptions<
+          CryptoFundingWallet | CryptoFundingWallet[]
+        >;
+        const response: CryptoFundingWallet[] = [
+          {
+            chain: "ETH",
+            address: "0x1234567890123456789012345678901234567890",
+            created_at: "2023-05-25T10:00:00Z",
+          },
+        ];
+        return mockFetch(response)("") as Promise<T>;
+      },
+    };
+
+    const tradeClient = trade(mockContext);
+    const asset = "ETH";
+
+    await tradeClient.getCryptoWallets(asset);
+
+    assert(requestedOptions?.path === "/v2/wallets");
+    assert(requestedOptions?.method === "GET");
+    assert(requestedOptions?.params?.asset === asset);
+  }
+);
+
+Deno.test(
+  "getCryptoWhitelistedAddresses should send a GET request with the correct path",
+  async () => {
+    let requestedOptions: RequestOptions<WhitelistedAddress[]> | undefined;
+    const mockContext: ClientContext = {
+      options: {
+        keyId: "test_key",
+        secretKey: "test_secret",
+        baseURL: "https://paper-api.alpaca.markets",
+      },
+      request: <T>(options: RequestOptions<T>): Promise<T> => {
+        requestedOptions = options as RequestOptions<WhitelistedAddress[]>;
+        const response: WhitelistedAddress[] = [
+          {
+            id: "whitelisted_address_123",
+            chain: "ETH",
+            asset: "ETH",
+            address: "0x1234567890123456789012345678901234567890",
+            status: "ACTIVE",
+            created_at: "2023-05-25T10:00:00Z",
+          },
+        ];
+        return mockFetch(response)("") as Promise<T>;
+      },
+    };
+
+    const tradeClient = trade(mockContext);
+
+    await tradeClient.getCryptoWhitelistedAddresses();
+
+    assert(requestedOptions?.path === "/v2/wallets/whitelists");
+    assert(requestedOptions?.method === "GET");
+  }
+);
+
+Deno.test(
+  "requestCryptoWhitelistedAddress should send a POST request with the correct path and data",
+  async () => {
+    let requestedOptions: RequestOptions<WhitelistedAddress> | undefined;
+    const mockContext: ClientContext = {
+      options: {
+        keyId: "test_key",
+        secretKey: "test_secret",
+        baseURL: "https://paper-api.alpaca.markets",
+      },
+      request: <T>(options: RequestOptions<T>): Promise<T> => {
+        requestedOptions = options as RequestOptions<WhitelistedAddress>;
+        const response: WhitelistedAddress = {
+          id: "whitelisted_address_123",
+          chain: "ETH",
+          asset: "ETH",
+          address: "0x1234567890123456789012345678901234567890",
+          status: "PENDING",
+          created_at: "2023-05-25T10:00:00Z",
+        };
+        return mockFetch(response)("") as Promise<T>;
+      },
+    };
+
+    const tradeClient = trade(mockContext);
+    const whitelistedAddressParams: WhitelistedAddressParams = {
+      address: "0x1234567890123456789012345678901234567890",
+      asset: "ETH",
+    };
+
+    await tradeClient.requestCryptoWhitelistedAddress(whitelistedAddressParams);
+
+    assert(requestedOptions?.path === "/v2/wallets/whitelists");
+    assert(requestedOptions?.method === "POST");
+    assert(requestedOptions?.data === whitelistedAddressParams);
+  }
+);
+
+Deno.test(
+  "deleteCryptoWhitelistedAddress should send a DELETE request with the correct path",
+  async () => {
+    let requestedOptions: RequestOptions<void> | undefined;
+    const mockContext: ClientContext = {
+      options: {
+        keyId: "test_key",
+        secretKey: "test_secret",
+        baseURL: "https://paper-api.alpaca.markets",
+      },
+      request: <T>(options: RequestOptions<T>): Promise<T> => {
+        requestedOptions = options as RequestOptions<void>;
+        return mockFetch(undefined)("") as Promise<T>;
+      },
+    };
+
+    const tradeClient = trade(mockContext);
+    const whitelistedAddressId = "whitelisted_address_123";
+
+    await tradeClient.deleteCryptoWhitelistedAddress(whitelistedAddressId);
+
+    assert(
+      requestedOptions?.path ===
+        `/v2/wallets/whitelists/${whitelistedAddressId}`
+    );
+    assert(requestedOptions?.method === "DELETE");
+  }
+);
+
+Deno.test(
+  "getCryptoTransferFeeEstimate should send a GET request with the correct path and params",
+  async () => {
+    let requestedOptions: RequestOptions<TransactionFeeResponse> | undefined;
+    const mockContext: ClientContext = {
+      options: {
+        keyId: "test_key",
+        secretKey: "test_secret",
+        baseURL: "https://paper-api.alpaca.markets",
+      },
+      request: <T>(options: RequestOptions<T>): Promise<T> => {
+        requestedOptions = options as RequestOptions<TransactionFeeResponse>;
+        const response: TransactionFeeResponse = {
+          fee: "0.00123456",
+        };
+        return mockFetch(response)("") as Promise<T>;
+      },
+    };
+
+    const tradeClient = trade(mockContext);
+    const transactionParams: TransactionParams = {
+      asset: "ETH",
+      from_address: "0x1234567890123456789012345678901234567890",
+      to_address: "0x0987654321098765432109876543210987654321",
+      amount: "1.23456789",
+    };
+
+    await tradeClient.getCryptoTransferFeeEstimate(transactionParams);
+
+    assert(requestedOptions?.path === "/v2/wallets/fees/estimate");
+    assert(requestedOptions?.method === "GET");
+    assert(requestedOptions?.params === transactionParams);
+  }
+);
+
+Deno.test(
+  "getCryptoTransfer should send a GET request with the correct path",
+  async () => {
+    let requestedOptions: RequestOptions<CryptoFundingTransfer> | undefined;
+    const mockContext: ClientContext = {
+      options: {
+        keyId: "test_key",
+        secretKey: "test_secret",
+        baseURL: "https://paper-api.alpaca.markets",
+      },
+      request: <T>(options: RequestOptions<T>): Promise<T> => {
+        requestedOptions = options as RequestOptions<CryptoFundingTransfer>;
+        const response: CryptoFundingTransfer = {
+          id: "transfer_123",
+          tx_hash: "0x1234567890123456789012345678901234567890",
+          direction: "INCOMING",
+          status: "COMPLETE",
+          amount: "1.23456789",
+          usd_value: "123.45",
+          network_fee: "0.00123456",
+          fees: "0.00123456",
+          chain: "ETH",
+          asset: "ETH",
+          from_address: "0x1234567890123456789012345678901234567890",
+          to_address: "0x0987654321098765432109876543210987654321",
+          created_at: "2023-05-25T10:00:00Z",
+        };
+        return mockFetch(response)("") as Promise<T>;
+      },
+    };
+
+    const tradeClient = trade(mockContext);
+    const transferId = "transfer_123";
+
+    await tradeClient.getCryptoTransfer(transferId);
+
+    assert(requestedOptions?.path === `/v2/wallets/transfers/${transferId}`);
+    assert(requestedOptions?.method === "GET");
+  }
+);
+
+Deno.test(
+  "getCryptoTransfers should send a GET request with the correct path",
+  async () => {
+    let requestedOptions: RequestOptions<CryptoFundingTransfer[]> | undefined;
+    const mockContext: ClientContext = {
+      options: {
+        keyId: "test_key",
+        secretKey: "test_secret",
+        baseURL: "https://paper-api.alpaca.markets",
+      },
+      request: <T>(options: RequestOptions<T>): Promise<T> => {
+        requestedOptions = options as RequestOptions<CryptoFundingTransfer[]>;
+        const response: CryptoFundingTransfer[] = [
+          {
+            id: "transfer_123",
+            tx_hash: "0x1234567890123456789012345678901234567890",
+            direction: "INCOMING",
+            status: "COMPLETE",
+            amount: "1.23456789",
+            usd_value: "123.45",
+            network_fee: "0.00123456",
+            fees: "0.00123456",
+            chain: "ETH",
+            asset: "ETH",
+            from_address: "0x1234567890123456789012345678901234567890",
+            to_address: "0x0987654321098765432109876543210987654321",
+            created_at: "2023-05-25T10:00:00Z",
+          },
+        ];
+        return mockFetch(response)("") as Promise<T>;
+      },
+    };
+
+    const tradeClient = trade(mockContext);
+
+    await tradeClient.getCryptoTransfers();
+
+    assert(requestedOptions?.path === "/v2/wallets/transfers");
+    assert(requestedOptions?.method === "GET");
+  }
+);
+
+Deno.test(
+  "requestCryptoWithdrawal should send a POST request with the correct path and data",
+  async () => {
+    let requestedOptions: RequestOptions<CryptoFundingTransfer> | undefined;
+    const mockContext: ClientContext = {
+      options: {
+        keyId: "test_key",
+        secretKey: "test_secret",
+        baseURL: "https://paper-api.alpaca.markets",
+      },
+      request: <T>(options: RequestOptions<T>): Promise<T> => {
+        requestedOptions = options as RequestOptions<CryptoFundingTransfer>;
+        const response: CryptoFundingTransfer = {
+          id: "transfer_123",
+          tx_hash: "0x1234567890123456789012345678901234567890",
+          direction: "OUTGOING",
+          status: "PROCESSING",
+          amount: "1.23456789",
+          usd_value: "123.45",
+          network_fee: "0.00123456",
+          fees: "0.00123456",
+          chain: "ETH",
+          asset: "ETH",
+          from_address: "0x1234567890123456789012345678901234567890",
+          to_address: "0x0987654321098765432109876543210987654321",
+          created_at: "2023-05-25T10:00:00Z",
+        };
+        return mockFetch(response)("") as Promise<T>;
+      },
+    };
+
+    const tradeClient = trade(mockContext);
+    const withdrawalParams: WithdrawalParams = {
+      amount: "1.23456789",
+      address: "0x0987654321098765432109876543210987654321",
+      asset: "ETH",
+    };
+
+    await tradeClient.requestCryptoWithdrawal(withdrawalParams);
+
+    assert(requestedOptions?.path === "/v2/wallets/transfers");
+    assert(requestedOptions?.method === "POST");
+    assert(requestedOptions?.data === withdrawalParams);
   }
 );
