@@ -481,286 +481,288 @@ export type GetActivitiesOptions = {
   category?: string;
 };
 
-/**
- * - [] GET https://paper-api.alpaca.markets/v2/wallets
- * - [] GET https://paper-api.alpaca.markets/v2/wallets/transfers
- * - [] POST https://paper-api.alpaca.markets/v2/wallets/transfers
- * - [] GET https://paper-api.alpaca.markets/v2/wallets/transfers/{transfer_id}
- * - [] GET https://paper-api.alpaca.markets/v2/wallets/whitelists
- * - [] POST https://paper-api.alpaca.markets/v2/wallets/whitelists
- * - [] DELETE https://paper-api.alpaca.markets/v2/wallets/whitelists/{whitelisted_address_id}
- * - [] GET https://paper-api.alpaca.markets/v2/wallets/fees/estimate
- */
-
 export default ({ request }: ClientContext) => ({
-  getAccount: () =>
-    request<Account>({
-      path: "/v2/account",
-    }),
-  getOrder: (orderId: string) =>
-    request<Order>({
-      path: `/v2/orders/${orderId}`,
-    }),
-  getOrders: (options: GetOrdersOptions) =>
-    request<Order[]>({
-      path: "/v2/orders",
-      method: "GET",
-      params: options,
-    }),
-  createOrder: (options: CreateOrderOptions) =>
-    request<Order>({
-      path: "/v2/orders",
-      method: "POST",
-      data: options,
-    }),
-  replaceOrder: (options: PatchOrderOptions | string, nested?: boolean) => {
-    let path = "/v2/orders";
-    let params = {};
+  v2: {
+    account: {
+      get: () =>
+        request<Account>({
+          path: "/v2/account",
+        }),
+      configurations: {
+        get: () =>
+          request<AccountConfigurations>({
+            path: "/v2/account/configurations",
+          }),
+        patch: (updatedConfig: UpdatedAccountConfigurations) =>
+          request<void>({
+            path: "/v2/account/configurations",
+            method: "PATCH",
+            data: updatedConfig,
+          }),
+      },
+      activities: {
+        get: (options?: GetActivitiesOptions) =>
+          request<AccountActivity[]>({
+            path: "/v2/account/activities",
+            method: "GET",
+            params: options,
+          }),
+      },
+    },
+    orders: {
+      get: (options: GetOrdersOptions) =>
+        request<Order[]>({
+          path: "/v2/orders",
+          method: "GET",
+          params: options,
+        }),
+      // getOrderById: (orderId: string) =>
+      //   request<Order>({
+      //     path: `/v2/orders/${orderId}`,
+      //   }),
+      post: (options: CreateOrderOptions) =>
+        request<Order>({
+          path: "/v2/orders",
+          method: "POST",
+          data: options,
+        }),
+      patch: (options: PatchOrderOptions | string, nested?: boolean) => {
+        let path = "/v2/orders";
+        let params = {};
 
-    if (typeof options === "string") {
-      path += `/${options}`;
+        if (typeof options === "string") {
+          path += `/${options}`;
 
-      if (nested !== undefined) {
-        params = { nested };
-      }
-    } else if (typeof options === "object") {
-      params = options;
-    }
+          if (nested !== undefined) {
+            params = { nested };
+          }
+        } else if (typeof options === "object") {
+          params = options;
+        }
 
-    return request<Order | Order[]>({
-      path,
-      method: "PATCH",
-      params,
-    });
+        return request<Order | Order[]>({
+          path,
+          method: "PATCH",
+          params,
+        });
+      },
+      delete: () =>
+        request<void>({
+          path: "/v2/orders",
+          method: "DELETE",
+        }),
+      // cancelOrderById: (orderId: string) =>
+      //   request<void>({
+      //     path: `/v2/orders/${orderId}`,
+      //     method: "DELETE",
+      //   }),
+    },
+    positions: {
+      get: () =>
+        request<Position[]>({
+          path: "/v2/positions",
+        }),
+      // getPositionBySymbolOrAssetId: (symbol_or_asset_id: string) =>
+      //   request<Position | Position[]>({
+      //     path: `/v2/positions/${symbol_or_asset_id}`,
+      //     method: "GET",
+      //   }),
+      delete: (params: Pick<ClosePositionOptions, "cancel_orders">) =>
+        request<PositionClosedResponse>({
+          path: "/v2/positions",
+          method: "DELETE",
+          params: { cancel_orders: params.cancel_orders },
+        }),
+      exercise: {
+        post: (symbol_or_contract_id: string) =>
+          request<void>({
+            path: `/v2/positions/${symbol_or_contract_id}/exercise`,
+            method: "POST",
+          }),
+      },
+      // closePositionBySymbolOrAssetdId: (
+      //   params: Pick<
+      //     ClosePositionOptions,
+      //     "symbol_or_asset_id" | "qty" | "percentage"
+      //   >
+      // ) =>
+      //   request<Order[]>({
+      //     path: `/v2/positions/${params.symbol_or_asset_id}`,
+      //     method: "DELETE",
+      //     params: { qty: params.qty, percentage: params.percentage },
+      //   }),
+    },
+    portfolio: {
+      history: {
+        get: (params?: PortfolioHistoryParams) =>
+          request<PortfolioHistoryResponse>({
+            path: "/v2/account/portfolio/history",
+            method: "GET",
+            params,
+          }),
+      },
+    },
+    watchlists: {
+      get: (watchlist_id: string) =>
+        request<Watchlist>({
+          path: `/v2/watchlists/${watchlist_id}`,
+        }),
+      getAll: () =>
+        request<Watchlist[]>({
+          path: "/v2/watchlists",
+        }),
+      post: (params: CreateWatchlistParams) =>
+        request<Watchlist>({
+          path: "/v2/watchlists",
+          method: "POST",
+          data: params,
+        }),
+      patch: (watchlist_id: string, params: UpdateWatchlistParams) =>
+        request<Watchlist>({
+          path: `/v2/watchlists/${watchlist_id}`,
+          method: "PATCH",
+          data: params,
+        }),
+      delete: (watchlist_id: string) =>
+        request<void>({
+          path: `/v2/watchlists/${watchlist_id}`,
+          method: "DELETE",
+        }),
+    },
+    calendar: {
+      get: (options?: {
+        start?: string;
+        end?: string;
+        dateType?: "TRADING" | "SETTLEMENT";
+      }) =>
+        request<MarketCalendar[]>({
+          path: "/v2/calendar",
+          method: "GET",
+          params: Object.fromEntries(
+            Object.entries({
+              start: options?.start,
+              end: options?.end,
+              date_type: options?.dateType,
+            }).filter(([_, value]) => value !== undefined)
+          ),
+        }),
+    },
+    clock: {
+      get: () =>
+        request<MarketClock>({
+          path: "/v2/clock",
+          method: "GET",
+        }),
+    },
+    assets: {
+      get: (symbolOrAssetId: string) =>
+        request<Asset>({
+          path: `/v2/assets/${symbolOrAssetId}`,
+          method: "GET",
+        }),
+      // getAssets: (options?: {
+      //   status?: string;
+      //   asset_class?: string;
+      //   exchange?: string;
+      //   attributes?: string[];
+      // }) =>
+      //   request<Asset[]>({
+      //     path: "/v2/assets",
+      //     method: "GET",
+      //     params: Object.fromEntries(
+      //       Object.entries({
+      //         status: options?.status,
+      //         asset_class: options?.asset_class,
+      //         exchange: options?.exchange,
+      //         attributes: options?.attributes?.join(","),
+      //       }).filter(([_, value]) => value !== undefined)
+      //     ),
+      //   }),
+    },
+    options: {
+      contracts: {
+        get: (queryParams: OptionContractsQueryParams) =>
+          request<OptionContract[]>({
+            path: "/v2/options/contracts",
+            method: "GET",
+            params: queryParams,
+          }),
+        // getOptionsContract: (
+        //   symbolOrId: string,
+        //   queryParams: OptionContractsQueryParams
+        // ) =>
+        //   request<OptionContract>({
+        //     path: `/v2/options/contracts/${symbolOrId}`,
+        //     method: "GET",
+        //     params: queryParams,
+        //   }),
+      },
+    },
+    corporate_actions: {
+      announcements: {
+        get: (announcementId?: string) =>
+          request<CorporateActionAnnouncement>({
+            path: `/v2/corporate_actions/announcements/${announcementId}`,
+            method: "GET",
+          }),
+        // getCorporateActionAnnouncements: (
+        //   queryParams: AnnouncementsQueryParams
+        // ) =>
+        //   request<CorporateActionAnnouncement[]>({
+        //     path: "/v2/corporate_actions/announcements",
+        //     method: "GET",
+        //     params: queryParams,
+        //   }),
+      },
+    },
+    wallets: {
+      get: (asset?: string) =>
+        request<CryptoFundingWallet | CryptoFundingWallet[]>({
+          path: "/v2/wallets",
+          method: "GET",
+          params: { asset },
+        }),
+      whitelists: {
+        get: () =>
+          request<WhitelistedAddress[]>({
+            path: "/v2/wallets/whitelists",
+            method: "GET",
+          }),
+        post: (whitelistedAddressParams: WhitelistedAddressParams) =>
+          request<WhitelistedAddress>({
+            path: "/v2/wallets/whitelists",
+            method: "POST",
+            data: whitelistedAddressParams,
+          }),
+        delete: (whitelistedAddressId: string) =>
+          request<void>({
+            path: `/v2/wallets/whitelists/${whitelistedAddressId}`,
+            method: "DELETE",
+          }),
+      },
+      fees: {
+        estimate: {
+          get: (transactionParams: TransactionParams) =>
+            request<TransactionFeeResponse>({
+              path: "/v2/wallets/fees/estimate",
+              method: "GET",
+              params: transactionParams,
+            }),
+        },
+      },
+      transfers: {
+        get: () =>
+          request<CryptoFundingTransfer[]>({
+            path: "/v2/wallets/transfers",
+            method: "GET",
+          }),
+        post: (withdrawalParams: WithdrawalParams) =>
+          request<CryptoFundingTransfer>({
+            path: "/v2/wallets/transfers",
+            method: "POST",
+            data: withdrawalParams,
+          }),
+      },
+    },
   },
-  cancelOrder: (orderId: string) =>
-    request<void>({
-      path: `/v2/orders/${orderId}`,
-      method: "DELETE",
-    }),
-  cancelOrders: () =>
-    request<void>({
-      path: "/v2/orders",
-      method: "DELETE",
-    }),
-  getPosition: (symbol_or_asset_id: string) =>
-    request<Position | Position[]>({
-      path: `/v2/positions/${symbol_or_asset_id}`,
-      method: "GET",
-    }),
-  getPositions: () =>
-    request<Position[]>({
-      path: "/v2/positions",
-      method: "GET",
-    }),
-  closePosition: (
-    params: Pick<
-      ClosePositionOptions,
-      "symbol_or_asset_id" | "qty" | "percentage"
-    >
-  ) =>
-    request<Order[]>({
-      path: `/v2/positions/${params.symbol_or_asset_id}`,
-      method: "DELETE",
-      params: { qty: params.qty, percentage: params.percentage },
-    }),
-  closeAllPositions: (params: Pick<ClosePositionOptions, "cancel_orders">) =>
-    request<PositionClosedResponse>({
-      path: "/v2/positions",
-      method: "DELETE",
-      params: { cancel_orders: params.cancel_orders },
-    }),
-  exercisePosition: (symbol_or_contract_id: string) =>
-    request<void>({
-      path: `/v2/positions/${symbol_or_contract_id}/exercise`,
-      method: "POST",
-    }),
-  getPortfolioHistory: (params?: PortfolioHistoryParams) =>
-    request<PortfolioHistoryResponse>({
-      path: "/v2/account/portfolio/history",
-      method: "GET",
-      params,
-    }),
-  getWatchlist: (watchlist_id: string) =>
-    request<Watchlist>({
-      path: `/v2/watchlists/${watchlist_id}`,
-    }),
-  getWatchlists: () =>
-    request<Watchlist[]>({
-      path: "/v2/watchlists",
-    }),
-  createWatchlist: ({ name, symbols }: CreateWatchlistParams) =>
-    request<Watchlist>({
-      path: "/v2/watchlists",
-      method: "POST",
-      data: { name, symbols },
-    }),
-  updateWatchlist: ({
-    watchlist_id,
-    name,
-    symbols,
-  }: { watchlist_id: string } & UpdateWatchlistParams) =>
-    request<Watchlist>({
-      path: `/v2/watchlists/${watchlist_id}`,
-      method: "PUT",
-      data: { name, symbols },
-    }),
-  deleteWatchlist: ({ watchlist_id }: { watchlist_id: string }) =>
-    request<void>({
-      path: `/v2/watchlists/${watchlist_id}`,
-      method: "DELETE",
-    }),
-  getAccountConfigurations: () =>
-    request<AccountConfigurations>({
-      path: "/v2/account/configurations",
-    }),
-  updateAccountConfigurations: (updatedConfig: UpdatedAccountConfigurations) =>
-    request<void>({
-      path: "/v2/account/configurations",
-      method: "PATCH",
-      data: updatedConfig,
-    }),
-  getActivities: (
-    activityType?: string,
-    options?: {
-      date?: string;
-      until?: string;
-      after?: string;
-      direction?: string;
-      pageSize?: number;
-      pageToken?: string;
-      category?: string;
-    }
-  ) =>
-    request<AccountActivity[]>({
-      path: `/v2/account/activities${activityType ? `/${activityType}` : ""}`,
-      method: "GET",
-      params: Object.fromEntries(
-        Object.entries({
-          date: options?.date,
-          until: options?.until,
-          after: options?.after,
-          direction: options?.direction,
-          page_size: options?.pageSize,
-          page_token: options?.pageToken,
-          category: options?.category,
-        }).filter(([_, value]) => value !== undefined)
-      ),
-    }),
-  getCalendar: (options?: {
-    start?: string;
-    end?: string;
-    dateType?: "TRADING" | "SETTLEMENT";
-  }) =>
-    request<MarketCalendar[]>({
-      path: "/v2/calendar",
-      method: "GET",
-      params: Object.fromEntries(
-        Object.entries({
-          start: options?.start,
-          end: options?.end,
-          date_type: options?.dateType,
-        }).filter(([_, value]) => value !== undefined)
-      ),
-    }),
-  getClock: () =>
-    request<MarketClock>({
-      path: "/v2/clock",
-      method: "GET",
-    }),
-  getAsset: (symbolOrAssetId: string) =>
-    request<Asset>({
-      path: `/v2/assets/${symbolOrAssetId}`,
-      method: "GET",
-    }),
-  getAssets: (options?: {
-    status?: string;
-    asset_class?: string;
-    exchange?: string;
-    attributes?: string[];
-  }) =>
-    request<Asset[]>({
-      path: "/v2/assets",
-      method: "GET",
-      params: Object.fromEntries(
-        Object.entries({
-          status: options?.status,
-          asset_class: options?.asset_class,
-          exchange: options?.exchange,
-          attributes: options?.attributes?.join(","),
-        }).filter(([_, value]) => value !== undefined)
-      ),
-    }),
-  getOptionsContracts: (queryParams: OptionContractsQueryParams) =>
-    request<OptionContract[]>({
-      path: "/v2/options/contracts",
-      method: "GET",
-      params: queryParams,
-    }),
-  getOptionsContract: (
-    symbolOrId: string,
-    queryParams: OptionContractsQueryParams
-  ) =>
-    request<OptionContract>({
-      path: `/v2/options/contracts/${symbolOrId}`,
-      method: "GET",
-      params: queryParams,
-    }),
-  getCorporateActionAnnouncement: (announcementId: string) =>
-    request<CorporateActionAnnouncement>({
-      path: `/v2/corporate_actions/announcements/${announcementId}`,
-      method: "GET",
-    }),
-  getCorporateActionAnnouncements: (queryParams: AnnouncementsQueryParams) =>
-    request<CorporateActionAnnouncement[]>({
-      path: "/v2/corporate_actions/announcements",
-      method: "GET",
-      params: queryParams,
-    }),
-  getCryptoWallets: (asset?: string) =>
-    request<CryptoFundingWallet | CryptoFundingWallet[]>({
-      path: "/v2/wallets",
-      method: "GET",
-      params: { asset },
-    }),
-  getCryptoWhitelistedAddresses: () =>
-    request<WhitelistedAddress[]>({
-      path: "/v2/wallets/whitelists",
-      method: "GET",
-    }),
-  requestCryptoWhitelistedAddress: (
-    whitelistedAddressParams: WhitelistedAddressParams
-  ) =>
-    request<WhitelistedAddress>({
-      path: "/v2/wallets/whitelists",
-      method: "POST",
-      data: whitelistedAddressParams,
-    }),
-  deleteCryptoWhitelistedAddress: (whitelistedAddressId: string) =>
-    request<void>({
-      path: `/v2/wallets/whitelists/${whitelistedAddressId}`,
-      method: "DELETE",
-    }),
-  getCryptoTransferFeeEstimate: (transactionParams: TransactionParams) =>
-    request<TransactionFeeResponse>({
-      path: "/v2/wallets/fees/estimate",
-      method: "GET",
-      params: transactionParams,
-    }),
-  getCryptoTransfer: (transferId: string) =>
-    request<CryptoFundingTransfer>({
-      path: `/v2/wallets/transfers/${transferId}`,
-      method: "GET",
-    }),
-  getCryptoTransfers: () =>
-    request<CryptoFundingTransfer[]>({
-      path: "/v2/wallets/transfers",
-      method: "GET",
-    }),
-  requestCryptoWithdrawal: (withdrawalParams: WithdrawalParams) =>
-    request<CryptoFundingTransfer>({
-      path: "/v2/wallets/transfers",
-      method: "POST",
-      data: withdrawalParams,
-    }),
 });

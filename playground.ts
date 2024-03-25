@@ -8,7 +8,7 @@ const client = createClient({
 });
 
 async function main() {
-  const account = await client.getAccount();
+  const account = await client.v2.account.get();
   console.log(account);
 }
 

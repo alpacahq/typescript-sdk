@@ -67,6 +67,7 @@ export function createClient<T extends keyof ClientFactoryMap>(
 
     // Hold the final path
     let modified = path;
+
     if (params) {
       // Replace path parameters with actual values
       for (const [key, value] of Object.entries(params)) {
@@ -96,9 +97,8 @@ export function createClient<T extends keyof ClientFactoryMap>(
         );
       }
 
-      const responseData = await response.json();
-
-      return Object.assign(response, { data: responseData as T }).data;
+      return Object.assign(response, { data: (await response.json()) as T })
+        .data;
     });
   };
 
