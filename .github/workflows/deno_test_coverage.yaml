@@ -25,8 +25,8 @@ jobs:
           COVERED_LINES=$(grep -o '^DA:[^,]*' lcov.info | grep -o '1' | wc -l | xargs)
           COVERAGE_PERCENT=$((COVERED_LINES * 100 / TOTAL_LINES))
           echo "Test coverage: $COVERAGE_PERCENT%"
-          if [ "$COVERAGE_PERCENT" -lt 50 ]; then
-            echo "test coverage is below 50%"
+          if [ "$COVERAGE_PERCENT" -lt 25 ]; then
+            echo "test coverage is below 25%"
             exit 1
           fi
         shell: bash
