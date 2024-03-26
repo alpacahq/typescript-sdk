@@ -1,5 +1,7 @@
 import { ClientContext } from "../factory/createClient.ts";
 
+// trigger build
+
 export interface CorporateActionsQueryParams {
   symbols: string;
   types?: string;
