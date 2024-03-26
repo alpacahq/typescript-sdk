@@ -5,9 +5,9 @@ import {
   ClientContext,
   ClientFactoryMap,
   ClientWithContext,
-} from "./_createClient.type.ts";
+} from "./createClient.type.ts";
 
-import { CreateClientOptions, RequestOptions } from "./_createClient.type.ts";
+import { CreateClientOptions, RequestOptions } from "./createClient.type.ts";
 import { createTokenBucket } from "./createTokenBucket.ts";
 
 export function createClient<T extends keyof ClientFactoryMap>(
