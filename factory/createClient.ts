@@ -1,14 +1,45 @@
 import marketData from "../api/marketData.ts";
 import trade from "../api/trading.ts";
 
-import {
-  ClientContext,
-  ClientFactoryMap,
-  ClientWithContext,
-} from "./createClient.type.ts";
+import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
-import { CreateClientOptions, RequestOptions } from "./createClient.type.ts";
-import { createTokenBucket } from "./createTokenBucket.ts";
+export type RequestOptions<T> = {
+  method?: string;
+  path: string;
+  // deno-lint-ignore no-explicit-any
+  params?: Record<string, any>;
+  data?: object;
+  responseType?: T;
+};
+
+export type CreateClientOptions = {
+  keyId?: string;
+  secretKey?: string;
+  baseURL?: string;
+  accessToken?: string;
+  tokenBucket?: TokenBucketOptions;
+};
+
+export type Client = Trade | MarketData;
+
+export type ClientContext = {
+  options: CreateClientOptions;
+  request: <T>(options: RequestOptions<T>) => Promise<T>;
+};
+
+export type ClientWithContext<T extends keyof ClientFactoryMap> =
+  ClientFactoryMap[T] & {
+    _context: ClientContext;
+  };
+
+export type Trade = ReturnType<typeof trade>;
+export type MarketData = ReturnType<typeof marketData>;
+
+// Infer the client type based on the base URL
+export type ClientFactoryMap = {
+  "https://paper-api.alpaca.markets": Trade;
+  "https://data.alpaca.markets": MarketData;
+};
 
 export function createClient<T extends keyof ClientFactoryMap>(
   options: CreateClientOptions & { baseURL: T }
@@ -34,18 +65,15 @@ export function createClient<T extends keyof ClientFactoryMap>(
       }, 1000);
     });
 
-    // Hold the final path
-    let modified = path;
+    // Construct the URL
+    const url = new URL(path, options.baseURL);
 
     if (params) {
-      // Replace path parameters with actual values
+      // Add query parameters to the URL
       for (const [key, value] of Object.entries(params)) {
-        modified = modified.replace(`{${key}}`, encodeURIComponent(value));
+        url.searchParams.append(key, value);
       }
     }
-
-    // Construct the full URL
-    const url = `${options.baseURL}${modified}`;
 
     // Construct the headers
     const headers = new Headers({
@@ -55,7 +83,7 @@ export function createClient<T extends keyof ClientFactoryMap>(
       "Content-Type": "application/json",
     });
 
-    // Make the request and return the Response object
+    // Make the request
     return fetch(url, {
       method,
       headers,

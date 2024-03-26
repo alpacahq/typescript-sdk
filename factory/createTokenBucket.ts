@@ -1,4 +1,7 @@
-import { TokenBucketOptions } from "./createTokenBucket.type.ts";
+export type TokenBucketOptions = {
+  capacity: number;
+  fillRate: number;
+};
 
 export const createTokenBucket = (
   { capacity, fillRate }: TokenBucketOptions = {

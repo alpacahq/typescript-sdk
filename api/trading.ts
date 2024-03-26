@@ -1,42 +1,531 @@
-import {
-  Account,
-  AccountActivity,
-  AccountConfigurations,
-  Asset,
-  CancelOrdersOptions,
-  ClosePositionOptions,
-  CorporateActionAnnouncement,
-  CreateOrderOptions,
-  CreateWatchlistParams,
-  CryptoFundingTransfer,
-  CryptoFundingWallet,
-  DeleteWatchlistOptions,
-  ExerciseOptions,
-  GetActivitiesOptions,
-  GetOrdersOptions,
-  GetOrdersReturn,
-  GetPositionsOptions,
-  GetPositionsResponse,
-  GetWatchlistOptions,
-  MarketCalendar,
-  MarketClock,
-  OptionContract,
-  OptionContractsQueryParams,
-  Order,
-  PortfolioHistoryParams,
-  PortfolioHistoryResponse,
-  ReplaceOrderOptions,
-  TransactionFeeResponse,
-  TransactionParams,
-  UpdateWatchlistParams,
-  UpdatedAccountConfigurations,
-  Watchlist,
-  WhitelistedAddress,
-  WhitelistedAddressParams,
-  WithdrawalParams,
-} from "./trading.type.ts";
+import { ClientContext } from "../factory/createClient.ts";
 
-import { ClientContext } from "../factory/createClient.type.ts";
+export interface CorporateActionAnnouncement {
+  id: string;
+  corporate_actions_id: string;
+  ca_type: string;
+  ca_sub_type: string;
+  initiating_symbol: string;
+  initiating_original_cusip: string;
+  target_symbol: string;
+  target_original_cusip: string;
+  declaration_date: string;
+  expiration_date: string;
+  record_date: string;
+  payable_date: string;
+  cash: string;
+  old_rate: string;
+  new_rate: string;
+}
+
+export interface AnnouncementsQueryParams {
+  ca_types?: string;
+  since?: string;
+  until?: string;
+  symbol?: string;
+  cusip?: string;
+  date_type?: string;
+}
+
+export interface CryptoFundingWallet {
+  chain: string;
+  address: string;
+  created_at: string;
+}
+
+export interface WhitelistedAddressParams {
+  address: string;
+  asset: string;
+}
+export interface WhitelistedAddress {
+  id: string;
+  chain: string;
+  asset: string;
+  address: string;
+  status: "ACTIVE" | "PENDING";
+  created_at: string; // Timestamp (RFC3339) of account creation
+}
+
+export interface CryptoFundingTransfer {
+  id: string;
+  tx_hash: string;
+  direction: "INCOMING" | "OUTGOING";
+  status: "PROCESSING" | "FAILED" | "COMPLETE";
+  amount: string;
+  usd_value: string;
+  network_fee: string;
+  fees: string;
+  chain: string;
+  asset: string;
+  from_address: string;
+  to_address: string;
+  created_at: string; // Timestamp (RFC3339) of transfer creation
+}
+
+export interface WithdrawalParams {
+  amount: string;
+  address: string;
+  asset: string;
+}
+
+export interface CryptoFundingTransfer {
+  id: string;
+  tx_hash: string;
+  direction: "INCOMING" | "OUTGOING";
+  status: "PROCESSING" | "FAILED" | "COMPLETE";
+  amount: string;
+  usd_value: string;
+  network_fee: string;
+  fees: string;
+  chain: string;
+  asset: string;
+  from_address: string;
+  to_address: string;
+  created_at: string; // Timestamp (RFC3339) of transfer creation
+}
+
+export interface CryptoFundingQueryParams {
+  asset?: string;
+}
+
+export interface CryptoFundingResponse {
+  wallets?: CryptoFundingWallet | CryptoFundingWallet[];
+  transfers?: CryptoFundingTransfer[];
+}
+
+export interface CryptoFundingWallet {
+  chain: string;
+  address: string;
+  created_at: string; // Timestamp (RFC3339) of account creation
+}
+
+export interface WithdrawalParams {
+  amount: string;
+  address: string;
+  asset: string;
+}
+
+export interface CryptoFundingTransfer {
+  id: string;
+  tx_hash: string;
+  direction: "INCOMING" | "OUTGOING";
+  status: "PROCESSING" | "FAILED" | "COMPLETE";
+  amount: string;
+  usd_value: string;
+  network_fee: string;
+  fees: string;
+  chain: string;
+  asset: string;
+  from_address: string;
+  to_address: string;
+  created_at: string; // Timestamp (RFC3339) of transfer creation
+}
+
+export interface TransactionParams {
+  asset: string;
+  from_address: string;
+  to_address: string;
+  amount: string;
+}
+
+export interface TransactionFeeResponse {
+  fee: string;
+}
+export interface OptionContractsQueryParams {
+  underlying_symbols?: string;
+  status?: string;
+  active?: boolean;
+  expiration_date?: string;
+  expiration_date_gte?: string;
+  expiration_date_lte?: string;
+  root_symbol?: string;
+  type?: string;
+  style?: string;
+  strike_price_gte?: number;
+  strike_price_lte?: number;
+  page_token?: string;
+  limit?: number;
+}
+
+export interface OptionContract {
+  id: string;
+  symbol: string;
+  name: string;
+  status: string;
+  tradable: boolean;
+  expiration_date: string;
+  root_symbol?: string;
+  underlying_symbol: string;
+  underlying_asset_id: string;
+  type: string;
+  style: string;
+  strike_price: string;
+  size: string;
+  open_interest?: string;
+  open_interest_date?: string;
+  close_price?: string;
+  close_price_date?: string;
+  next_page_token: string | null;
+}
+
+export type BaseOrder = {
+  id: string;
+  client_order_id: string;
+  created_at: string;
+  updated_at: string;
+  submitted_at: string;
+  filled_at: string | null;
+  expired_at: string | null;
+  canceled_at: string | null;
+  failed_at: string | null;
+  replaced_at: string | null;
+  replaced_by: string | null;
+  replaces: string | null;
+  asset_id: string;
+  notional: string | null;
+  qty: string;
+  filled_qty: string;
+  filled_avg_price: string | null;
+  order_class: string;
+  order_type: string;
+  type: string;
+  side: string;
+  time_in_force: string;
+  limit_price: string | null;
+  stop_price: string | null;
+  status: string;
+  extended_hours: boolean;
+  legs: any | null;
+  trail_percent: string | null;
+  trail_price: string | null;
+  hwm: string | null;
+  subtag: string | null;
+  source: string | null;
+};
+
+export type EquityOrder = BaseOrder & {
+  asset_class: "us_equity";
+  symbol: string;
+};
+
+export type OptionsOrder = BaseOrder & {
+  asset_class: "us_option";
+  symbol: string;
+  order_class: "simple";
+};
+
+export type CryptoOrder = BaseOrder & {
+  asset_class: "crypto";
+  symbol: string;
+};
+
+export type Order = EquityOrder | OptionsOrder | CryptoOrder;
+
+export interface MarketClock {
+  timestamp: string;
+  is_open: boolean;
+  next_open: string;
+  next_close: string;
+}
+
+export type Asset = {
+  id: string;
+  class: string;
+  exchange: string;
+  symbol: string;
+  name: string;
+  status: string;
+  tradable: boolean;
+  marginable: boolean;
+  shortable: boolean;
+  easy_to_borrow: boolean;
+  fractionable: boolean;
+  maintenance_margin_requirement: string;
+  attributes: string[];
+};
+
+export type Account = {
+  id: string;
+  account_number: string;
+  status: string;
+  currency: string;
+  cash: string;
+  portfolio_value: string;
+  non_marginable_buying_power: string;
+  accrued_fees: string;
+  pending_transfer_in: string;
+  pending_transfer_out: string;
+  pattern_day_trader: boolean;
+  trade_suspended_by_user: boolean;
+  trading_blocked: boolean;
+  transfers_blocked: boolean;
+  account_blocked: boolean;
+  created_at: string;
+  shorting_enabled: boolean;
+  long_market_value: string;
+  short_market_value: string;
+  equity: string;
+  last_equity: string;
+  multiplier: string;
+  buying_power: string;
+  initial_margin: string;
+  maintenance_margin: string;
+  sma: string;
+  daytrade_count: number;
+  last_maintenance_margin: string;
+  daytrading_buying_power: string;
+  regt_buying_power: string;
+  options_buying_power: string;
+  options_approved_level: number;
+  options_trading_level: number;
+};
+
+export interface PortfolioHistoryOptions {
+  period?: string;
+  timeframe?: string;
+  intraday_reporting?: string;
+  start?: string;
+  end?: string;
+  pnl_reset?: string;
+}
+
+export interface PortfolioHistory {
+  timestamp: number[];
+  equity: number[];
+  profit_loss: number[];
+  profit_loss_pct: number[];
+  base_value: number;
+  base_value_asof: string;
+  timeframe: string;
+}
+
+export interface AccountConfigurations {
+  dtbpCheck: "both" | "entry" | "exit";
+  tradeConfirmEmail: "all" | "none";
+  suspendTrade: boolean;
+  noShorting: boolean;
+  fractionalTrading: boolean;
+  maxMarginMultiplier: "1" | "2";
+  maxOptionsTradingLevel: 0 | 1 | 2;
+  pdtCheck: "both" | "entry" | "exit";
+  ptpNoExceptionEntry: boolean;
+}
+
+export interface PatchAccountConfigurationsOptions {
+  dtbp_check?: string;
+  trade_confirm_email?: string;
+  suspend_trade?: boolean;
+  no_shorting?: boolean;
+  fractional_trading?: boolean;
+  max_margin_multiplier?: string;
+  max_options_trading_level?: number;
+  pdt_check?: string;
+  ptp_no_exception_entry?: boolean;
+}
+
+interface GetActivitiesOptions {
+  activityType?: string;
+  activityTypes?: string;
+  date?: string;
+  until?: string;
+  after?: string;
+  direction?: string;
+  pageSize?: number;
+  pageToken?: string;
+  category?: string;
+}
+
+export interface AccountTradingActivity {
+  activity_type: string;
+  id: string;
+  cum_qty: string;
+  leaves_qty: string;
+  price: string;
+  qty: string;
+  side: string;
+  symbol: string;
+  transaction_time: string;
+  order_id: string;
+  type: string;
+  order_status: string;
+}
+
+export interface AccountNonTradeActivity {
+  activity_type: string;
+  id: string;
+  date: string;
+  net_amount: string;
+  symbol?: string;
+  qty?: string;
+  per_share_amount?: string;
+}
+
+export type AccountActivity = AccountTradingActivity | AccountNonTradeActivity;
+
+export interface GetOrdersOptions {
+  status?: string;
+  limit?: number;
+  after?: string;
+  until?: string;
+  direction?: string;
+  nested?: boolean;
+  symbols?: string;
+  side?: string;
+  order_id?: string;
+}
+
+export type Orders<T extends GetOrdersOptions> = T extends {
+  order_id: string;
+}
+  ? Order
+  : Order[];
+
+export interface PostOrderOptions {
+  symbol: string;
+  qty?: string | number;
+  notional?: string;
+  side: string;
+  type: string;
+  time_in_force: string;
+  limit_price?: string;
+  stop_price?: string;
+  trail_price?: string;
+  trail_percent?: string;
+  extended_hours?: boolean;
+  client_order_id?: string;
+  order_class?: string;
+  take_profit?: {
+    limit_price: string;
+  };
+  stop_loss?: {
+    stop_price: string;
+    limit_price?: string;
+  };
+}
+
+export type PatchOrderOptions = {
+  qty?: string | number;
+  time_in_force?: string;
+  limit_price?: string;
+  stop_price?: string;
+  trail?: string;
+  client_order_id?: string;
+  order_id: string;
+};
+
+export type CancelOrdersOptions = {
+  order_id?: string;
+};
+
+export type GetPositionsOptions = {
+  symbol?: string;
+  asset_id?: string;
+};
+
+export interface Position {
+  asset_id: string;
+  symbol: string;
+  exchange: string;
+  asset_class: string;
+  avg_entry_price: string;
+  qty: string | number;
+  qty_available: string;
+  side: string;
+  market_value: string;
+  cost_basis: string;
+  unrealized_pl: string;
+  unrealized_plpc: string;
+  unrealized_intraday_pl: string;
+  unrealized_intraday_plpc: string;
+  current_price: string;
+  lastday_price: string;
+  change_today: string;
+  asset_marginable: boolean;
+}
+
+export type Positions<T extends GetPositionsOptions> = T extends
+  | { symbol: string }
+  | { asset_id: string }
+  ? Position
+  : Position[];
+
+export interface DeletePositionOptions {
+  symbol_or_asset_id?: string;
+  cancel_orders?: boolean;
+  qty?: number;
+  percentage?: number;
+  symbol?: string;
+  asset_id?: string;
+}
+
+export type PostExerciseOptions =
+  | { symbol: string; contract_id?: never }
+  | { symbol?: never; contract_id: string };
+
+export interface CreateWatchlistParams {
+  name: string;
+  symbols: string[] | null;
+}
+
+export interface AddAssetToWatchlistParams {
+  name: string;
+  symbol: string;
+}
+
+export interface DeleteSymbolFromWatchlistParams {
+  watchlistId: string;
+  symbol: string;
+}
+
+export interface DeleteWatchlistByNameParams {
+  name: string;
+}
+
+export interface GetWatchlistByNameParams {
+  name: string;
+}
+
+export interface UpdateWatchlistParams {
+  name: string;
+  symbols: string[] | null;
+  watchlist_id: string;
+}
+
+export interface UpdateWatchlistByNameParams {
+  name: string;
+  newName: string;
+  symbols: string[] | null;
+}
+
+export interface Watchlist {
+  id: string;
+  account_id: string;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  assets: Asset[];
+}
+
+export type GetWatchlistOptions = {
+  watchlist_id: string;
+};
+
+export type DeleteWatchlistOptions = {
+  watchlist_id: string;
+};
+
+export type MarketCalendarOptions = {
+  start?: string;
+  end?: string;
+  dateType?: "TRADING" | "SETTLEMENT";
+};
+
+export interface MarketCalendar {
+  date: string;
+  open: string;
+  close: string;
+  settlement_date: string;
+}
 
 export default ({ request }: ClientContext) => ({
   v2: {
@@ -45,49 +534,61 @@ export default ({ request }: ClientContext) => ({
         request<Account>({
           path: "/v2/account",
         }),
+      portfolio: {
+        history: {
+          get: (options: PortfolioHistoryOptions = {}) =>
+            request<PortfolioHistory>({
+              path: "/v2/account/portfolio/history",
+              method: "GET",
+              params: options,
+            }),
+        },
+      },
       configurations: {
         get: () =>
           request<AccountConfigurations>({
             path: "/v2/account/configurations",
           }),
-        patch: (updatedConfig: UpdatedAccountConfigurations) =>
+        patch: (options: PatchAccountConfigurationsOptions) =>
           request<void>({
             path: "/v2/account/configurations",
             method: "PATCH",
-            data: updatedConfig,
+            data: options,
           }),
       },
       activities: {
-        get: (options?: GetActivitiesOptions) =>
+        get: ({ activityType, ...options }: GetActivitiesOptions = {}) =>
           request<AccountActivity[]>({
-            path: "/v2/account/activities",
+            path: activityType
+              ? `/v2/account/activities/${activityType}`
+              : "/v2/account/activities",
             method: "GET",
             params: options,
           }),
       },
     },
     orders: {
-      get: <T extends GetOrdersOptions>(options?: T) =>
-        request<GetOrdersReturn<T>>({
+      get: <T extends GetOrdersOptions>(options: T = {} as T) =>
+        request<Orders<T>>({
           path: options?.order_id
             ? `/v2/orders/${options.order_id}`
             : "/v2/orders",
           method: "GET",
           params: options,
         }),
-      post: (options: CreateOrderOptions) =>
+      post: (options: PostOrderOptions) =>
         request<Order>({
           path: "/v2/orders",
           method: "POST",
           data: options,
         }),
-      patch: ({ order_id, ...options }: ReplaceOrderOptions) =>
+      patch: ({ order_id, ...options }: PatchOrderOptions) =>
         request<Order>({
           path: `/v2/orders/${order_id}`,
           method: "PATCH",
           data: options,
         }),
-      delete: (options?: CancelOrdersOptions) =>
+      delete: (options: CancelOrdersOptions = {}) =>
         request<void>({
           path: options?.order_id
             ? `/v2/orders/${options.order_id}`
@@ -96,15 +597,15 @@ export default ({ request }: ClientContext) => ({
         }),
     },
     positions: {
-      get: <T extends GetPositionsOptions>(options?: T) =>
-        request<GetPositionsResponse<T>>({
+      get: <T extends GetPositionsOptions>(options: T = {} as T) =>
+        request<Positions<T>>({
           path:
             options?.symbol || options?.asset_id
               ? `/v2/positions/${options.symbol || options.asset_id}`
               : "/v2/positions",
           method: "GET",
         }),
-      delete: <T extends ClosePositionOptions>(params?: T) =>
+      delete: <T extends DeletePositionOptions>(params?: T) =>
         request<
           T extends { symbol?: string; asset_id?: string } ? Order : Order[]
         >({
@@ -120,7 +621,7 @@ export default ({ request }: ClientContext) => ({
           },
         }),
       exercise: {
-        post: (options: ExerciseOptions) =>
+        post: (options: PostExerciseOptions) =>
           request<void>({
             path: `/v2/positions/${
               "symbol" in options ? options.symbol : options.contract_id
@@ -129,34 +630,24 @@ export default ({ request }: ClientContext) => ({
           }),
       },
     },
-    portfolio: {
-      history: {
-        get: (options?: PortfolioHistoryParams) =>
-          request<PortfolioHistoryResponse>({
-            path: "/v2/account/portfolio/history",
-            method: "GET",
-            params: options,
-          }),
-      },
-    },
     watchlists: {
-      get: (options?: GetWatchlistOptions) =>
+      get: (options = {} as GetWatchlistOptions) =>
         request<Watchlist>({
           path: options?.watchlist_id
             ? `/v2/watchlists/${options.watchlist_id}`
             : "/v2/watchlists",
         }),
-      post: (params: CreateWatchlistParams) =>
+      post: (options: CreateWatchlistParams) =>
         request<Watchlist>({
           path: "/v2/watchlists",
           method: "POST",
-          data: params,
+          data: options,
         }),
-      patch: (params: UpdateWatchlistParams) =>
+      patch: (options: UpdateWatchlistParams) =>
         request<Watchlist>({
-          path: `/v2/watchlists/${params.watchlist_id}`,
+          path: `/v2/watchlists/${options.watchlist_id}`,
           method: "PATCH",
-          data: params,
+          data: options,
         }),
       delete: (options: DeleteWatchlistOptions) =>
         request<void>({
@@ -165,21 +656,11 @@ export default ({ request }: ClientContext) => ({
         }),
     },
     calendar: {
-      get: (options?: {
-        start?: string;
-        end?: string;
-        dateType?: "TRADING" | "SETTLEMENT";
-      }) =>
+      get: (options: MarketCalendarOptions = {}) =>
         request<MarketCalendar[]>({
           path: "/v2/calendar",
           method: "GET",
-          params: Object.fromEntries(
-            Object.entries({
-              start: options?.start,
-              end: options?.end,
-              date_type: options?.dateType,
-            }).filter(([_, value]) => value !== undefined)
-          ),
+          params: options,
         }),
     },
     clock: {
@@ -189,6 +670,7 @@ export default ({ request }: ClientContext) => ({
           method: "GET",
         }),
     },
+    // --------------- OK ABOVE THIS LINE --------------- //
     assets: {
       get: (symbolOrAssetId: string) =>
         request<Asset>({
