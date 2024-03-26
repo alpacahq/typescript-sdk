@@ -1,4 +1,4 @@
-import { ClientContext } from "../factory/createClient.ts";
+import { ClientContext } from "./createClient.ts";
 
 export interface CorporateActionAnnouncement {
   id: string;
@@ -528,7 +528,7 @@ export interface MarketCalendar {
 }
 
 export default ({ request }: ClientContext) => ({
-  v2: {
+  v2: () => ({
     account: {
       get: () =>
         request<Account>({
@@ -536,7 +536,7 @@ export default ({ request }: ClientContext) => ({
         }),
       portfolio: {
         history: {
-          get: (options: PortfolioHistoryOptions = {}) =>
+          getPortfolioHistory: (options: PortfolioHistoryOptions = {}) =>
             request<PortfolioHistory>({
               path: "/v2/account/portfolio/history",
               method: "GET",
@@ -781,5 +781,5 @@ export default ({ request }: ClientContext) => ({
           }),
       },
     },
-  },
+  }),
 });
