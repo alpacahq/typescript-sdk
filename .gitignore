@@ -1,2 +1,3 @@
 coverage
 lcov.info
+.env

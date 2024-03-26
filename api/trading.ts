@@ -293,6 +293,7 @@ export interface PatchOrderOptions {
   stop_price?: string;
   trail?: string;
   client_order_id?: string;
+  nested?: boolean;
 }
 
 export interface GetOrdersOptions {
@@ -304,6 +305,7 @@ export interface GetOrdersOptions {
   nested?: boolean;
   symbols?: string;
   side?: "buy" | "sell";
+  order_id?: string;
 }
 
 export interface CreateOrderOptions {
@@ -404,6 +406,8 @@ export interface ClosePositionOptions {
   cancel_orders?: boolean;
   qty?: number;
   percentage?: number;
+  symbol?: string;
+  asset_id?: string;
 }
 
 export type PositionClosedResponse = unknown[];
@@ -454,6 +458,7 @@ export interface GetWatchlistByNameParams {
 export interface UpdateWatchlistParams {
   name: string;
   symbols: string[] | null;
+  watchlist_id: string;
 }
 
 export interface UpdateWatchlistByNameParams {
@@ -479,6 +484,49 @@ export type GetActivitiesOptions = {
   pageSize?: number;
   pageToken?: string;
   category?: string;
+};
+
+export type GetOrdersReturn<T extends GetOrdersOptions> = T extends {
+  order_id: string;
+}
+  ? Order
+  : Order[];
+
+export type CancelOrdersOptions = {
+  order_id?: string;
+};
+
+type ReplaceOrderOptions = {
+  qty?: string | number;
+  time_in_force?: string;
+  limit_price?: string;
+  stop_price?: string;
+  trail?: string;
+  client_order_id?: string;
+  order_id: string;
+};
+
+type GetPositionsOptions = {
+  symbol?: string;
+  asset_id?: string;
+};
+
+type GetPositionsResponse<T extends GetPositionsOptions> = T extends
+  | { symbol: string }
+  | { asset_id: string }
+  ? Position
+  : Position[];
+
+type ExerciseOptions =
+  | { symbol: string; contract_id?: never }
+  | { symbol?: never; contract_id: string };
+
+type GetWatchlistOptions = {
+  watchlist_id: string;
+};
+
+type DeleteWatchlistOptions = {
+  watchlist_id: string;
 };
 
 export default ({ request }: ClientContext) => ({
@@ -510,106 +558,84 @@ export default ({ request }: ClientContext) => ({
       },
     },
     orders: {
-      get: (options: GetOrdersOptions) =>
-        request<Order[]>({
-          path: "/v2/orders",
+      get: <T extends GetOrdersOptions>(options?: T) =>
+        request<GetOrdersReturn<T>>({
+          path: options?.order_id
+            ? `/v2/orders/${options.order_id}`
+            : "/v2/orders",
           method: "GET",
           params: options,
         }),
-      // getOrderById: (orderId: string) =>
-      //   request<Order>({
-      //     path: `/v2/orders/${orderId}`,
-      //   }),
       post: (options: CreateOrderOptions) =>
         request<Order>({
           path: "/v2/orders",
           method: "POST",
           data: options,
         }),
-      patch: (options: PatchOrderOptions | string, nested?: boolean) => {
-        let path = "/v2/orders";
-        let params = {};
-
-        if (typeof options === "string") {
-          path += `/${options}`;
-
-          if (nested !== undefined) {
-            params = { nested };
-          }
-        } else if (typeof options === "object") {
-          params = options;
-        }
-
-        return request<Order | Order[]>({
-          path,
+      patch: ({ order_id, ...options }: ReplaceOrderOptions) =>
+        request<Order>({
+          path: `/v2/orders/${order_id}`,
           method: "PATCH",
-          params,
-        });
-      },
-      delete: () =>
+          data: options,
+        }),
+      delete: (options?: CancelOrdersOptions) =>
         request<void>({
-          path: "/v2/orders",
+          path: options?.order_id
+            ? `/v2/orders/${options.order_id}`
+            : "/v2/orders",
           method: "DELETE",
         }),
-      // cancelOrderById: (orderId: string) =>
-      //   request<void>({
-      //     path: `/v2/orders/${orderId}`,
-      //     method: "DELETE",
-      //   }),
     },
     positions: {
-      get: () =>
-        request<Position[]>({
-          path: "/v2/positions",
+      get: <T extends GetPositionsOptions>(options?: T) =>
+        request<GetPositionsResponse<T>>({
+          path:
+            options?.symbol || options?.asset_id
+              ? `/v2/positions/${options.symbol || options.asset_id}`
+              : "/v2/positions",
+          method: "GET",
         }),
-      // getPositionBySymbolOrAssetId: (symbol_or_asset_id: string) =>
-      //   request<Position | Position[]>({
-      //     path: `/v2/positions/${symbol_or_asset_id}`,
-      //     method: "GET",
-      //   }),
-      delete: (params: Pick<ClosePositionOptions, "cancel_orders">) =>
-        request<PositionClosedResponse>({
-          path: "/v2/positions",
+      delete: <T extends ClosePositionOptions>(params?: T) =>
+        request<
+          T extends { symbol?: string; asset_id?: string } ? Order : Order[]
+        >({
+          path:
+            params?.symbol || params?.asset_id
+              ? `/v2/positions/${params.symbol || params.asset_id}`
+              : "/v2/positions",
           method: "DELETE",
-          params: { cancel_orders: params.cancel_orders },
+          params: {
+            qty: params?.qty,
+            percentage: params?.percentage,
+            cancel_orders: params?.cancel_orders,
+          },
         }),
       exercise: {
-        post: (symbol_or_contract_id: string) =>
+        post: (options: ExerciseOptions) =>
           request<void>({
-            path: `/v2/positions/${symbol_or_contract_id}/exercise`,
+            path: `/v2/positions/${
+              "symbol" in options ? options.symbol : options.contract_id
+            }/exercise`,
             method: "POST",
           }),
       },
-      // closePositionBySymbolOrAssetdId: (
-      //   params: Pick<
-      //     ClosePositionOptions,
-      //     "symbol_or_asset_id" | "qty" | "percentage"
-      //   >
-      // ) =>
-      //   request<Order[]>({
-      //     path: `/v2/positions/${params.symbol_or_asset_id}`,
-      //     method: "DELETE",
-      //     params: { qty: params.qty, percentage: params.percentage },
-      //   }),
     },
     portfolio: {
       history: {
-        get: (params?: PortfolioHistoryParams) =>
+        get: (options?: PortfolioHistoryParams) =>
           request<PortfolioHistoryResponse>({
             path: "/v2/account/portfolio/history",
             method: "GET",
-            params,
+            params: options,
           }),
       },
     },
     watchlists: {
-      get: (watchlist_id: string) =>
+      get: (options?: GetWatchlistOptions) =>
         request<Watchlist>({
-          path: `/v2/watchlists/${watchlist_id}`,
-        }),
-      getAll: () =>
-        request<Watchlist[]>({
-          path: "/v2/watchlists",
+          path: options?.watchlist_id
+            ? `/v2/watchlists/${options.watchlist_id}`
+            : "/v2/watchlists",
         }),
       post: (params: CreateWatchlistParams) =>
         request<Watchlist>({
@@ -617,15 +643,15 @@ export default ({ request }: ClientContext) => ({
           method: "POST",
           data: params,
         }),
-      patch: (watchlist_id: string, params: UpdateWatchlistParams) =>
+      patch: (params: UpdateWatchlistParams) =>
         request<Watchlist>({
-          path: `/v2/watchlists/${watchlist_id}`,
+          path: `/v2/watchlists/${params.watchlist_id}`,
           method: "PATCH",
           data: params,
         }),
-      delete: (watchlist_id: string) =>
+      delete: (options: DeleteWatchlistOptions) =>
         request<void>({
-          path: `/v2/watchlists/${watchlist_id}`,
+          path: `/v2/watchlists/${options.watchlist_id}`,
           method: "DELETE",
         }),
     },

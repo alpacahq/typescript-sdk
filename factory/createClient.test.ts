@@ -13,8 +13,8 @@ Deno.test(
       secretKey: "EXAMPLE_KEY_SECRET",
     });
 
-    assert(client.getAccount !== undefined);
-    assert(client.createOrder !== undefined);
+    assert(client.v2.account !== undefined);
+    assert(typeof client.v2.account.get === "function");
   }
 );
 
@@ -27,8 +27,8 @@ Deno.test(
       secretKey: "EXAMPLE_KEY_SECRET",
     });
 
-    assert(client.rest.v1beta1 !== undefined);
-    assert(client.rest.v1beta3 !== undefined);
+    assert(client.v2.stocks !== undefined);
+    assert(typeof client.v2.stocks.bars.get === "function");
   }
 );
 

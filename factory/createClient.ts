@@ -24,8 +24,8 @@ export type RequestOptions<T> = {
 };
 
 type CreateClientOptions = {
-  keyId: string;
-  secretKey: string;
+  keyId?: string;
+  secretKey?: string;
   baseURL?: string;
   accessToken?: string;
   tokenBucket?: TokenBucketOptions;
@@ -80,8 +80,9 @@ export function createClient<T extends keyof ClientFactoryMap>(
 
     // Construct the headers
     const headers = new Headers({
-      "APCA-API-KEY-ID": options.keyId,
-      "APCA-API-SECRET-KEY": options.secretKey,
+      "APCA-API-KEY-ID": options.keyId || Deno.env.get("APCA_KEY_ID") || "",
+      "APCA-API-SECRET-KEY":
+        options.secretKey || Deno.env.get("APCA_KEY_SECRET") || "",
       "Content-Type": "application/json",
     });
 
@@ -97,8 +98,21 @@ export function createClient<T extends keyof ClientFactoryMap>(
         );
       }
 
-      return Object.assign(response, { data: (await response.json()) as T })
-        .data;
+      try {
+        const jsonData = await response.json();
+        return Object.assign(response, { data: jsonData as T }).data;
+      } catch (error) {
+        if (
+          error instanceof SyntaxError &&
+          error.message.includes("Unexpected end of JSON input")
+        ) {
+          // Return an empty object or a default value instead of throwing an error
+          return Object.assign(response, { data: {} as T }).data;
+        }
+
+        // Re-throw other errors
+        throw error;
+      }
     });
   };
 
