@@ -1,7 +1,7 @@
 import marketData from "../api/marketData.ts";
 import trade from "../api/trading.ts";
 
-import { TokenBucketOptions } from "./createTokenBucket.type.ts";
+import { TokenBucketOptions } from "./_createTokenBucket.type.ts";
 
 export type RequestOptions<T> = {
   method?: string;

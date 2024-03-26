@@ -1,4 +1,4 @@
-import { MockFetch, MockResponse } from "./mockFetch.type.ts";
+import { MockFetch, MockResponse } from "./_mockFetch.type.ts";
 
 export const mockFetch: (response: MockResponse) => MockFetch =
   (response) => (_url, _init?) =>

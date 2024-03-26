@@ -1,4 +1,4 @@
-import { ClientContext } from "../factory/createClient.type.ts";
+import { ClientContext } from "../factory/_createClient.type.ts";
 
 export type Account = {
   id: string;
