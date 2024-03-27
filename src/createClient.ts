@@ -1,10 +1,6 @@
-import marketData from "../api/marketData.ts";
-import trade from "../api/trading.ts";
+import { data, trading } from "./rest.ts";
 
-import {
-  TokenBucketOptions,
-  createTokenBucket,
-} from "../factory/createTokenBucket.ts";
+import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
 export type RequestOptions<T> = {
   method?: string;
@@ -16,8 +12,8 @@ export type RequestOptions<T> = {
 };
 
 export type CreateClientOptions = {
-  keyId?: string;
-  secretKey?: string;
+  key?: string;
+  secret?: string;
   baseURL?: string;
   accessToken?: string;
   tokenBucket?: TokenBucketOptions;
@@ -35,8 +31,8 @@ export type ClientWithContext<T extends keyof ClientFactoryMap> =
     _context: ClientContext;
   };
 
-export type Trade = ReturnType<typeof trade>;
-export type MarketData = ReturnType<typeof marketData>;
+export type Trade = ReturnType<typeof trading>;
+export type MarketData = ReturnType<typeof data>;
 
 // Infer the client type based on the base URL
 export type ClientFactoryMap = {
@@ -80,9 +76,9 @@ export function createClient<T extends keyof ClientFactoryMap>(
 
     // Construct the headers
     const headers = new Headers({
-      "APCA-API-KEY-ID": options.keyId || Deno.env.get("APCA_KEY_ID") || "",
+      "APCA-API-KEY-ID": options.key || Deno.env.get("APCA_KEY_ID") || "",
       "APCA-API-SECRET-KEY":
-        options.secretKey || Deno.env.get("APCA_KEY_SECRET") || "",
+        options.secret || Deno.env.get("APCA_KEY_SECRET") || "",
       "Content-Type": "application/json",
     });
 
@@ -127,9 +123,9 @@ export function createClient<T extends keyof ClientFactoryMap>(
     let client: ClientFactoryMap[T];
 
     if (options.baseURL === "https://paper-api.alpaca.markets") {
-      client = trade(context) as ClientFactoryMap[T];
+      client = trading(context) as ClientFactoryMap[T];
     } else if (options.baseURL === "https://data.alpaca.markets") {
-      client = marketData(context) as ClientFactoryMap[T];
+      client = data(context) as ClientFactoryMap[T];
     } else {
       throw new Error("invalid base URL");
     }
@@ -139,3 +135,5 @@ export function createClient<T extends keyof ClientFactoryMap>(
 
   return factory(context);
 }
+
+// client.<resource>.<method>(options)

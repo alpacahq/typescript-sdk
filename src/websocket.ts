@@ -1,4 +1,4 @@
-import { ClientContext } from "../createClient.ts";
+import { ClientContext } from "./createClient.ts";
 
 export interface CorporateActionsQueryParams {
   symbols: string;
