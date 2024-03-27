@@ -1131,7 +1131,7 @@ export interface HistoricalAuctionsParams {
 export type MarketDataEventMap = any;
 
 export default {
-  api: ({ request }: ClientContext) => ({
+  rest: ({ request }: ClientContext) => ({
     v2: {
       account: {
         get: () =>

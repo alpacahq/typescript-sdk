@@ -6,6 +6,8 @@ import {
   createTokenBucket,
 } from "../factory/createTokenBucket.ts";
 
+import { WebSocketClient } from "https://deno.land/x/websocket@v0.1.4/mod.ts";
+
 export type RequestOptions<T> = {
   path: string;
   method?: string;
@@ -25,13 +27,14 @@ export type CreateClientOptions = {
 export type ClientContext = {
   options: CreateClientOptions;
   request: <T>(options: RequestOptions<T>) => Promise<T>;
+  websocket: WebSocketClient;
 };
 
 const clientFactoryMap = {
   // REST (JSON)
-  "https://api.alpaca.markets": trade.api,
-  "https://paper-api.alpaca.markets": trade.api,
-  "https://data.alpaca.markets": marketData.api,
+  "https://api.alpaca.markets": trade.rest,
+  "https://paper-api.alpaca.markets": trade.rest,
+  "https://data.alpaca.markets": marketData.rest,
   // WebSocket (binary)
   "wss://paper-api.alpaca.markets/stream": trade.websocket,
   "wss://api.alpaca.markets/stream": trade.websocket,
@@ -143,10 +146,14 @@ export const createClient = <T extends keyof ClientFactoryMap>(
     });
   };
 
+  // Create a WebSocket client
+  // const websocket = new StandardWebSocketClient(options.baseURL);
+
   // Create a context object to pass to the client factory
   const context: ClientContext = {
     options,
     request,
+    websocket: null as any,
   };
 
   // Get the client factory function based on the base URL

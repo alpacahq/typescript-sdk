@@ -623,7 +623,7 @@ export interface HistoricalAuctionsParams {
 export type MarketDataEventMap = any;
 
 export default {
-  api: ({ request }: ClientContext) => ({
+  rest: ({ request }: ClientContext) => ({
     v1beta1: {
       corporate_actions: {
         get: (queryParams: CorporateActionsQueryParams) =>
