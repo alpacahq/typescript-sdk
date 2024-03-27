@@ -34,17 +34,16 @@ Deno.test(
 
 Deno.test("createClient should throw an error with an invalid base URL", () => {
   assertThrows(
-    () => {
+    () =>
       createClient({
         // deno-lint-ignore ban-ts-comment
         // @ts-expect-error
         baseURL: "https://invalid-url.com",
         key: "EXAMPLE_KEY_ID",
         secret: "EXAMPLE_KEY_SECRET",
-      });
-    },
+      }),
     Error,
-    "invalid base URL"
+    "Invalid base URL"
   );
 });
 
