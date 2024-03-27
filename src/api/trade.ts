@@ -60,7 +60,7 @@ export interface CryptoFundingTransfer {
   asset: string;
   from_address: string;
   to_address: string;
-  created_at: string; // Timestamp (RFC3339) of transfer creation
+  created_at: string;
 }
 
 export interface WithdrawalParams {
@@ -82,7 +82,7 @@ export interface CryptoFundingTransfer {
   asset: string;
   from_address: string;
   to_address: string;
-  created_at: string; // Timestamp (RFC3339) of transfer creation
+  created_at: string;
 }
 
 export interface CryptoFundingQueryParams {
@@ -97,7 +97,7 @@ export interface CryptoFundingResponse {
 export interface CryptoFundingWallet {
   chain: string;
   address: string;
-  created_at: string; // Timestamp (RFC3339) of account creation
+  created_at: string;
 }
 
 export interface WithdrawalParams {
@@ -119,7 +119,7 @@ export interface CryptoFundingTransfer {
   asset: string;
   from_address: string;
   to_address: string;
-  created_at: string; // Timestamp (RFC3339) of transfer creation
+  created_at: string;
 }
 
 export interface TransactionParams {
@@ -658,10 +658,10 @@ export interface LatestForexRatesResponse {
 }
 
 export interface ForexRate {
-  bp: number; // Bid price
-  mp: number; // Mid price
-  ap: number; // Ask price
-  t: string; // Timestamp
+  bp: number;
+  mp: number;
+  ap: number;
+  t: string;
 }
 
 export interface HistoricalForexRatesResponse {
@@ -672,10 +672,10 @@ export interface HistoricalForexRatesResponse {
 }
 
 export interface HistoricalForexRate {
-  bp: number; // Bid price
-  mp: number; // Mid price
-  ap: number; // Ask price
-  t: string; // Timestamp
+  bp: number;
+  mp: number;
+  ap: number;
+  t: string;
 }
 export interface HistoricalBarsResponse {
   bars: { [symbol: string]: CryptoBar[] };
@@ -683,14 +683,14 @@ export interface HistoricalBarsResponse {
 }
 
 export interface CryptoBar {
-  t: string; // Timestamp
-  o: number; // Open price
-  h: number; // High price
-  l: number; // Low price
-  c: number; // Close price
-  v: number; // Volume
-  n: number; // Trade count
-  vw: number; // Volume weighted average price
+  t: string;
+  o: number;
+  h: number;
+  l: number;
+  c: number;
+  v: number;
+  n: number;
+  vw: number;
 }
 
 export interface LatestBarsResponse {
@@ -702,14 +702,14 @@ export interface LatestOrderbooksResponse {
 }
 
 export interface CryptoOrderbook {
-  t: string; // Timestamp
-  b: OrderbookEntry[]; // Bid orderbook entries
-  a: OrderbookEntry[]; // Ask orderbook entries
+  t: string;
+  b: OrderbookEntry[];
+  a: OrderbookEntry[];
 }
 
 export interface OrderbookEntry {
-  p: number; // Price
-  s: number; // Size
+  p: number;
+  s: number;
 }
 
 export interface LatestQuotesResponse {
@@ -717,11 +717,11 @@ export interface LatestQuotesResponse {
 }
 
 export interface CryptoQuote {
-  t: string; // Timestamp
-  bp: number; // Bid price
-  bs: number; // Bid size
-  ap: number; // Ask price
-  as: number; // Ask size
+  t: string;
+  bp: number;
+  bs: number;
+  ap: number;
+  as: number;
 }
 
 export interface LatestTradesResponse {
@@ -729,11 +729,11 @@ export interface LatestTradesResponse {
 }
 
 export interface CryptoTrade {
-  t: string; // Timestamp
-  p: number; // Price
-  s: number; // Size
-  tks: string; // Trade side (S: Sell, B: Buy)
-  i: number; // Trade ID
+  t: string;
+  p: number;
+  s: number;
+  tks: string;
+  i: number;
 }
 
 export interface HistoricalQuotesResponse {
@@ -754,29 +754,29 @@ interface CryptoSnapshot {
 }
 
 interface BarData {
-  t: string; // Timestamp
-  o: number; // Open price
-  h: number; // High price
-  l: number; // Low price
-  c: number; // Close price
-  v: number; // Volume
-  vw: number; // Volume weighted average price
-  n: number; // Number of trades
+  t: string;
+  o: number;
+  h: number;
+  l: number;
+  c: number;
+  v: number;
+  vw: number;
+  n: number;
 }
 
 interface QuoteData {
-  t: string; // Timestamp
-  bp: number; // Bid price
-  bs: number; // Bid size
-  ap: number; // Ask price
-  as: number; // Ask size
+  t: string;
+  bp: number;
+  bs: number;
+  ap: number;
+  as: number;
 }
 
 interface TradeData {
-  t: string; // Timestamp
-  p: number; // Trade price
-  s: number; // Trade size
-  tks: string; // Trade side (Buy or Sell)
+  t: string;
+  p: number;
+  s: number;
+  tks: string;
 }
 
 export interface CryptoHistoricalTradesResponse {
@@ -812,14 +812,14 @@ export interface HistoricalOptionBarsResponse {
 }
 
 export interface OptionBar {
-  t: string; // Timestamp in RFC-3339 format
-  o: number; // Opening price
-  h: number; // High price
-  l: number; // Low price
-  c: number; // Closing price
-  v: number; // Bar volume
-  n: number; // Trade count in the bar
-  vw: number; // Volume weighted average price
+  t: string;
+  o: number;
+  h: number;
+  l: number;
+  c: number;
+  v: number;
+  n: number;
+  vw: number;
 }
 
 export interface OptionExchangeMapping {
@@ -856,11 +856,11 @@ export interface LatestTradesResponse {
 export interface HistoricalTradesResponse {
   trades: {
     [symbol: string]: {
-      t: string; // Timestamp in RFC-3339 format
-      x: string; // Exchange code
-      p: number; // Trade price
-      s: number; // Trade size
-      c: string; // Condition
+      t: string;
+      x: string;
+      p: number;
+      s: number;
+      c: string;
     }[];
   };
   next_page_token: string | null;
@@ -876,8 +876,8 @@ export interface SnapshotsResponse {
 }
 
 interface TradeSnapshot {
-  t: string; // Timestamp in RFC-3339 format
-  x: string; // Exchange code
+  t: string;
+  x: string;
   p: number; // Trade price
   s: number; // Trade size
   c: string; // Condition
@@ -1130,6 +1130,13 @@ export interface HistoricalAuctionsParams {
 
 export type MarketDataEventMap = any;
 
+type WebSocketEvent = "trade_updates" | "listening" | "authorization";
+
+type WebSocketMessage = {
+  stream: WebSocketEvent;
+  data: any;
+};
+
 export default {
   rest: ({ request }: ClientContext) => ({
     v2: {
@@ -1353,5 +1360,37 @@ export default {
       },
     },
   }),
-  websocket: ({}: ClientContext) => ({}),
+  websocket: ({ websocket }: ClientContext) => {
+    return {
+      on: (event: WebSocketEvent, callback: (data: any) => void) => {
+        websocket.addEventListener("customMessage", (message) => {
+          //@ts-ignore
+          if (message.detail.stream == event) {
+            // @ts-ignore
+            callback(message.detail.data);
+          }
+        });
+      },
+      subscribe: (streams: WebSocketEvent[]) => {
+        const subscribeMessage = {
+          action: "listen",
+          data: {
+            streams,
+          },
+        };
+
+        websocket.send(JSON.stringify(subscribeMessage));
+      },
+      unsubscribe: (streams: WebSocketEvent[]) => {
+        const unsubscribeMessage = {
+          action: "listen",
+          data: {
+            streams,
+          },
+        };
+
+        websocket.send(JSON.stringify(unsubscribeMessage));
+      },
+    };
+  },
 };

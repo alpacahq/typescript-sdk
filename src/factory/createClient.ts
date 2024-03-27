@@ -6,7 +6,7 @@ import {
   createTokenBucket,
 } from "../factory/createTokenBucket.ts";
 
-import { WebSocketClient } from "https://deno.land/x/websocket@v0.1.4/mod.ts";
+import { WebSocketMessage } from "https://deno.land/std@0.92.0/ws/mod.ts";
 
 export type RequestOptions<T> = {
   path: string;
@@ -27,7 +27,7 @@ export type CreateClientOptions = {
 export type ClientContext = {
   options: CreateClientOptions;
   request: <T>(options: RequestOptions<T>) => Promise<T>;
-  websocket: WebSocketClient;
+  websocket: WebSocket;
 };
 
 const clientFactoryMap = {
@@ -40,6 +40,7 @@ const clientFactoryMap = {
   "wss://api.alpaca.markets/stream": trade.websocket,
   // WebSocket (JSON)
   "wss://data.alpaca.markets/stream": marketData.websocket,
+  "wss://stream.data.alpaca.markets/v2/test": marketData.websocket,
 } as const;
 
 export type ClientFactoryMap = {
@@ -56,6 +57,82 @@ export type ClientWithContext<T extends keyof ClientFactoryMap> =
 export const createClient = <T extends keyof ClientFactoryMap>(
   options: CreateClientOptions & { baseURL?: T }
 ): ClientWithContext<T> => {
+  const {
+    key = "",
+    secret = "",
+    token = "",
+  } = {
+    key: options.key || Deno.env.get("APCA_KEY_ID"),
+    secret: options.secret || Deno.env.get("APCA_KEY_SECRET"),
+    token: options.token || Deno.env.get("APCA_ACCESS_TOKEN"),
+  };
+
+  // Check if credentials are provided
+  if (!token && (!key || !secret)) {
+    throw new Error("Missing credentials (need accessToken or key/secret)");
+  }
+
+  // Hold a reference to the WebSocket instance
+  let ws: WebSocket | null = null;
+
+  // Check if the base URL is a WebSocket URL
+  if (options.baseURL.startsWith("wss://")) {
+    // Create a WebSocket instance only for WebSocket base URLs
+    ws = new WebSocket(options.baseURL);
+
+    // Add event listeners to the WebSocket instance
+    ws.addEventListener("open", () => {
+      if (!key || !secret) {
+        throw new Error(
+          "Missing API key or secret for WebSocket authentication"
+        );
+      }
+
+      const authMessage = {
+        action: "auth",
+        key,
+        secret,
+      };
+
+      ws?.send(JSON.stringify(authMessage));
+    });
+
+    ws.addEventListener("message", (event: MessageEvent) => {
+      if (event.data instanceof Blob) {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          const message = reader.result as string;
+          const parsed: WebSocketMessage = JSON.parse(message);
+
+          // Emit a custom event with the parsed message
+          ws?.dispatchEvent(
+            new CustomEvent("customMessage", { detail: parsed })
+          );
+        };
+
+        reader.onerror = () => {
+          console.error("Error reading Blob:", reader.error);
+        };
+
+        reader.readAsText(event.data);
+      } else {
+        const parsed: WebSocketMessage = JSON.parse(event.data);
+
+        // Emit a custom event with the parsed message
+        ws?.dispatchEvent(new CustomEvent("customMessage", { detail: parsed }));
+      }
+    });
+
+    ws.addEventListener("close", () => {
+      console.log("WebSocket connection closed");
+    });
+
+    ws.addEventListener("error", (event: Event) => {
+      console.error("WebSocket error:", event);
+    });
+  }
+
   // Create a token bucket for rate limiting
   const bucket = createTokenBucket(options.tokenBucket);
 
@@ -85,21 +162,6 @@ export const createClient = <T extends keyof ClientFactoryMap>(
       url.search = new URLSearchParams(
         Object.entries(params) as [string, string][]
       ).toString();
-    }
-
-    const {
-      key = "",
-      secret = "",
-      token = "",
-    } = {
-      key: options.key || Deno.env.get("APCA_KEY_ID"),
-      secret: options.secret || Deno.env.get("APCA_KEY_SECRET"),
-      token: options.token || Deno.env.get("APCA_ACCESS_TOKEN"),
-    };
-
-    // Check if credentials are provided
-    if (!token && (!key || !secret)) {
-      throw new Error("Missing credentials (need accessToken or key/secret)");
     }
 
     // Construct the headers
@@ -146,25 +208,23 @@ export const createClient = <T extends keyof ClientFactoryMap>(
     });
   };
 
-  // Create a WebSocket client
-  // const websocket = new StandardWebSocketClient(options.baseURL);
-
   // Create a context object to pass to the client factory
-  const context: ClientContext = {
+  const _context: ClientContext = {
     options,
     request,
-    websocket: null as any,
+    websocket: ws as WebSocket,
   };
 
   // Get the client factory function based on the base URL
-  const clientFactory = clientFactoryMap[options.baseURL as T];
+  const factory = clientFactoryMap[options.baseURL as T];
 
-  if (!clientFactory) {
+  // The factory will be undefined if the base URL is invalid
+  if (!factory) {
     throw new Error("Invalid base URL");
   }
 
   // Create the client using the client factory function
-  const client = clientFactory(context) as ClientFactoryMap[T];
-
-  return Object.assign(client, { _context: context });
+  return Object.assign(factory(_context) as ClientFactoryMap[T], {
+    _context,
+  });
 };

@@ -1060,5 +1060,66 @@ export default {
       },
     },
   }),
-  websocket: ({}: ClientContext) => ({}),
+  websocket: ({ websocket }: ClientContext) => {
+    return {
+      on: (
+        event: WebSocketEvent,
+        callback: (data: WebSocketMessage) => void
+      ) => {
+        const handleMessage = (message: MessageEvent) => {
+          const data = JSON.parse(message.data) as WebSocketMessage[];
+          data.forEach((detail) => {
+            if (detail.T === event) {
+              callback(detail);
+            }
+          });
+        };
+        websocket.addEventListener("message", handleMessage);
+        return () => {
+          websocket.removeEventListener("message", handleMessage);
+        };
+      },
+      subscribe: (channels: SubscribeMessage["channels"]) => {
+        const subscribeMessage: SubscribeMessage = {
+          action: "subscribe",
+          channels,
+        };
+        websocket.send(JSON.stringify(subscribeMessage));
+      },
+      unsubscribe: (channels: UnsubscribeMessage["channels"]) => {
+        const unsubscribeMessage: UnsubscribeMessage = {
+          action: "unsubscribe",
+          channels,
+        };
+        websocket.send(JSON.stringify(unsubscribeMessage));
+      },
+    };
+  },
+};
+
+type WebSocketEvent =
+  | "trade_updates"
+  | "account_updates"
+  | "subscription"
+  | "error"
+  | "success"
+  | "authorization";
+
+type WebSocketMessage = {
+  T: WebSocketEvent;
+  [key: string]: any;
+};
+
+type SubscribeMessage = {
+  action: "subscribe";
+  channels: {
+    [key: string]: string[];
+  };
+};
+
+type UnsubscribeMessage = {
+  action: "unsubscribe";
+  channels: {
+    [key: string]: string[];
+  };
 };

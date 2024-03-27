@@ -9,7 +9,7 @@ export { type TokenBucketOptions } from "./factory/createTokenBucket.ts";
 // factory/createClient.test.ts
 // factory/createClient.ts
 // factory/createTokenBucket.test.ts ✅
-// factory/createTokenBucket.ts ✅
-// util/mockFetch.test.ts ✅
-// util/mockFetch.ts ✅
+// factory/createTokenBucket.ts      ✅
+// util/mockFetch.test.ts            ✅
+// util/mockFetch.ts                 ✅
 // index.ts (this file)
