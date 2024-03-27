@@ -1,3 +1,5 @@
+⚠️ **ALMOST READY; RELEASES THIS WEEK** ⚠️
+
 # typescript-sdk
 
 ![version](https://img.shields.io/badge/dynamic/json?label=version&query=$[0].name&url=https://api.github.com/repos/alpacahq/typescript-sdk/tags&style=flat&color=FF33A0)
