@@ -622,241 +622,287 @@ export interface HistoricalAuctionsParams {
 
 export type MarketDataEventMap = any;
 
-export default ({ request }: ClientContext) => ({
-  v1beta1: {
-    corporate_actions: {
-      get: (queryParams: CorporateActionsQueryParams) =>
-        request<CorporateActionsResponse>({
-          path: "/v1beta1/corporate-actions",
-          method: "GET",
-          params: queryParams,
-        }),
-    },
-    forex: {
-      latest: {
+export default {
+  api: ({ request }: ClientContext) => ({
+    v1beta1: {
+      corporate_actions: {
+        get: (queryParams: CorporateActionsQueryParams) =>
+          request<CorporateActionsResponse>({
+            path: "/v1beta1/corporate-actions",
+            method: "GET",
+            params: queryParams,
+          }),
+      },
+      forex: {
+        latest: {
+          rates: {
+            get: (currencyPairs: string) =>
+              request<LatestForexRatesResponse>({
+                path: "/v1beta1/forex/latest/rates",
+                method: "GET",
+                params: { currency_pairs: currencyPairs },
+              }),
+          },
+        },
         rates: {
-          get: (currencyPairs: string) =>
-            request<LatestForexRatesResponse>({
-              path: "/v1beta1/forex/latest/rates",
+          get: (
+            currencyPairs: string,
+            timeframe: string,
+            start?: string,
+            end?: string,
+            limit?: number,
+            sort?: string,
+            pageToken?: string
+          ) =>
+            request<HistoricalForexRatesResponse>({
+              path: "/v1beta1/forex/rates",
               method: "GET",
-              params: { currency_pairs: currencyPairs },
+              params: {
+                currency_pairs: currencyPairs,
+                timeframe: timeframe,
+                start: start,
+                end: end,
+                limit: limit,
+                sort: sort,
+                page_token: pageToken,
+              },
             }),
         },
       },
-      rates: {
+      logos: {
+        get: (symbol: string, placeholder?: boolean) =>
+          // uhh, not sure yet how to handle this
+          request<unknown>({
+            path: `/v1beta1/logos/${symbol}`,
+            method: "GET",
+            params: { placeholder: placeholder },
+          }),
+      },
+      news: {
         get: (
-          currencyPairs: string,
-          timeframe: string,
           start?: string,
           end?: string,
-          limit?: number,
           sort?: string,
+          symbols?: string,
+          limit?: number,
+          includeContent?: boolean,
+          excludeContentless?: boolean,
           pageToken?: string
         ) =>
-          request<HistoricalForexRatesResponse>({
-            path: "/v1beta1/forex/rates",
+          request<NewsResponse>({
+            path: "/v1beta1/news",
             method: "GET",
             params: {
-              currency_pairs: currencyPairs,
-              timeframe: timeframe,
               start: start,
               end: end,
-              limit: limit,
               sort: sort,
-              page_token: pageToken,
-            },
-          }),
-      },
-    },
-    logos: {
-      get: (symbol: string, placeholder?: boolean) =>
-        // uhh, not sure yet how to handle this
-        request<unknown>({
-          path: `/v1beta1/logos/${symbol}`,
-          method: "GET",
-          params: { placeholder: placeholder },
-        }),
-    },
-    news: {
-      get: (
-        start?: string,
-        end?: string,
-        sort?: string,
-        symbols?: string,
-        limit?: number,
-        includeContent?: boolean,
-        excludeContentless?: boolean,
-        pageToken?: string
-      ) =>
-        request<NewsResponse>({
-          path: "/v1beta1/news",
-          method: "GET",
-          params: {
-            start: start,
-            end: end,
-            sort: sort,
-            symbols: symbols,
-            limit: limit,
-            include_content: includeContent,
-            exclude_contentless: excludeContentless,
-            page_token: pageToken,
-          },
-        }),
-    },
-    options: {
-      bars: {
-        get: (
-          symbols: string,
-          timeframe: string,
-          start?: string,
-          end?: string,
-          limit?: number,
-          pageToken?: string,
-          sort?: string
-        ) =>
-          request<HistoricalOptionBarsResponse>({
-            path: "/v1beta1/options/bars",
-            method: "GET",
-            params: {
               symbols: symbols,
-              timeframe: timeframe,
-              start: start,
-              end: end,
               limit: limit,
+              include_content: includeContent,
+              exclude_contentless: excludeContentless,
               page_token: pageToken,
-              sort: sort,
             },
           }),
       },
-      meta: {
-        exchanges: {
-          get: () =>
-            request<OptionExchangeMapping>({
-              path: "/v1beta1/options/meta/exchanges",
-              method: "GET",
-            }),
-        },
-      },
-      quotes: {
-        latest: {
-          get: (symbols: string, feed?: string) =>
-            request<LatestQuotesResponse>({
-              path: "/v1beta1/options/quotes/latest",
-              method: "GET",
-              params: { symbols, feed },
-            }),
-        },
-      },
-      trades: {
-        latest: {
-          get: (symbols: string, feed?: string) =>
-            request<LatestTradesResponse>({
-              path: "/v1beta1/options/trades/latest",
-              method: "GET",
-              params: { symbols, feed },
-            }),
-        },
-        get: (
-          symbols: string,
-          start?: string,
-          end?: string,
-          limit?: number,
-          pageToken?: string,
-          sort?: string
-        ) =>
-          request<HistoricalTradesResponse>({
-            path: "/v1beta1/options/trades",
-            method: "GET",
-            params: { symbols, start, end, limit, pageToken, sort },
-          }),
-      },
-      snapshots: {
-        get: (symbols: string, feed?: string) =>
-          request<SnapshotsResponse>({
-            path: "/v1beta1/options/snapshots",
-            method: "GET",
-            params: { symbols, feed },
-          }),
-        // snapshotsByUnderlying: (underlyingSymbol: string, feed?: string) =>
-        //   // uhh, not sure yet how to handle this
-        //   request<SnapshotsResponse>({
-        //     path: `/v1beta1/options/snapshots/${underlyingSymbol}`,
-        //     method: "GET",
-        //     params: { feed },
-        //   }),
-      },
-    },
-    screener: {
-      most_actives: {
-        get: (by = "volume", top = 10) =>
-          request<MostActivesResponse>({
-            path: "/v1beta1/screener/stocks/most-actives",
-            method: "GET",
-            params: { by, top },
-          }),
-      },
-      movers: {
-        get: (marketType: string, top: number = 10) =>
-          request<MarketMoversResponse>({
-            path: `/v1beta1/screener/${marketType}/movers`,
-            method: "GET",
-            params: { top },
-          }),
-      },
-    },
-  },
-  v1beta3: {
-    crypto: {
-      bars: {
-        get: (
-          loc: string,
-          symbols: string,
-          timeframe: string,
-          start?: string,
-          end?: string,
-          limit: number = 1000,
-          page_token?: string,
-          sort?: string
-        ) =>
-          request<HistoricalBarsResponse>({
-            path: `/v1beta3/crypto/${loc}/bars`,
-            method: "GET",
-            params: {
-              symbols,
-              timeframe,
-              start,
-              end,
-              limit,
-              page_token,
-              sort,
-            },
-          }),
-      },
-      latest: {
+      options: {
         bars: {
-          get: (loc: string, symbols: string) =>
-            request<LatestBarsResponse>({
-              path: `/v1beta3/crypto/${loc}/latest/bars`,
+          get: (
+            symbols: string,
+            timeframe: string,
+            start?: string,
+            end?: string,
+            limit?: number,
+            pageToken?: string,
+            sort?: string
+          ) =>
+            request<HistoricalOptionBarsResponse>({
+              path: "/v1beta1/options/bars",
               method: "GET",
               params: {
-                symbols,
+                symbols: symbols,
+                timeframe: timeframe,
+                start: start,
+                end: end,
+                limit: limit,
+                page_token: pageToken,
+                sort: sort,
               },
             }),
         },
-        orderbooks: {
-          get: (loc: string, symbols: string) =>
-            request<LatestOrderbooksResponse>({
-              path: `/v1beta3/crypto/${loc}/latest/orderbooks`,
-              method: "GET",
-              params: {
-                symbols,
-              },
-            }),
+        meta: {
+          exchanges: {
+            get: () =>
+              request<OptionExchangeMapping>({
+                path: "/v1beta1/options/meta/exchanges",
+                method: "GET",
+              }),
+          },
         },
         quotes: {
+          latest: {
+            get: (symbols: string, feed?: string) =>
+              request<LatestQuotesResponse>({
+                path: "/v1beta1/options/quotes/latest",
+                method: "GET",
+                params: { symbols, feed },
+              }),
+          },
+        },
+        trades: {
+          latest: {
+            get: (symbols: string, feed?: string) =>
+              request<LatestTradesResponse>({
+                path: "/v1beta1/options/trades/latest",
+                method: "GET",
+                params: { symbols, feed },
+              }),
+          },
+          get: (
+            symbols: string,
+            start?: string,
+            end?: string,
+            limit?: number,
+            pageToken?: string,
+            sort?: string
+          ) =>
+            request<HistoricalTradesResponse>({
+              path: "/v1beta1/options/trades",
+              method: "GET",
+              params: { symbols, start, end, limit, pageToken, sort },
+            }),
+        },
+        snapshots: {
+          get: (symbols: string, feed?: string) =>
+            request<SnapshotsResponse>({
+              path: "/v1beta1/options/snapshots",
+              method: "GET",
+              params: { symbols, feed },
+            }),
+          // snapshotsByUnderlying: (underlyingSymbol: string, feed?: string) =>
+          //   // uhh, not sure yet how to handle this
+          //   request<SnapshotsResponse>({
+          //     path: `/v1beta1/options/snapshots/${underlyingSymbol}`,
+          //     method: "GET",
+          //     params: { feed },
+          //   }),
+        },
+      },
+      screener: {
+        most_actives: {
+          get: (by = "volume", top = 10) =>
+            request<MostActivesResponse>({
+              path: "/v1beta1/screener/stocks/most-actives",
+              method: "GET",
+              params: { by, top },
+            }),
+        },
+        movers: {
+          get: (marketType: string, top: number = 10) =>
+            request<MarketMoversResponse>({
+              path: `/v1beta1/screener/${marketType}/movers`,
+              method: "GET",
+              params: { top },
+            }),
+        },
+      },
+    },
+    v1beta3: {
+      crypto: {
+        bars: {
+          get: (
+            loc: string,
+            symbols: string,
+            timeframe: string,
+            start?: string,
+            end?: string,
+            limit: number = 1000,
+            page_token?: string,
+            sort?: string
+          ) =>
+            request<HistoricalBarsResponse>({
+              path: `/v1beta3/crypto/${loc}/bars`,
+              method: "GET",
+              params: {
+                symbols,
+                timeframe,
+                start,
+                end,
+                limit,
+                page_token,
+                sort,
+              },
+            }),
+        },
+        latest: {
+          bars: {
+            get: (loc: string, symbols: string) =>
+              request<LatestBarsResponse>({
+                path: `/v1beta3/crypto/${loc}/latest/bars`,
+                method: "GET",
+                params: {
+                  symbols,
+                },
+              }),
+          },
+          orderbooks: {
+            get: (loc: string, symbols: string) =>
+              request<LatestOrderbooksResponse>({
+                path: `/v1beta3/crypto/${loc}/latest/orderbooks`,
+                method: "GET",
+                params: {
+                  symbols,
+                },
+              }),
+          },
+          quotes: {
+            get: (loc: string, symbols: string) =>
+              request<LatestQuotesResponse>({
+                path: `/v1beta3/crypto/${loc}/latest/quotes`,
+                method: "GET",
+                params: {
+                  symbols,
+                },
+              }),
+          },
+          trades: {
+            get: (loc: string, symbols: string) =>
+              request<LatestTradesResponse>({
+                path: `/v1beta3/crypto/${loc}/latest/trades`,
+                method: "GET",
+                params: {
+                  symbols,
+                },
+              }),
+          },
+        },
+        quotes: {
+          get: (
+            loc: string,
+            symbols: string,
+            start?: string,
+            end?: string,
+            limit?: number,
+            pageToken?: string,
+            sort?: string
+          ) =>
+            request<HistoricalQuotesResponse>({
+              path: `/v1beta3/crypto/${loc}/quotes`,
+              method: "GET",
+              params: {
+                symbols,
+                start,
+                end,
+                limit,
+                page_token: pageToken,
+                sort,
+              },
+            }),
+        },
+
+        snapshots: {
           get: (loc: string, symbols: string) =>
-            request<LatestQuotesResponse>({
-              path: `/v1beta3/crypto/${loc}/latest/quotes`,
+            request<CryptoSnapshotsResponse>({
+              path: `/v1beta3/crypto/${loc}/snapshots`,
               method: "GET",
               params: {
                 symbols,
@@ -864,198 +910,155 @@ export default ({ request }: ClientContext) => ({
             }),
         },
         trades: {
-          get: (loc: string, symbols: string) =>
-            request<LatestTradesResponse>({
-              path: `/v1beta3/crypto/${loc}/latest/trades`,
+          get: (
+            loc: string,
+            symbols: string,
+            start?: string,
+            end?: string,
+            limit?: number,
+            page_token?: string,
+            sort?: string
+          ) =>
+            request<CryptoHistoricalTradesResponse>({
+              path: `/v1beta3/crypto/${loc}/trades`,
               method: "GET",
               params: {
                 symbols,
+                start,
+                end,
+                limit,
+                page_token,
+                sort,
               },
             }),
         },
       },
-      quotes: {
-        get: (
-          loc: string,
-          symbols: string,
-          start?: string,
-          end?: string,
-          limit?: number,
-          pageToken?: string,
-          sort?: string
-        ) =>
-          request<HistoricalQuotesResponse>({
-            path: `/v1beta3/crypto/${loc}/quotes`,
-            method: "GET",
-            params: {
-              symbols,
-              start,
-              end,
-              limit,
-              page_token: pageToken,
-              sort,
-            },
-          }),
-      },
-
-      snapshots: {
-        get: (loc: string, symbols: string) =>
-          request<CryptoSnapshotsResponse>({
-            path: `/v1beta3/crypto/${loc}/snapshots`,
-            method: "GET",
-            params: {
-              symbols,
-            },
-          }),
-      },
-      trades: {
-        get: (
-          loc: string,
-          symbols: string,
-          start?: string,
-          end?: string,
-          limit?: number,
-          page_token?: string,
-          sort?: string
-        ) =>
-          request<CryptoHistoricalTradesResponse>({
-            path: `/v1beta3/crypto/${loc}/trades`,
-            method: "GET",
-            params: {
-              symbols,
-              start,
-              end,
-              limit,
-              page_token,
-              sort,
-            },
-          }),
-      },
     },
-  },
-  v2: {
-    stocks: {
-      auctions: {
-        get: (
-          symbols: string,
-          start?: string,
-          end?: string,
-          limit?: number,
-          asof?: string,
-          feed?: string,
-          page_token?: string,
-          sort?: string
-        ) =>
-          request<HistoricalAuctionsResponse>({
-            path: `/v2/stocks/auctions`,
-            method: "GET",
-            params: {
-              symbols,
-              start,
-              end,
-              limit,
-              asof,
-              feed,
-              page_token,
-              sort,
+    v2: {
+      stocks: {
+        auctions: {
+          get: (
+            symbols: string,
+            start?: string,
+            end?: string,
+            limit?: number,
+            asof?: string,
+            feed?: string,
+            page_token?: string,
+            sort?: string
+          ) =>
+            request<HistoricalAuctionsResponse>({
+              path: `/v2/stocks/auctions`,
+              method: "GET",
+              params: {
+                symbols,
+                start,
+                end,
+                limit,
+                asof,
+                feed,
+                page_token,
+                sort,
+              },
+            }),
+        },
+        bars: {
+          get: (
+            symbols: string,
+            timeframe: string,
+            start?: string,
+            end?: string,
+            limit?: number,
+            adjustment?: string,
+            asof?: string,
+            feed?: string,
+            page_token?: string,
+            sort?: string
+          ) =>
+            request<HistoricalBarsResponse>({
+              path: `/v2/stocks/bars`,
+              method: "GET",
+              params: {
+                symbols,
+                timeframe,
+                start,
+                end,
+                limit,
+                adjustment,
+                asof,
+                feed,
+                page_token,
+                sort,
+              },
+            }),
+          latest: {
+            get: (symbols: string, feed?: string, currency?: string) =>
+              request<LatestBarsResponse>({
+                path: `/v2/stocks/bars/latest`,
+                method: "GET",
+                params: { symbols, feed, currency },
+              }),
+          },
+        },
+        meta: {
+          conditions: {
+            get: (tickType: string, tape: string) =>
+              request<ConditionCodesResponse>({
+                path: `/v2/stocks/meta/conditions/${tickType}`,
+                method: "GET",
+                params: { tape },
+              }),
+          },
+          exchanges: {
+            get: () =>
+              request<ExchangeCodesResponse>({
+                path: "/v2/stocks/meta/exchanges",
+                method: "GET",
+              }),
+          },
+          quotes: {
+            get: (params: HistoricalQuotesParams) =>
+              request<HistoricalQuotesResponse>({
+                path: "/v2/stocks/quotes",
+                method: "GET",
+                params,
+              }),
+            latest: {
+              get: (params: LatestQuotesParams) =>
+                request<LatestQuotesResponse>({
+                  path: "/v2/stocks/quotes/latest",
+                  method: "GET",
+                  params,
+                }),
             },
-          }),
-      },
-      bars: {
-        get: (
-          symbols: string,
-          timeframe: string,
-          start?: string,
-          end?: string,
-          limit?: number,
-          adjustment?: string,
-          asof?: string,
-          feed?: string,
-          page_token?: string,
-          sort?: string
-        ) =>
-          request<HistoricalBarsResponse>({
-            path: `/v2/stocks/bars`,
-            method: "GET",
-            params: {
-              symbols,
-              timeframe,
-              start,
-              end,
-              limit,
-              adjustment,
-              asof,
-              feed,
-              page_token,
-              sort,
-            },
-          }),
-        latest: {
-          get: (symbols: string, feed?: string, currency?: string) =>
-            request<LatestBarsResponse>({
-              path: `/v2/stocks/bars/latest`,
+          },
+        },
+        snapshots: {
+          get: (params: SnapshotParams) =>
+            request<SnapshotResponse>({
+              path: "/v2/stocks/snapshots",
               method: "GET",
-              params: { symbols, feed, currency },
+              params,
             }),
         },
-      },
-      meta: {
-        conditions: {
-          get: (tickType: string, tape: string) =>
-            request<ConditionCodesResponse>({
-              path: `/v2/stocks/meta/conditions/${tickType}`,
-              method: "GET",
-              params: { tape },
-            }),
-        },
-        exchanges: {
-          get: () =>
-            request<ExchangeCodesResponse>({
-              path: "/v2/stocks/meta/exchanges",
-              method: "GET",
-            }),
-        },
-        quotes: {
-          get: (params: HistoricalQuotesParams) =>
-            request<HistoricalQuotesResponse>({
-              path: "/v2/stocks/quotes",
+        trades: {
+          get: (params: TradeParams) =>
+            request<TradeResponse>({
+              path: "/v2/stocks/trades",
               method: "GET",
               params,
             }),
           latest: {
-            get: (params: LatestQuotesParams) =>
-              request<LatestQuotesResponse>({
-                path: "/v2/stocks/quotes/latest",
+            get: (params: LatestTradeParams) =>
+              request<LatestTradeResponse>({
+                path: "/v2/stocks/trades/latest",
                 method: "GET",
                 params,
               }),
           },
         },
       },
-      snapshots: {
-        get: (params: SnapshotParams) =>
-          request<SnapshotResponse>({
-            path: "/v2/stocks/snapshots",
-            method: "GET",
-            params,
-          }),
-      },
-      trades: {
-        get: (params: TradeParams) =>
-          request<TradeResponse>({
-            path: "/v2/stocks/trades",
-            method: "GET",
-            params,
-          }),
-        latest: {
-          get: (params: LatestTradeParams) =>
-            request<LatestTradeResponse>({
-              path: "/v2/stocks/trades/latest",
-              method: "GET",
-              params,
-            }),
-        },
-      },
     },
-  },
-});
+  }),
+  websocket: ({}: ClientContext) => ({}),
+};

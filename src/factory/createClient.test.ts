@@ -9,8 +9,8 @@ Deno.test(
   () => {
     const client = createClient({
       baseURL: "https://paper-api.alpaca.markets",
-      keyId: "EXAMPLE_KEY_ID",
-      secretKey: "EXAMPLE_KEY_SECRET",
+      key: "EXAMPLE_KEY_ID",
+      secret: "EXAMPLE_KEY_SECRET",
     });
 
     assert(client.v2.account !== undefined);
@@ -23,8 +23,8 @@ Deno.test(
   () => {
     const client = createClient({
       baseURL: "https://data.alpaca.markets",
-      keyId: "EXAMPLE_KEY_ID",
-      secretKey: "EXAMPLE_KEY_SECRET",
+      key: "EXAMPLE_KEY_ID",
+      secret: "EXAMPLE_KEY_SECRET",
     });
 
     assert(client.v2.stocks !== undefined);
@@ -39,8 +39,8 @@ Deno.test("createClient should throw an error with an invalid base URL", () => {
         // deno-lint-ignore ban-ts-comment
         // @ts-expect-error
         baseURL: "https://invalid-url.com",
-        keyId: "EXAMPLE_KEY_ID",
-        secretKey: "EXAMPLE_KEY_SECRET",
+        key: "EXAMPLE_KEY_ID",
+        secret: "EXAMPLE_KEY_SECRET",
       });
     },
     Error,
@@ -56,8 +56,8 @@ Deno.test("createClient should use the provided token bucket options", () => {
 
   const client = createClient({
     baseURL: "https://paper-api.alpaca.markets",
-    keyId: "EXAMPLE_KEY_ID",
-    secretKey: "EXAMPLE_KEY_SECRET",
+    key: "EXAMPLE_KEY_ID",
+    secret: "EXAMPLE_KEY_SECRET",
     tokenBucket: tokenBucketOptions,
   });
 
@@ -69,8 +69,8 @@ Deno.test(
   () => {
     const client = createClient({
       baseURL: "https://paper-api.alpaca.markets",
-      keyId: "EXAMPLE_KEY_ID",
-      secretKey: "EXAMPLE_KEY_SECRET",
+      key: "EXAMPLE_KEY_ID",
+      secret: "EXAMPLE_KEY_SECRET",
     });
 
     assert(client._context.options.tokenBucket === undefined);
@@ -82,14 +82,15 @@ Deno.test(
   async () => {
     const mockResponse = { mock: "data" };
     const originalFetch = globalThis.fetch;
+
     // deno-lint-ignore ban-ts-comment
     // @ts-expect-error
     globalThis.fetch = mockFetch(mockResponse);
 
     const client = createClient({
       baseURL: "https://paper-api.alpaca.markets",
-      keyId: "EXAMPLE_KEY_ID",
-      secretKey: "EXAMPLE_KEY_SECRET",
+      key: "EXAMPLE_KEY_ID",
+      secret: "EXAMPLE_KEY_SECRET",
     });
 
     const response = await client._context.request<typeof mockResponse>({
@@ -97,7 +98,6 @@ Deno.test(
     });
 
     assertEquals(response, mockResponse);
-
     globalThis.fetch = originalFetch;
   }
 );
@@ -114,8 +114,8 @@ Deno.test(
 
     const client = createClient({
       baseURL: "https://paper-api.alpaca.markets",
-      keyId: "EXAMPLE_KEY_ID",
-      secretKey: "EXAMPLE_KEY_SECRET",
+      key: "EXAMPLE_KEY_ID",
+      secret: "EXAMPLE_KEY_SECRET",
       tokenBucket: {
         capacity: 2,
         fillRate: 1,
@@ -134,7 +134,6 @@ Deno.test(
     const elapsedTime = endTime - startTime;
 
     assert(elapsedTime >= 2000, "Requests should be throttled");
-
     globalThis.fetch = originalFetch;
   }
 );

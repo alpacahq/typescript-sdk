@@ -1,4 +1,5 @@
-import { data, trading } from "../api/trade.ts";
+import marketData from "../api/marketData.ts";
+import trade from "../api/trade.ts";
 
 import {
   TokenBucketOptions,
@@ -6,27 +7,42 @@ import {
 } from "../factory/createTokenBucket.ts";
 
 export type RequestOptions<T> = {
-  method?: string;
   path: string;
+  method?: string;
+  data?: object;
   // deno-lint-ignore no-explicit-any
   params?: Record<string, any>;
-  data?: object;
-  responseType?: T;
 };
 
 export type CreateClientOptions = {
   key?: string;
   secret?: string;
-  baseURL?: string;
-  accessToken?: string;
+  token?: string;
+  baseURL: string;
   tokenBucket?: TokenBucketOptions;
 };
-
-export type Client = Trade | MarketData;
 
 export type ClientContext = {
   options: CreateClientOptions;
   request: <T>(options: RequestOptions<T>) => Promise<T>;
+};
+
+const clientFactoryMap = {
+  // REST (JSON)
+  "https://api.alpaca.markets": trade.api,
+  "https://paper-api.alpaca.markets": trade.api,
+  "https://data.alpaca.markets": marketData.api,
+  // WebSocket (binary)
+  "wss://paper-api.alpaca.markets/stream": trade.websocket,
+  "wss://api.alpaca.markets/stream": trade.websocket,
+  // WebSocket (JSON)
+  "wss://data.alpaca.markets/stream": marketData.websocket,
+} as const;
+
+export type ClientFactoryMap = {
+  [K in keyof typeof clientFactoryMap]: ReturnType<
+    (typeof clientFactoryMap)[K]
+  >;
 };
 
 export type ClientWithContext<T extends keyof ClientFactoryMap> =
@@ -34,18 +50,9 @@ export type ClientWithContext<T extends keyof ClientFactoryMap> =
     _context: ClientContext;
   };
 
-export type Trade = ReturnType<typeof trading>;
-export type MarketData = ReturnType<typeof data>;
-
-// Infer the client type based on the base URL
-export type ClientFactoryMap = {
-  "https://paper-api.alpaca.markets": Trade;
-  "https://data.alpaca.markets": MarketData;
-};
-
-export function createClient<T extends keyof ClientFactoryMap>(
-  options: CreateClientOptions & { baseURL: T }
-): ClientWithContext<T> {
+export const createClient = <T extends keyof ClientFactoryMap>(
+  options: CreateClientOptions & { baseURL?: T }
+): ClientWithContext<T> => {
   // Create a token bucket for rate limiting
   const bucket = createTokenBucket(options.tokenBucket);
 
@@ -71,26 +78,47 @@ export function createClient<T extends keyof ClientFactoryMap>(
     const url = new URL(path, options.baseURL);
 
     if (params) {
-      // Add query parameters to the URL
-      for (const [key, value] of Object.entries(params)) {
-        url.searchParams.append(key, value);
-      }
+      // Append query parameters to the URL
+      url.search = new URLSearchParams(
+        Object.entries(params) as [string, string][]
+      ).toString();
+    }
+
+    const {
+      key = "",
+      secret = "",
+      token = "",
+    } = {
+      key: options.key || Deno.env.get("APCA_KEY_ID"),
+      secret: options.secret || Deno.env.get("APCA_KEY_SECRET"),
+      token: options.token || Deno.env.get("APCA_ACCESS_TOKEN"),
+    };
+
+    // Check if credentials are provided
+    if (!token && (!key || !secret)) {
+      throw new Error("Missing credentials (need accessToken or key/secret)");
     }
 
     // Construct the headers
     const headers = new Headers({
-      "APCA-API-KEY-ID": options.key || Deno.env.get("APCA_KEY_ID") || "",
-      "APCA-API-SECRET-KEY":
-        options.secret || Deno.env.get("APCA_KEY_SECRET") || "",
       "Content-Type": "application/json",
     });
+
+    if (token) {
+      // Use the access token for authentication
+      headers.set("Authorization", `Bearer ${token}`);
+    } else {
+      // Use the API key and secret for authentication
+      headers.set("APCA-API-KEY-ID", key);
+      headers.set("APCA-API-SECRET-KEY", secret);
+    }
 
     // Make the request
     return fetch(url, {
       method,
       headers,
       body: data ? JSON.stringify(data) : null,
-    }).then(async (response) => {
+    }).then((response) => {
       if (!response.ok) {
         throw new Error(
           `Failed to ${method} ${url}: ${response.status} ${response.statusText}`
@@ -98,15 +126,15 @@ export function createClient<T extends keyof ClientFactoryMap>(
       }
 
       try {
-        const jsonData = await response.json();
-        return Object.assign(response, { data: jsonData as T }).data;
+        // Parse the response and cast it to the expected type
+        return response.json() as Promise<T>;
       } catch (error) {
         if (
           error instanceof SyntaxError &&
           error.message.includes("Unexpected end of JSON input")
         ) {
           // Return an empty object or a default value instead of throwing an error
-          return Object.assign(response, { data: {} as T }).data;
+          return {} as T;
         }
 
         // Re-throw other errors
@@ -121,22 +149,15 @@ export function createClient<T extends keyof ClientFactoryMap>(
     request,
   };
 
-  // Conditionally return client based on the base URL
-  const factory = (context: ClientContext): ClientWithContext<T> => {
-    let client: ClientFactoryMap[T];
+  // Get the client factory function based on the base URL
+  const clientFactory = clientFactoryMap[options.baseURL as T];
 
-    if (options.baseURL === "https://paper-api.alpaca.markets") {
-      client = trading(context) as ClientFactoryMap[T];
-    } else if (options.baseURL === "https://data.alpaca.markets") {
-      client = data(context) as ClientFactoryMap[T];
-    } else {
-      throw new Error("invalid base URL");
-    }
+  if (!clientFactory) {
+    throw new Error("Invalid base URL");
+  }
 
-    return Object.assign(client, { _context: context });
-  };
+  // Create the client using the client factory function
+  const client = clientFactory(context) as ClientFactoryMap[T];
 
-  return factory(context);
-}
-
-// client.<resource>.<method>(options)
+  return Object.assign(client, { _context: context });
+};
