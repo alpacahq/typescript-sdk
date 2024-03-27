@@ -1,4 +1,4 @@
-<img width="175" alt="CleanShot 2024-03-27 at 04 13 01@2x" src="https://github.com/alpacahq/typescript-sdk/assets/16513382/8f29685b-3eff-4a1c-8217-9d0347990a34">
+<img width="150" alt="CleanShot 2024-03-27 at 04 13 01@2x" src="https://github.com/alpacahq/typescript-sdk/assets/16513382/8f29685b-3eff-4a1c-8217-9d0347990a34">
 
 # typescript-sdk
 
