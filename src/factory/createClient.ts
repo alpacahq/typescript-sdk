@@ -1,6 +1,9 @@
-import { data, trading } from "./rest.ts";
+import { data, trading } from "../api/trade.ts";
 
-import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
+import {
+  TokenBucketOptions,
+  createTokenBucket,
+} from "../factory/createTokenBucket.ts";
 
 export type RequestOptions<T> = {
   method?: string;
