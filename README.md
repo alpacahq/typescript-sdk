@@ -12,7 +12,6 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [Features](#features)
 - [Install](#install)
 - [Usage](#getting-started)
-
   - [Create a Client](#create-a-client)
   - [Configuration](#configuration)
     - [Base URLs](#base-urls)
@@ -142,7 +141,7 @@ The methods are named to reflect the structure of their API paths.
 - `resource` is the REST resource (ex. `account`, `orders`, `assets`, etc.)
 - `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
-Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented below.
+Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. They are also documented below.
 
 #### Methods
 
