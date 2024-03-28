@@ -58,27 +58,48 @@ import { createClient } from "https://cdn.skypack.dev/@alpacahq/typescript-sdk";
 
 ### Create a Client
 
-First, you'll need to create an API key on the Alpaca website. You can do that [here](https://app.alpaca.markets). Once you have an API key, you can use it to create a client. Using OAuth? Simply pass an `access_token` in the credentials object.
+First, you'll need to create an API key on the Alpaca website. You can do that [here](https://app.alpaca.markets). Once you have an API key, you can use it to create a client.
 
 ```ts
 import { createClient } from "@alpacahq/typescript-sdk";
 
 const client = createClient({
-  keyId: "YOUR_API_KEY_ID",
-  secretKey: "YOUR_API_SECRET_KEY",
-  // accessToken: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  key: "YOUR_API_KEY_ID",
+  secret: "YOUR_API_SECRET_KEY",
+  // Or, provide an access token if you're using OAuth.
+  // token: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
 });
 ```
 
+You can also use the `ALPACA_KEY` and `ALPACA_SECRET` environment variables to set your API key and secret. The client will automatically use these values if they are set. They will not override any credentials explicitly passed to `createClient`.
+
 ### Configuration
 
-#### Environments
+Some configuration options are available when creating a client.
 
-The environment (paper or live) is determined by the API key you use. If you use a paper key, the client will make requests to the paper environment. If you use a live key, the client will make requests to the live environment. You can also specify the environment explicitly by passing the `baseURL` option to the `createClient` function.
+#### Base URLs
+
+By default, the client will make requests to the paper environment of the trading API (`https://paper-api.alpaca.markets`). This is a safety measure to prevent accidental trades.
+
+You can change this by passing the `baseURL` option to the `createClient` function. Depending on the environment, you may need to use a different API key. Types will be inferred based on the base URL you provide.
 
 ```ts
 baseURL: "https://paper-api.alpaca.markets",
 ```
+
+The possible values for `baseURL` are:
+
+| Environment | Base URL                                   | Type               |
+| :---------- | :----------------------------------------- | :----------------- |
+| Live        | `https://api.alpaca.markets`               | REST               |
+| Paper       | `https://paper-api.alpaca.markets`         | REST               |
+| Data        | `https://data.alpaca.markets`              | REST               |
+| Live        | `wss://api.alpaca.markets/stream`          | WebSocket (binary) |
+| Paper       | `wss://paper-api.alpaca.markets/stream`    | WebSocket (binary) |
+| Data        | `wss://data.alpaca.markets/stream`         | WebSocket (JSON)   |
+| Data        | `wss://stream.data.alpaca.markets/v2/test` | WebSocket (JSON)   |
+
+When you create a client with a WebSocket URL (`wss://`), a WebSocket connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
 
 #### Rate Limiting
 
@@ -97,28 +118,6 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-#### Example
-
-Below is an example of how to use the REST API.
-
-```ts
-const client = createClient({
-  // ...
-});
-
-// not ready
-
-// {
-//   "id": "e6f8f4f3-3b6b-4b2f-8b2e-4b0e3b3d3e3e",
-//   "account_number": "XXXXXXXXX",
-//   "status": "ACTIVE",
-//   "currency": "USD",
-//   "cash": "1000000",
-//   "cash_withdrawable": "1000000",
-//   ...
-// }
-```
-
 #### Convention
 
 You may notice a pattern in the method names. This is consistent across all methods and mirrors the docs closely.
@@ -132,32 +131,6 @@ You may notice a pattern in the method names. This is consistent across all meth
 - `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
-
-### WebSocket
-
-Below is an example of how to use the WebSocket streams.
-
-```ts
-const {
-  websocket: { account },
-} = createClient({
-  // ...
-});
-
-account.on("trade_updates", "new", (data) => {
-  console.log("New Trade:", data);
-});
-
-(async () => {
-  await account.subscribe([
-    { channel: "trade_updates", symbols: ["AAPL", "MSFT"] },
-  ]);
-
-  console.log("Subscribed to trade updates.");
-})();
-```
-
-Authentication is handled for you by the client on first subscription. The client will automatically reconnect if the connection is lost. If you want to manually reconnect, you can access the WebSocket instance directly.
 
 ## Need Help?
 
