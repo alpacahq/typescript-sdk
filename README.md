@@ -100,7 +100,7 @@ The possible values for `baseURL` are:
 | `wss://data.alpaca.markets/stream`         | Data        | WebSocket (JSON)   |
 | `wss://stream.data.alpaca.markets/v2/test` | Data        | WebSocket (JSON)   |
 
-When you create a client with a WebSocket URL (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
+> Note: When you create a client with a WebSocket URL (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
 
 #### Rate Limiting
 
