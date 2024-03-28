@@ -139,25 +139,25 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 ##### Trading
 
-| Path                                  | Method(s)                        |
-| :------------------------------------ | :------------------------------- |
-| `/v2/account`                         | `get`                            |
-| `/v2/account/portfolio/history`       | `get`                            |
-| `/v2/account/configurations`          | `get`, `patch`                   |
-| `/v2/account/activities`              | `get`                            |
-| `/v2/orders`                          | `get`, `post`, `patch`, `delete` |
-| `/v2/positions`                       | `get`, `delete`                  |
-| `/v2/positions/exercise`              | `post`                           |
-| `/v2/watchlists`                      | `get`, `post`, `patch`, `delete` |
-| `/v2/calendar`                        | `get`                            |
-| `/v2/clock`                           | `get`                            |
-| `/v2/assets`                          | `get`                            |
-| `/v2/options/contracts`               | `get`                            |
-| `/v2/corporate_actions/announcements` | `get`                            |
-| `/v2/wallets`                         | `get`                            |
-| `/v2/wallets/whitelists`              | `get`, `post`, `delete`          |
-| `/v2/wallets/fees/estimate`           | `get`                            |
-| `/v2/wallets/transfers`               | `get`, `post`, `delete`          |
+| Path                                 | Method(s)                        |
+| :----------------------------------- | :------------------------------- |
+| `v2.account`                         | `get`                            |
+| `v2.account.portfolio.history`       | `get`                            |
+| `v2.account.configurations`          | `get`, `patch`                   |
+| `v2.account.activities`              | `get`                            |
+| `v2.orders`                          | `get`, `post`, `patch`, `delete` |
+| `v2.positions`                       | `get`, `delete`                  |
+| `v2.positions.exercise`              | `post`                           |
+| `v2.watchlists`                      | `get`, `post`, `patch`, `delete` |
+| `v2.calendar`                        | `get`                            |
+| `v2.clock`                           | `get`                            |
+| `v2.assets`                          | `get`                            |
+| `v2.options.contracts`               | `get`                            |
+| `v2.corporate_actions.announcements` | `get`                            |
+| `v2.wallets`                         | `get`                            |
+| `v2.wallets.whitelists`              | `get`, `post`, `delete`          |
+| `v2.wallets.fees.estimate`           | `get`                            |
+| `v2.wallets.transfers`               | `get`, `post`, `delete`          |
 
 ##### Market Data
 
