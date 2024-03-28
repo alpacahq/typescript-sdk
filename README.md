@@ -19,9 +19,29 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
   - [REST](#rest)
     - [Convention](#convention)
     - [Examples](#examples)
+      - [Trading](#trading)
+        - [Account](#account)
+        - [Orders](#orders)
+        - [Assets](#assets)
+        - [Positions](#positions)
+        - [Calendar](#calendar)
+        - [Clock](#clock)
+        - [Watchlists](#watchlists)
+        - [Configurations](#account-configurations)
+        - [Activities](#account-activities)
+        - [Portfolio History](#account-portfolio-history)
+      - [Market Data](#market-data)
+        - [Bars](#bars)
+        - [Quotes](#quotes)
+        - [Trades](#trades)
+        - [Last Trade](#last-trade)
+        - [Last Quote](#last-quote)
   - [WebSocket](#websocket)
     - [How It Works](#how-it-works)
     - [Examples](#examples)
+      - [Subscribe](#subscribe)
+      - [Unsubscribe](#unsubscribe)
+      - [Handle Messages](#handle-messages)
 - [Need Help?](#need-help)
 
 ## Features
@@ -139,6 +159,10 @@ todo
 #### How It Works
 
 When you create a client with a WebSocket `baseURL` (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
+
+#### Channels
+
+todo
 
 #### Examples
 
