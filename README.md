@@ -17,7 +17,6 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
     - [Base URLs](#base-urls)
     - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
-    - [Convention](#convention)
     - [Methods](#methods)
       - [Trading](#trading)
       - [Market Data](#market-data)
@@ -124,7 +123,7 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-#### Convention
+#### Methods
 
 You may notice a pattern in the method names. This is consistent across all methods and mirrors the docs closely.
 
@@ -137,8 +136,6 @@ You may notice a pattern in the method names. This is consistent across all meth
 - `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
-
-#### Methods
 
 ##### Trading
 
