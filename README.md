@@ -18,7 +18,10 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
     - [Base URLs](#base-urls)
     - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
-    - [Convention](#convention)
+    - [How It Works](#how-it-works)
+    - [Methods](#methods)
+      - [Trade](#trade)
+      - [Market Data](#market-data)
     - [Examples](#example)
       - [Account](#account)
       - [Orders](#orders)
@@ -26,6 +29,9 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
       - [Market Data](#market-data)
   - [WebSocket](#websocket)
     - [How It Works](#how-it-works)
+    - [Channels](#channels)
+      - [Trade](#trade)
+      - [Market Data](#market-data)
     - [Examples](#examples)
       - [Subscribe](#subscribe)
       - [Unsubscribe](#unsubscribe)
@@ -124,9 +130,9 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-#### Convention
+#### How It Works
 
-You may notice a pattern in the method names. This is consistent across all methods and mirrors the docs closely.
+The methods are named to reflect the structure of their API paths.
 
 ```ts
 {version}.{resource}.{method}()
@@ -136,7 +142,11 @@ You may notice a pattern in the method names. This is consistent across all meth
 - `resource` is the REST resource (ex. `account`, `orders`, `assets`, etc.)
 - `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
-Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
+Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented below.
+
+#### Methods
+
+##### Trade
 
 | Path                                 | Method(s)                        |
 | :----------------------------------- | :------------------------------- |
@@ -157,6 +167,8 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 | `v2.wallets.whitelists`              | `get`, `post`, `delete`          |
 | `v2.wallets.fees.estimate`           | `get`                            |
 | `v2.wallets.transfers`               | `get`, `post`, `delete`          |
+
+##### Market Data
 
 | Path                                   | Method(s) |
 | :------------------------------------- | :-------- |
@@ -199,6 +211,12 @@ When you create a client with a WebSocket `baseURL` (`wss://`), a connection is 
 
 #### Channels
 
+##### Trade
+
+todo
+
+##### Market Data
+
 todo
 
 #### Examples
@@ -208,11 +226,3 @@ todo
 ## Need Help?
 
 The primary maintainer of this project is [@117](https://github.com/117). Feel free to reach out on [Slack](https://alpaca-community.slack.com/join/shared_invite/zt-2ebgo7i1f-HbNoBjPWZ_bX72IVQTkcwg) 👋 or by opening an issue on this repo. I'm happy to help with any questions or issues you may have.
-
-```
-
-```
-
-```
-
-```
