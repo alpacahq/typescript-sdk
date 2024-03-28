@@ -82,13 +82,10 @@ By default, the client will make requests to the paper trading environment (`htt
 You can change this by passing the `baseURL` option to the `createClient` function. Depending on the environment, you may need to use a different API key. Types will be inferred based on the base URL you provide.
 
 ```ts
-{
-  // ...
-  baseURL: "https://paper-api.alpaca.markets",
-}
+baseURL: "https://paper-api.alpaca.markets",
 ```
 
-Here are the possible base URLs:
+Here are the possible `baseURL` values:
 
 | URL                                        | Environment | Type               |
 | :----------------------------------------- | :---------- | :----------------- |
@@ -105,14 +102,11 @@ Here are the possible base URLs:
 You can customize the rate limiting by passing a `tokenBucket` object to the `createClient` function. This object should contain the `capacity` and `fillRate` for the rate limiter.
 
 ```ts
-{
-  // ...
-  tokenBucket: {
-    // Maximum number of tokens that can be stored
-    capacity: 200,
-    // Number of tokens refilled per second
-    fillRate: 60,
-  },
+tokenBucket: {
+  // Maximum number of tokens that can be stored
+  capacity: 200,
+  // Number of tokens refilled per second
+  fillRate: 60,
 }
 ```
 
