@@ -12,24 +12,25 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [Features](#features)
 - [Install](#install)
 - [Usage](#getting-started)
+
   - [Create a Client](#create-a-client)
   - [Configuration](#configuration)
     - [Base URLs](#base-urls)
     - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
-    - [Methods](#methods)
-      - [Trading](#trading)
+    - [Convention](#convention)
+    - [Examples](#example)
+      - [Account](#account)
+      - [Orders](#orders)
+      - [Assets](#assets)
       - [Market Data](#market-data)
-    - [Example](#example)
   - [WebSocket](#websocket)
     - [How It Works](#how-it-works)
-    - [Channels](#channels)
-    - [Methods](#methods)
+    - [Examples](#examples)
       - [Subscribe](#subscribe)
       - [Unsubscribe](#unsubscribe)
       - [Handle Messages](#handle-messages)
-    - [Example](#example)
-- [Need Help?](#need-help)
+  - [Need Help?](#need-help)
 
 ## Features
 
@@ -123,7 +124,7 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### REST
 
-#### Methods
+#### Convention
 
 You may notice a pattern in the method names. This is consistent across all methods and mirrors the docs closely.
 
@@ -136,8 +137,6 @@ You may notice a pattern in the method names. This is consistent across all meth
 - `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
-
-##### Trading
 
 | Path                                 | Method(s)                        |
 | :----------------------------------- | :------------------------------- |
@@ -158,8 +157,6 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 | `v2.wallets.whitelists`              | `get`, `post`, `delete`          |
 | `v2.wallets.fees.estimate`           | `get`                            |
 | `v2.wallets.transfers`               | `get`, `post`, `delete`          |
-
-##### Market Data
 
 | Path                                   | Method(s) |
 | :------------------------------------- | :-------- |
@@ -194,68 +191,6 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 | `v2.stocks.trades`                     | `get`     |
 | `v2.stocks.trades.latest`              | `get`     |
 
-#### Example
-
-Here's a simple example that buys a random stock if the market is open:
-
-```ts
-import { createClient } from "@alpacahq/typescript-sdk";
-
-// Create a client with your API key and secret
-const client = createClient({
-  key: "MY_API_KEY",
-  secret: "MY_API_SECRET",
-  // Not required, but recommended for safety (explicit is better than implicit)
-  baseURL: "https://paper-api.alpaca.markets",
-});
-
-(async () => {
-  // Get the market clock
-  const clock = await client.v2.clock.get();
-
-  // Check if the market is open
-  if (!clock.is_open) {
-    console.log("The market is closed.");
-    return;
-  }
-
-  // Get a random asset
-  const assets = await client.v2.assets.get();
-
-  // Pick a random asset
-  const { symbol } = assets[Math.floor(Math.random() * assets.length)];
-
-  // Place a market order
-  const order = await client.v2.orders.post({
-    // Stock symbol
-    symbol,
-    // One share
-    qty: 1,
-    // Buy order (you can also sell to short)
-    side: "buy",
-    // Market order
-    type: "market",
-    // Good 'til canceled
-    time_in_force: "gtc",
-  });
-
-  // Notifies you that the order was placed
-  console.log(order);
-
-  // {
-  //   id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-  //   client_order_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-  //   created_at: '2021-08-01T00:00:00.000Z',
-  //   updated_at: '2021-08-01T00:00:00.000Z',
-  //   submitted_at: '2021-08-01T00:00:00.000Z',
-  //   filled_at: null,
-  //   ...
-  // }
-})();
-```
-
-There are countless possibilities with the API. You can build trading bots, analyze market data, or create OAuth applications 🚀. What will you build?
-
 ### WebSocket
 
 #### How It Works
@@ -266,11 +201,7 @@ When you create a client with a WebSocket `baseURL` (`wss://`), a connection is 
 
 todo
 
-#### Methods
-
-todo
-
-#### Example
+#### Examples
 
 todo
 
