@@ -100,8 +100,6 @@ Here are the possible base URLs:
 | `wss://data.alpaca.markets/stream`         | Data        | WebSocket (JSON)   |
 | `wss://stream.data.alpaca.markets/v2/test` | Data        | WebSocket (JSON)   |
 
-> Note: When you create a client with a WebSocket URL (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
-
 #### Rate Limiting
 
 You can customize the rate limiting by passing a `tokenBucket` object to the `createClient` function. This object should contain the `capacity` and `fillRate` for the rate limiter.
@@ -141,6 +139,10 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 todo
 
 ### WebSocket
+
+#### How It Works
+
+When you create a client with a WebSocket URL (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
 
 #### Examples
 
