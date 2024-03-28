@@ -145,7 +145,7 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 #### Methods
 
-#### Trade
+##### Trade
 
 These are available on `api` and `paper-api` `baseURL`'s:
 
@@ -169,7 +169,7 @@ These are available on `api` and `paper-api` `baseURL`'s:
 | `v2.wallets.fees.estimate`           | `get`                            |
 | `v2.wallets.transfers`               | `get`, `post`, `delete`          |
 
-#### Market Data
+##### Market Data
 
 These are available on the `https://data.alpaca.markets` `baseURL`:
 
