@@ -196,9 +196,12 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 #### Example
 
-Ready to start building 😁? Here's a simple example that buys a random stock if the market is open. This example assumes you have a funded paper account. **DO NOT** run this code in a live environment, as it will place real trades.
+Ready to start building 😁? Here's a simple example that buys a random stock if the market is open.
+
+First, create a client with your API key and secret.
 
 ```ts
+// main.ts
 import { createClient } from "@alpacahq/typescript-sdk";
 
 // Create a client with your API key and secret
@@ -208,7 +211,12 @@ const client = createClient({
   // Not required, but recommended for safety (explicit is better than implicit)
   baseURL: "https://paper-api.alpaca.markets",
 });
+```
 
+Next, check if the market is open and place a market order for one share of a random stock.
+
+```ts
+// main.ts
 (async () => {
   // Get the market clock
   const clock = await client.v2.clock.get();
@@ -238,8 +246,23 @@ const client = createClient({
     // Good 'til canceled
     time_in_force: "gtc",
   });
+
+  // Notifies you that the order was placed
+  console.log(order);
+
+  // {
+  //   id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  //   client_order_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  //   created_at: '2021-08-01T00:00:00.000Z',
+  //   updated_at: '2021-08-01T00:00:00.000Z',
+  //   submitted_at: '2021-08-01T00:00:00.000Z',
+  //   filled_at: null,
+  //   ...
+  // }
 })();
 ```
+
+There are countless possibilities with the API. You can build trading bots, analyze market data, or create OAuth applications 🚀.
 
 ### WebSocket
 
