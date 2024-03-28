@@ -75,8 +75,6 @@ You can also use the `ALPACA_KEY` and `ALPACA_SECRET` environment variables to s
 
 ### Configuration
 
-Some configuration options are available when creating a client.
-
 #### Base URLs
 
 By default, the client will make requests to the paper environment of the trading API (`https://paper-api.alpaca.markets`). This is a safety measure to prevent accidental trades.
