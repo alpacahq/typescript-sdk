@@ -88,7 +88,7 @@ You can change this by passing the `baseURL` option to the `createClient` functi
 }
 ```
 
-The possible values for `baseURL` are:
+Here are the possible base URLs:
 
 | URL                                        | Environment | Type               |
 | :----------------------------------------- | :---------- | :----------------- |
