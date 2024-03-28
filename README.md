@@ -77,12 +77,15 @@ You can also use the `ALPACA_KEY` and `ALPACA_SECRET` environment variables to s
 
 #### Base URLs
 
-By default, the client will make requests to the paper environment of the trading API (`https://paper-api.alpaca.markets`). This is a safety measure to prevent accidental trades.
+By default, the client will make requests to the paper trading environment (`https://paper-api.alpaca.markets`). This is a safety measure to prevent accidental trades.
 
 You can change this by passing the `baseURL` option to the `createClient` function. Depending on the environment, you may need to use a different API key. Types will be inferred based on the base URL you provide.
 
 ```ts
-baseURL: "https://paper-api.alpaca.markets",
+{
+  // ...
+  baseURL: "https://paper-api.alpaca.markets",
+}
 ```
 
 The possible values for `baseURL` are:
@@ -97,18 +100,21 @@ The possible values for `baseURL` are:
 | Data        | `wss://data.alpaca.markets/stream`         | WebSocket (JSON)   |
 | Data        | `wss://stream.data.alpaca.markets/v2/test` | WebSocket (JSON)   |
 
-When you create a client with a WebSocket URL (`wss://`), a WebSocket connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
+When you create a client with a WebSocket URL (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
 
 #### Rate Limiting
 
 You can customize the rate limiting by passing a `tokenBucket` object to the `createClient` function. This object should contain the `capacity` and `fillRate` for the rate limiter.
 
 ```ts
-tokenBucket: {
-  // Maximum number of tokens that can be stored
-  capacity: 200,
-  // Number of tokens refilled per second
-  fillRate: 60,
+{
+  // ...
+  tokenBucket: {
+    // Maximum number of tokens that can be stored
+    capacity: 200,
+    // Number of tokens refilled per second
+    fillRate: 60,
+  },
 }
 ```
 
@@ -129,6 +135,16 @@ You may notice a pattern in the method names. This is consistent across all meth
 - `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
+
+#### Examples
+
+todo
+
+### WebSocket
+
+#### Examples
+
+todo
 
 ## Need Help?
 
