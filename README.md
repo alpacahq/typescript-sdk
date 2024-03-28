@@ -205,7 +205,7 @@ import { createClient } from "@alpacahq/typescript-sdk";
 const client = createClient({
   key: "MY_API_KEY",
   secret: "MY_API_SECRET",
-  // Not required, but recommended for safety (see above)
+  // Not required, but recommended for safety (explicit is better than implicit)
   baseURL: "https://paper-api.alpaca.markets",
 });
 
