@@ -20,14 +20,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
     - [Methods](#methods)
       - [Trading](#trading)
       - [Market Data](#market-data)
-    - [Examples](#examples)
-      - [Get Clock](#get-clock)
-      - [Get Assets](#get-assets)
-      - [Get Account](#get-my-account)
-      - [Create Order](#create-order)
-      - [Get Position](#get-position)
-      - [Close Position](#close-position)
-      - [Random Bot](#random-bot)
+    - [Tutorial](#tutorial)
   - [WebSocket](#websocket)
     - [How It Works](#how-it-works)
     - [Channels](#channels)
@@ -201,9 +194,220 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 | `v2.stocks.trades`                     | `get`     |
 | `v2.stocks.trades.latest`              | `get`     |
 
-#### Examples
+#### Tutorial
 
-todo
+Ready to start building 😁? Let's walk through creating a simple bot.
+
+##### Requirements
+
+- API key/secret or OAuth token from Alpaca
+- Node.js (v14+) or Deno (v1.8+)
+- TypeScript (v4+)
+
+##### Step 1: Create a Client
+
+First, create a client with your API key and secret. We'll use the paper trading environment for safety.
+
+```ts
+import { createClient } from "@alpacahq/typescript-sdk";
+
+const client = createClient({
+  key: "MY_API_KEY",
+  secret: "MY_API_SECRET",
+  baseURL: "https://paper-api.alpaca.markets",
+});
+```
+
+##### Step 2: Get Account Information
+
+Next, let's get some account information. This will tell us how much cash we have available to trade.
+
+```ts
+const account = await client.v2.account.get();
+console.log(account);
+```
+
+You should see a response like this:
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "status": "ACTIVE",
+  "currency": "USD",
+  "cash": "100000",
+  "buying_power": "100000",
+  "cash_withdrawable": "100000",
+  "portfolio_value": "0",
+  "pattern_day_trader": false,
+  "trading_blocked": false,
+  "transfers_blocked": false
+  // ...
+}
+```
+
+##### Step 3: Place an Order
+
+Now that we know how much cash we have, let's place an order. We'll buy 1 share of Apple (AAPL) at market price.
+
+```ts
+const order = await client.v2.orders.post({
+  symbol: "AAPL",
+  qty: 1,
+  side: "buy",
+  type: "market",
+  time_in_force: "gtc",
+});
+console.log(order);
+```
+
+You should see a response like this:
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "client_order_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "created_at": "2021-06-01T00:00:00Z",
+  "updated_at": "2021-06-01T00:00:00Z",
+  "submitted_at": "2021-06-01T00:00:00Z",
+  "filled_at": null,
+  "expired_at": null,
+  "canceled_at": null,
+  "failed_at": null,
+  "replaced_at": null,
+  "replaced_by": null,
+  "replaces": null,
+  "asset_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "symbol": "AAPL",
+  "asset_class": "us_equity",
+  "qty": "1",
+  "filled_qty": "0",
+  "filled_avg_price": null,
+  "order_class": "",
+  "order_type": "market",
+  "type": "market",
+  "side": "buy",
+  "time_in_force": "gtc",
+  "limit_price": null,
+  "stop_price": null,
+  "status": "accepted",
+  "extended_hours": false,
+  "legs": null,
+  "trail_price": null,
+  "trail_percent": null,
+  "hwm": null
+}
+```
+
+##### Step 4: Check Order Status
+
+Let's check the status of our order to see if it was filled.
+
+```ts
+const order = await client.v2.orders.get(
+  "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+);
+
+if (order.status === "filled") {
+  console.log("Order filled!");
+} else {
+  console.log("Order pending...");
+}
+```
+
+You should see a response like this:
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "client_order_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "created_at": "2021-06-01T00:00:00Z",
+  "updated_at": "2021-06-01T00:00:00Z",
+  "submitted_at": "2021-06-01T00:00:00Z",
+  "filled_at": "2021-06-01T00:00:00Z",
+  "expired_at": null,
+  "canceled_at": null,
+  "failed_at": null,
+  "replaced_at": null,
+  "replaced_by": null,
+  "replaces": null,
+  "asset_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "symbol": "AAPL",
+  "asset_class": "us_equity",
+  "qty": "1",
+  "filled_qty": "1",
+  "filled_avg_price": "100.00",
+  "order_class": "",
+  "order_type": "market",
+  "type": "market",
+  "side": "buy",
+  "time_in_force": "gtc",
+  "limit_price": null,
+  "stop_price": null,
+  "status": "filled",
+  "extended_hours": false,
+  "legs": null,
+  "trail_price": null,
+  "trail_percent": null,
+  "hwm": null
+}
+```
+
+##### Step 5: Sell the Stock
+
+Finally, let's sell the stock we just bought. We'll sell 1 share of Apple (AAPL) at market price.
+
+```ts
+const order = await client.v2.orders.post({
+  symbol: "AAPL",
+  qty: 1,
+  side: "sell",
+  type: "market",
+  time_in_force: "gtc",
+});
+console.log(order);
+```
+
+You should see a response like this:
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "client_order_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "created_at": "2021-06-01T00:00:00Z",
+  "updated_at": "2021-06-01T00:00:00Z",
+  "submitted_at": "2021-06-01T00:00:00Z",
+  "filled_at": null,
+  "expired_at": null,
+  "canceled_at": null,
+  "failed_at": null,
+  "replaced_at": null,
+  "replaced_by": null,
+  "replaces": null,
+  "asset_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "symbol": "AAPL",
+  "asset_class": "us_equity",
+  "qty": "1",
+  "filled_qty": "0",
+  "filled_avg_price": null,
+  "order_class": "",
+  "order_type": "market",
+  "type": "market",
+  "side": "sell",
+  "time_in_force": "gtc",
+  "limit_price": null,
+  "stop_price": null,
+  "status": "accepted",
+  "extended_hours": false,
+  "legs": null,
+  "trail_price": null,
+  "trail_percent": null,
+  "hwm": null
+}
+```
+
+##### Step 6: You're Done!
+
+That's it! You've successfully created a simple bot that buys and sells a stock. You can expand on this by adding more complex logic, like technical indicators or machine learning models.
 
 ### WebSocket
 
@@ -226,3 +430,7 @@ todo
 ## Need Help?
 
 The primary maintainer of this project is [@117](https://github.com/117). Feel free to reach out on [Slack](https://alpaca-community.slack.com/join/shared_invite/zt-2ebgo7i1f-HbNoBjPWZ_bX72IVQTkcwg) 👋 or by opening an issue on this repo. I'm happy to help with any questions or issues you may have.
+
+```
+
+```
