@@ -96,15 +96,15 @@ baseURL: "https://paper-api.alpaca.markets",
 
 Here are the possible `baseURL` values:
 
-| URL                                        | Environment | Type               |
-| :----------------------------------------- | :---------- | :----------------- |
-| `https://api.alpaca.markets`               | Live        | REST               |
-| `https://paper-api.alpaca.markets`         | Paper       | REST               |
-| `https://data.alpaca.markets`              | Data        | REST               |
-| `wss://api.alpaca.markets/stream`          | Live        | WebSocket (binary) |
-| `wss://paper-api.alpaca.markets/stream`    | Paper       | WebSocket (binary) |
-| `wss://data.alpaca.markets/stream`         | Data        | WebSocket (JSON)   |
-| `wss://stream.data.alpaca.markets/v2/test` | Data        | WebSocket (JSON)   |
+| URL                                        | Type               |
+| :----------------------------------------- | :----------------- |
+| `https://api.alpaca.markets`               | REST               |
+| `https://paper-api.alpaca.markets`         | REST               |
+| `https://data.alpaca.markets`              | REST               |
+| `wss://api.alpaca.markets/stream`          | WebSocket (binary) |
+| `wss://paper-api.alpaca.markets/stream`    | WebSocket (binary) |
+| `wss://data.alpaca.markets/stream`         | WebSocket (JSON)   |
+| `wss://stream.data.alpaca.markets/v2/test` | WebSocket (JSON)   |
 
 #### Rate Limiting
 
