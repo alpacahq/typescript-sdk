@@ -90,15 +90,15 @@ You can change this by passing the `baseURL` option to the `createClient` functi
 
 The possible values for `baseURL` are:
 
-| Environment | Base URL                                   | Type               |
-| :---------- | :----------------------------------------- | :----------------- |
-| Live        | `https://api.alpaca.markets`               | REST               |
-| Paper       | `https://paper-api.alpaca.markets`         | REST               |
-| Data        | `https://data.alpaca.markets`              | REST               |
-| Live        | `wss://api.alpaca.markets/stream`          | WebSocket (binary) |
-| Paper       | `wss://paper-api.alpaca.markets/stream`    | WebSocket (binary) |
-| Data        | `wss://data.alpaca.markets/stream`         | WebSocket (JSON)   |
-| Data        | `wss://stream.data.alpaca.markets/v2/test` | WebSocket (JSON)   |
+| URL                                        | Environment | Type               |
+| :----------------------------------------- | :---------- | :----------------- |
+| `https://api.alpaca.markets`               | Live        | REST               |
+| `https://paper-api.alpaca.markets`         | Paper       | REST               |
+| `https://data.alpaca.markets`              | Data        | REST               |
+| `wss://api.alpaca.markets/stream`          | Live        | WebSocket (binary) |
+| `wss://paper-api.alpaca.markets/stream`    | Paper       | WebSocket (binary) |
+| `wss://data.alpaca.markets/stream`         | Data        | WebSocket (JSON)   |
+| `wss://stream.data.alpaca.markets/v2/test` | Data        | WebSocket (JSON)   |
 
 When you create a client with a WebSocket URL (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
 
