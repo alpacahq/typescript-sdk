@@ -19,8 +19,6 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
   - [REST](#rest)
     - [How It Works](#how-it-works)
     - [Methods](#methods)
-      - [Trade](#trade)
-      - [Market Data](#market-data)
     - [Examples](#example)
       - [Account](#account)
       - [Orders](#orders)
@@ -29,8 +27,6 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
   - [WebSocket](#websocket)
     - [How It Works](#how-it-works)
     - [Channels](#channels)
-      - [Trade](#trade)
-      - [Market Data](#market-data)
     - [Examples](#examples)
       - [Subscribe](#subscribe)
       - [Unsubscribe](#unsubscribe)
@@ -145,8 +141,6 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 #### Methods
 
-##### Trade
-
 These are available on `api` and `paper-api` `baseURL`'s:
 
 | Path                                 | Method(s)                        |
@@ -168,8 +162,6 @@ These are available on `api` and `paper-api` `baseURL`'s:
 | `v2.wallets.whitelists`              | `get`, `post`, `delete`          |
 | `v2.wallets.fees.estimate`           | `get`                            |
 | `v2.wallets.transfers`               | `get`, `post`, `delete`          |
-
-##### Market Data
 
 These are available on the `https://data.alpaca.markets` `baseURL`:
 
