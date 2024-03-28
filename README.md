@@ -18,30 +18,18 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
     - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
     - [Convention](#convention)
-    - [Examples](#examples)
+    - [Methods](#methods)
       - [Trading](#trading)
-        - [Account](#account)
-        - [Orders](#orders)
-        - [Assets](#assets)
-        - [Positions](#positions)
-        - [Calendar](#calendar)
-        - [Clock](#clock)
-        - [Watchlists](#watchlists)
-        - [Configurations](#account-configurations)
-        - [Activities](#account-activities)
-        - [Portfolio History](#account-portfolio-history)
       - [Market Data](#market-data)
-        - [Bars](#bars)
-        - [Quotes](#quotes)
-        - [Trades](#trades)
-        - [Last Trade](#last-trade)
-        - [Last Quote](#last-quote)
+    - [Examples](#examples)
   - [WebSocket](#websocket)
     - [How It Works](#how-it-works)
-    - [Examples](#examples)
+    - [Channels](#channels)
+    - [Methods](#methods)
       - [Subscribe](#subscribe)
       - [Unsubscribe](#unsubscribe)
       - [Handle Messages](#handle-messages)
+    - [Examples](#examples)
 - [Need Help?](#need-help)
 
 ## Features
@@ -150,6 +138,65 @@ You may notice a pattern in the method names. This is consistent across all meth
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. The methods are also documented in the source code.
 
+#### Methods
+
+##### Trading
+
+| Path                                  | Method(s)                        |
+| :------------------------------------ | :------------------------------- |
+| `/v2/account`                         | `get`                            |
+| `/v2/account/portfolio/history`       | `get`                            |
+| `/v2/account/configurations`          | `get`, `patch`                   |
+| `/v2/account/activities`              | `get`                            |
+| `/v2/orders`                          | `get`, `post`, `patch`, `delete` |
+| `/v2/positions`                       | `get`, `delete`                  |
+| `/v2/positions/exercise`              | `post`                           |
+| `/v2/watchlists`                      | `get`, `post`, `patch`, `delete` |
+| `/v2/calendar`                        | `get`                            |
+| `/v2/clock`                           | `get`                            |
+| `/v2/assets`                          | `get`                            |
+| `/v2/options/contracts`               | `get`                            |
+| `/v2/corporate_actions/announcements` | `get`                            |
+| `/v2/wallets`                         | `get`                            |
+| `/v2/wallets/whitelists`              | `get`, `post`, `delete`          |
+| `/v2/wallets/fees/estimate`           | `get`                            |
+| `/v2/wallets/transfers`               | `get`, `post`, `delete`          |
+
+##### Market Data
+
+| Path                                   | Method(s) |
+| :------------------------------------- | :-------- |
+| `v1beta1.corporate_actions`            | `get`     |
+| `v1beta1.forex.latest.rates`           | `get`     |
+| `v1beta1.forex.rates`                  | `get`     |
+| `v1beta1.logos`                        | `get`     |
+| `v1beta1.news`                         | `get`     |
+| `v1beta1.options.bars`                 | `get`     |
+| `v1beta1.options.meta.exchanges`       | `get`     |
+| `v1beta1.options.quotes.latest`        | `get`     |
+| `v1beta1.options.trades.latest`        | `get`     |
+| `v1beta1.options.trades`               | `get`     |
+| `v1beta1.options.snapshots`            | `get`     |
+| `v1beta1.screener.stocks.most_actives` | `get`     |
+| `v1beta1.screener.movers`              | `get`     |
+| `v1beta3.crypto.bars`                  | `get`     |
+| `v1beta3.crypto.latest.bars`           | `get`     |
+| `v1beta3.crypto.latest.orderbooks`     | `get`     |
+| `v1beta3.crypto.latest.quotes`         | `get`     |
+| `v1beta3.crypto.latest.trades`         | `get`     |
+| `v1beta3.crypto.quotes`                | `get`     |
+| `v1beta3.crypto.snapshots`             | `get`     |
+| `v1beta3.crypto.trades`                | `get`     |
+| `v2.stocks.auctions`                   | `get`     |
+| `v2.stocks.bars`                       | `get`     |
+| `v2.stocks.bars.latest`                | `get`     |
+| `v2.stocks.meta.conditions`            | `get`     |
+| `v2.stocks.meta.exchanges`             | `get`     |
+| `v2.stocks.meta.quotes`                | `get`     |
+| `v2.stocks.snapshots`                  | `get`     |
+| `v2.stocks.trades`                     | `get`     |
+| `v2.stocks.trades.latest`              | `get`     |
+
 #### Examples
 
 todo
@@ -161,6 +208,10 @@ todo
 When you create a client with a WebSocket `baseURL` (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
 
 #### Channels
+
+todo
+
+#### Methods
 
 todo
 
