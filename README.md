@@ -145,7 +145,7 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 
 #### Methods
 
-##### Trade
+These are available on `api` and `paper-api` `baseURL`'s:
 
 | Path                                 | Method(s)                        |
 | :----------------------------------- | :------------------------------- |
@@ -167,7 +167,7 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 | `v2.wallets.fees.estimate`           | `get`                            |
 | `v2.wallets.transfers`               | `get`, `post`, `delete`          |
 
-##### Market Data
+These are available on the `https://data.alpaca.markets` `baseURL`:
 
 | Path                                   | Method(s) |
 | :------------------------------------- | :-------- |
@@ -209,12 +209,6 @@ Since the client is fully-typed 😁, you can use your IDE to explore the availa
 When you create a client with a WebSocket `baseURL` (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
 
 #### Channels
-
-##### Trade
-
-todo
-
-##### Market Data
 
 todo
 
