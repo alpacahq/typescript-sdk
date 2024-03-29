@@ -21,7 +21,6 @@ jobs:
           DEFAULT_BUMP: patch
           DRY_RUN: true
           RELEASE_BRANCHES: main
-      # todo: remove suffix when package is stable
       - name: update tag with suffix
         run: |
           git tag ${{ steps.tag_version.outputs.new_tag }}-preview
