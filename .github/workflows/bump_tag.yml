@@ -12,6 +12,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: "0"
+      - name: remove '-preview' suffix from tag
+        run: |
+          git tag -l | while read tag; do
+            if [[ $tag == *"-preview" ]]; then
+              new_tag=${tag%-preview}
+              git tag $new_tag $tag
+              git tag -d $tag
+              git push origin :refs/tags/$tag
+              git push origin $new_tag
+            fi
+          done
       - name: bump tag
         id: tag_version
         uses: anothrNick/github-tag-action@1.37.0
@@ -21,7 +32,7 @@ jobs:
           DEFAULT_BUMP: patch
           DRY_RUN: true
           RELEASE_BRANCHES: main
-      - name: update tag
+      - name: add '-preview' suffix to new tag
         run: |
           git tag ${{ steps.tag_version.outputs.new_tag }}-preview
           git push origin ${{ steps.tag_version.outputs.new_tag }}-preview
