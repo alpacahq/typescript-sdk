@@ -12,27 +12,25 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: "0"
-      - name: remove '-preview' suffix from tag
+      - name: get latest tag
+        id: latest_tag
         run: |
-          git tag -l | while read tag; do
-            if [[ $tag == *"-preview" ]]; then
-              new_tag=${tag%-preview}
-              git tag $new_tag $tag
-              git tag -d $tag
-              git push origin :refs/tags/$tag
-              git push origin $new_tag
-            fi
-          done
+          git fetch --tags
+          latest_tag=$(git describe --tags --abbrev=0)
+          echo "::set-output name=tag::$latest_tag"
       - name: bump tag
-        id: tag_version
-        uses: anothrNick/github-tag-action@1.37.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: false
-          DEFAULT_BUMP: patch
-          DRY_RUN: true
-          RELEASE_BRANCHES: main
-      - name: add '-preview' suffix to new tag
-        run: |
-          git tag ${{ steps.tag_version.outputs.new_tag }}-preview
-          git push origin ${{ steps.tag_version.outputs.new_tag }}-preview
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const currentTag = '${{ steps.latest_tag.outputs.tag }}';
+            const [version, suffix] = currentTag.split('-');
+            const [major, minor, patch] = version.split('.').map(Number);
+            const newTag = `${major}.${minor}.${patch + 1}-${suffix || 'preview'}`;
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/${newTag}`,
+              sha: context.sha
+            });
+            console.log(`new tag created: ${newTag}`);
