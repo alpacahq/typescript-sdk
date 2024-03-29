@@ -1,0 +1,22 @@
+name: Deno Test
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.ts"
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.ts"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - name: run tests
+        run: deno test --allow-net --allow-env --allow-read --allow-write
+        working-directory: ./

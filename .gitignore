@@ -1,0 +1,7 @@
+coverage
+lcov.info
+.env
+playground.ts
+dist
+node_modules
+npm

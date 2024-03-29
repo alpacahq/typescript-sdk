@@ -1,0 +1,32 @@
+name: Deno Test Coverage
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.ts"
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.ts"
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - name: generate coverage
+        run: |
+          deno test --allow-all --coverage=coverage
+          deno coverage coverage --lcov > lcov.info
+          TOTAL_LINES=$(grep -o '^DA:[^,]*' lcov.info | wc -l | xargs)
+          COVERED_LINES=$(grep -o '^DA:[^,]*' lcov.info | grep -o '1' | wc -l | xargs)
+          COVERAGE_PERCENT=$((COVERED_LINES * 100 / TOTAL_LINES))
+          echo "Test coverage: $COVERAGE_PERCENT%"
+          if [ "$COVERAGE_PERCENT" -lt 25 ]; then
+            echo "test coverage is below 25%"
+            exit 1
+          fi
+        shell: bash

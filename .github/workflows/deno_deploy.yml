@@ -1,0 +1,29 @@
+name: Deno Deploy
+on:
+  workflow_run:
+    workflows: ["Bump Tag"]
+    types:
+      - completed
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup deno
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.x
+      - name: build npm package
+        run: |
+          deno run -A ./build.ts ${{ github.ref_name }}
+      # - name: setup node
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: "14.x"
+      #     registry-url: "https://registry.npmjs.org"
+      # - name: publish to npm
+      #   run: |
+      #     cd npm
+      #     npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
