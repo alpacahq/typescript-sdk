@@ -21,8 +21,7 @@ jobs:
           DEFAULT_BUMP: patch
           DRY_RUN: true
           RELEASE_BRANCHES: main
-      # trigger init tag
-      - name: update tag with suffix
+      - name: update tag
         run: |
           git tag ${{ steps.tag_version.outputs.new_tag }}-preview
           git push origin ${{ steps.tag_version.outputs.new_tag }}-preview
