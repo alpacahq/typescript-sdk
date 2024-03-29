@@ -16,7 +16,10 @@ jobs:
         id: latest_tag
         run: |
           git fetch --tags
-          latest_tag=$(git describe --tags --abbrev=0)
+          latest_tag=$(git tag --sort=-creatordate | head -n 1)
+          if [ -z "$latest_tag" ]; then
+            latest_tag="0.0.0-preview"
+          fi
           echo "::set-output name=tag::$latest_tag"
       - name: bump tag
         uses: actions/github-script@v6
@@ -33,4 +36,4 @@ jobs:
               ref: `refs/tags/${newTag}`,
               sha: context.sha
             });
-            console.log(`new tag created: ${newTag}`);
+            console.log(`New tag created: ${newTag}`);
