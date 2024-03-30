@@ -50,7 +50,8 @@ Feel free to contribute and PR to your 💖's content.
 
 ## Install
 
-While the SDK is developed with Deno, it can be used in Node as well. The SDK is published as an ESM package on NPM and Skypack.
+> 🚧 **WARNING** 🚧  
+> This SDK is still in development and should not be used in production. The API is subject to change. Please report any issues you encounter. Thank you! 🙏 When the version no longer has the `-preview` suffix.
 
 From NPM:
 
