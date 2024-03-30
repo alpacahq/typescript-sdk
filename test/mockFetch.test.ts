@@ -1,5 +1,5 @@
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
-import { mockFetch } from "../src/utility/mockFetch.ts";
+import { mockFetch } from "../src/util/mockFetch.ts";
 
 Deno.test("mockFetch should return a function", () => {
   const response = { data: "mocked response" };

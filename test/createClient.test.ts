@@ -2,7 +2,7 @@ import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
 import { assertEquals } from "https://deno.land/std@0.220.0/assert/assert_equals.ts";
 import { assertThrows } from "https://deno.land/std@0.220.0/assert/assert_throws.ts";
 import { createClient } from "../src/factory/createClient.ts";
-import { mockFetch } from "../src/utility/mockFetch.ts";
+import { mockFetch } from "../src/util/mockFetch.ts";
 
 Deno.test(
   "createClient should create a trade client with valid options",
