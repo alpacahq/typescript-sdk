@@ -51,7 +51,7 @@ Feel free to contribute and PR to your 💖's content.
 ## Install
 
 > 🚧 **WARNING** 🚧  
-> This SDK is still in development and should not be used in production. The API is subject to change. Please report any issues you encounter. Thank you! 🙏 When the version no longer has the `-preview` suffix.
+> This SDK is currently in development and not yet stable. The API may change. Please report any issues you find. Thank you! 🙏 When the version number loses the `-preview` suffix, the SDK is ready for production use.
 
 From NPM:
 
