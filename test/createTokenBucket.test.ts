@@ -1,5 +1,5 @@
 import { assert } from "https://deno.land/std@0.217.0/assert/assert.ts";
-import { createTokenBucket } from "../factory/createTokenBucket.ts";
+import { createTokenBucket } from "../src/factory/createTokenBucket.ts";
 
 Deno.test(
   "createTokenBucket should allow taking tokens within capacity",
