@@ -17,7 +17,6 @@ await build({
   declaration: "separate",
   package: {
     name: "@alpacahq/typescript-sdk",
-    // @todo: remove "-preview" when the package is stable
     version: Deno.args[0],
     description:
       "A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.",

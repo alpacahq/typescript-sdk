@@ -9,13 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: get latest tag
+        id: latest_tag
+        run: |
+          git fetch --tags
+          latest_tag=$(git describe --tags --abbrev=0)
+          echo "::set-output name=tag::$latest_tag"
       - name: setup deno
         uses: denolib/setup-deno@v2
         with:
           deno-version: v1.x
       - name: build npm package
         run: |
-          deno run -A ./build.ts ${{ github.ref_name }}
+          deno run -A ./build.ts ${{ steps.latest_tag.outputs.tag }}
       - name: setup node
         uses: actions/setup-node@v2
         with:
