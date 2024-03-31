@@ -1,5 +1,7 @@
 import { ClientContext } from "../factory/createClient.ts";
-import { UnstableNumber } from "./_shared.ts";
+
+// Used for fields where the type may change based on the context, such as prices.
+export type UnstableNumber = string | number;
 
 export type AccountStatus =
   | "ONBOARDING"

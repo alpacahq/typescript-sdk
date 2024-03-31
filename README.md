@@ -121,6 +121,8 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 ### Methods
 
+#### Trading API
+
 - [getAccount](#getaccount)
 - [createOrder](#createorder)
 - [getOrders](#getorders)
@@ -160,6 +162,40 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 - [getWhitelists](#getwhitelists)
 - [createWhitelist](#createwhitelist)
 - [removeWhitelist](#removewhitelist)
+
+#### Market Data API
+
+- [getCorporateActions](#getcorporateactions)
+- [getLatestForexRates](#getlatestforexrates)
+- [getHistoricalForexRates](#gethistoricalforexrates)
+- [getLogo](#getlogo)
+- [getNews](#getnews)
+- [getMostActives](#getmostactives)
+- [getMarketMovers](#getmarketmovers)
+- [getOptionsBars](#getoptionsbars)
+- [getOptionsExchanges](#getoptionsexchanges)
+- [getOptionsSnapshots](#getoptionssnapshots)
+- [getOptionsTrades](#getoptionstrades)
+- [getCryptoBars](#getcryptobars)
+- [getCryptoQuotes](#getcryptoquotes)
+- [getCryptoSnapshots](#getcryptosnapshots)
+- [getStocksSnapshots](#getstockssnapshots)
+- [getStocksAuctions](#getstocksauctions)
+- [getHistoricalBars](#gethistoricalbars)
+- [getLatestStocksBars](#getlateststocksbars)
+- [getCryptoTrades](#getcryptotrades)
+- [getStocksConditions](#getstocksconditions)
+- [getStocksExchangeCodes](#getstocksexchangecodes)
+- [getStocksQuotes](#getstocksquotes)
+- [getLatestStocksTrades](#getlateststockstrades)
+- [getStocksTrades](#getstockstrades)
+- [getLatestCryptoBars](#getlatestcryptobars)
+- [getStocksLatestQuotes](#getstockslatestquotes)
+- [getOptionsLatestTrades](#getoptionslatesttrades)
+- [getLatestCryptoOrderbooks](#getlatestcryptoorderbooks)
+- [getLatestStocksQuotes](#getlateststocksquotes)
+- [getLatestCryptoQuotes](#getlatestcryptoquotes)
+- [getLatestCryptoTrades](#getlatestcryptotrades)
 
 ##### Get Account
 
@@ -538,6 +574,319 @@ const options: RemoveWhitelistOptions = {
 };
 
 client.removeWhitelist(options).then(console.log);
+```
+
+##### Get Corporate Actions
+
+```typescript
+client
+  .getCorporateActions({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Latest Forex Rates
+
+```typescript
+client
+  .getLatestForexRates({
+    currency_pairs: "EURUSD,USDJPY",
+  })
+  .then(console.log);
+```
+
+##### Get Historical Forex Rates
+
+```typescript
+client
+  .getHistoricalForexRates({
+    currency_pairs: "EURUSD,USDJPY",
+    timeframe: "1D",
+  })
+  .then(console.log);
+```
+
+##### Get Logo
+
+```typescript
+client
+  .getLogo({
+    symbol: "AAPL",
+  })
+  .then(console.log);
+```
+
+##### Get News
+
+```typescript
+client
+  .getNews({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Most Actives
+
+```typescript
+client
+  .getMostActives({
+    by: "value",
+  })
+  .then(console.log);
+```
+
+##### Get Market Movers
+
+```typescript
+client
+  .getMarketMovers({
+    by: "change",
+  })
+  .then(console.log);
+```
+
+##### Get Options Bars
+
+```typescript
+client
+  .getOptionsBars({
+    symbols: "AAPL220617C00150000,AAPL220617P00150000",
+    timeframe: "1D",
+  })
+  .then(console.log);
+```
+
+##### Get Options Exchanges
+
+```typescript
+client.getOptionsExchanges().then(console.log);
+```
+
+##### Get Options Snapshots
+
+```typescript
+client
+  .getOptionsSnapshots({
+    symbols: "AAPL220617C00150000,AAPL220617P00150000",
+  })
+  .then(console.log);
+```
+
+##### Get Options Trades
+
+```typescript
+client
+  .getOptionsTrades({
+    symbols: "AAPL220617C00150000,AAPL220617P00150000",
+  })
+  .then(console.log);
+```
+
+##### Get Crypto Bars
+
+```typescript
+client
+  .getCryptoBars({
+    symbols: "BTC/USD,ETH/USD",
+    timeframe: "1D",
+  })
+  .then(console.log);
+```
+
+##### Get Crypto Quotes
+
+```typescript
+client
+  .getCryptoQuotes({
+    symbols: "BTC/USD,ETH/USD",
+  })
+  .then(console.log);
+```
+
+##### Get Crypto Snapshots
+
+```typescript
+client
+  .getCryptoSnapshots({
+    loc: "us",
+    symbols: "BTC/USD,ETH/USD",
+  })
+  .then(console.log);
+```
+
+##### Get Stocks Snapshots
+
+```typescript
+client
+  .getStocksSnapshots({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Stocks Auctions
+
+```typescript
+client
+  .getStocksAuctions({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Historical Bars
+
+```typescript
+client
+  .getHistoricalBars({
+    symbols: "AAPL,MSFT",
+    timeframe: "1D",
+  })
+  .then(console.log);
+```
+
+##### Get Latest Stocks Bars
+
+```typescript
+client
+  .getLatestStocksBars({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Crypto Trades
+
+```typescript
+client
+  .getCryptoTrades({
+    loc: "us",
+    symbols: "BTC/USD,ETH/USD",
+  })
+  .then(console.log);
+```
+
+##### Get Stocks Conditions
+
+```typescript
+client
+  .getStocksConditions({
+    tickType: "trades",
+    tape: "A",
+  })
+  .then(console.log);
+```
+
+##### Get Stocks Exchange Codes
+
+```typescript
+client.getStocksExchangeCodes().then(console.log);
+```
+
+##### Get Stocks Quotes
+
+```typescript
+client
+  .getStocksQuotes({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Latest Stocks Trades
+
+```typescript
+client
+  .getLatestStocksTrades({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Stocks Trades
+
+```typescript
+client
+  .getStocksTrades({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Latest Crypto Bars
+
+```typescript
+client
+  .getLatestCryptoBars({
+    loc: "us",
+    symbols: "BTC/USD,ETH/USD",
+  })
+  .then(console.log);
+```
+
+##### Get Stocks Latest Quotes
+
+```typescript
+client
+  .getStocksLatestQuotes({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Options Latest Trades
+
+```typescript
+client
+  .getOptionsLatestTrades({
+    symbols: "AAPL220617C00150000,AAPL220617P00150000",
+  })
+  .then(console.log);
+```
+
+##### Get Latest Crypto Orderbooks
+
+```typescript
+client
+  .getLatestCryptoOrderbooks({
+    loc: "us",
+    symbols: "BTC/USD,ETH/USD",
+  })
+  .then(console.log);
+```
+
+##### Get Latest Stocks Quotes
+
+```typescript
+client
+  .getLatestStocksQuotes({
+    symbols: "AAPL,MSFT",
+  })
+  .then(console.log);
+```
+
+##### Get Latest Crypto Quotes
+
+```typescript
+client
+  .getLatestCryptoQuotes({
+    loc: "us",
+    symbols: "BTC/USD,ETH/USD",
+  })
+  .then(console.log);
+```
+
+##### Get Latest Crypto Trades
+
+```typescript
+client
+  .getLatestCryptoTrades({
+    loc: "us",
+    symbols: "BTC/USD,ETH/USD",
+  })
+  .then(console.log);
 ```
 
 ### WebSocket

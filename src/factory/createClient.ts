@@ -1,138 +1,63 @@
-import marketData from "../api/marketData.ts";
-import trade from "../api/trade.ts";
+import * as marketData from "../api/marketData.ts";
+import * as trade from "../api/trade.ts";
 
-import {
-  TokenBucketOptions,
-  createTokenBucket,
-} from "../factory/createTokenBucket.ts";
+import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
-import { WebSocketMessage } from "https://deno.land/std@0.92.0/ws/mod.ts";
+const baseURLs = {
+  live: "https://api.alpaca.markets",
+  paper: "https://paper-api.alpaca.markets",
+  marketData: "https://data.alpaca.markets",
+};
 
 export type RequestOptions<T> = {
   path: string;
   method?: string;
   data?: object;
-  // deno-lint-ignore no-explicit-any
-  params?: Record<string, any>;
+  params?: object;
 };
 
-export type CreateClientOptions = {
-  key?: string;
-  secret?: string;
-  token?: string;
-  baseURL: string;
-  tokenBucket?: TokenBucketOptions;
+type Client = {
+  [K in keyof typeof trade]: (
+    context: ClientContext
+  ) => ReturnType<(typeof trade)[K]>;
+} & {
+  [K in keyof typeof marketData]: (
+    context: ClientContext
+  ) => ReturnType<(typeof marketData)[K]>;
 };
 
 export type ClientContext = {
   options: CreateClientOptions;
   request: <T>(options: RequestOptions<T>) => Promise<T>;
-  // @todo fix WebSocket type
-  websocket: any;
 };
 
-const clientFactoryMap = {
-  // REST (JSON)
-  "https://api.alpaca.markets": trade.rest,
-  "https://paper-api.alpaca.markets": trade.rest,
-  "https://data.alpaca.markets": marketData.rest,
-  // WebSocket (binary)
-  "wss://paper-api.alpaca.markets/stream": trade.websocket,
-  "wss://api.alpaca.markets/stream": trade.websocket,
-  // WebSocket (JSON)
-  "wss://data.alpaca.markets/stream": marketData.websocket,
-  "wss://stream.data.alpaca.markets/v2/test": marketData.websocket,
-} as const;
-
-export type ClientFactoryMap = {
-  [K in keyof typeof clientFactoryMap]: ReturnType<
-    (typeof clientFactoryMap)[K]
-  >;
+export type CreateClientOptions = {
+  key?: string;
+  secret?: string;
+  accessToken?: string;
+  baseURL?: string;
+  paper?: boolean;
+  tokenBucket?: TokenBucketOptions;
 };
 
-export type ClientWithContext<T extends keyof ClientFactoryMap> =
-  ClientFactoryMap[T] & {
-    _context: ClientContext;
-  };
-
-export const createClient = <T extends keyof ClientFactoryMap>(
-  options: CreateClientOptions & { baseURL?: T }
-): ClientWithContext<T> => {
+export const createClient = (options: CreateClientOptions) => {
   const {
     key = "",
     secret = "",
-    token = "",
+    accessToken = "",
+    paper = true,
   } = {
     key: options.key || Deno.env.get("APCA_KEY_ID"),
     secret: options.secret || Deno.env.get("APCA_KEY_SECRET"),
-    token: options.token || Deno.env.get("APCA_ACCESS_TOKEN"),
+    accessToken: options.accessToken || Deno.env.get("APCA_ACCESS_TOKEN"),
   };
 
   // Check if credentials are provided
-  if (!token && (!key || !secret)) {
+  if (!accessToken && (!key || !secret)) {
     throw new Error("Missing credentials (need accessToken or key/secret)");
   }
 
-  // Hold a reference to the WebSocket instance
-  let ws: WebSocket | null = null;
-
-  // Check if the base URL is a WebSocket URL
-  if (options.baseURL.startsWith("wss://")) {
-    // Create a WebSocket instance only for WebSocket base URLs
-    ws = new WebSocket(options.baseURL);
-
-    // Add event listeners to the WebSocket instance
-    ws.addEventListener("open", () => {
-      if (!key || !secret) {
-        throw new Error(
-          "Missing API key or secret for WebSocket authentication"
-        );
-      }
-
-      const authMessage = {
-        action: "auth",
-        key,
-        secret,
-      };
-
-      ws?.send(JSON.stringify(authMessage));
-    });
-
-    ws.addEventListener("message", (event: MessageEvent) => {
-      if (event.data instanceof Blob) {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          const message = reader.result as string;
-          const parsed: WebSocketMessage = JSON.parse(message);
-
-          // Emit a custom event with the parsed message
-          ws?.dispatchEvent(
-            new CustomEvent("customMessage", { detail: parsed })
-          );
-        };
-
-        reader.onerror = () => {
-          console.error("Error reading Blob:", reader.error);
-        };
-
-        reader.readAsText(event.data);
-      } else {
-        const parsed: WebSocketMessage = JSON.parse(event.data);
-
-        // Emit a custom event with the parsed message
-        ws?.dispatchEvent(new CustomEvent("customMessage", { detail: parsed }));
-      }
-    });
-
-    ws.addEventListener("close", () => {
-      console.log("WebSocket connection closed");
-    });
-
-    ws.addEventListener("error", (event: Event) => {
-      console.error("WebSocket error:", event);
-    });
-  }
+  const baseURL = options.baseURL || (paper ? baseURLs.paper : baseURLs.live);
 
   // Create a token bucket for rate limiting
   const bucket = createTokenBucket(options.tokenBucket);
@@ -156,7 +81,7 @@ export const createClient = <T extends keyof ClientFactoryMap>(
     });
 
     // Construct the URL
-    const url = new URL(path, options.baseURL);
+    const url = new URL(path, baseURL);
 
     if (params) {
       // Append query parameters to the URL
@@ -170,9 +95,9 @@ export const createClient = <T extends keyof ClientFactoryMap>(
       "Content-Type": "application/json",
     });
 
-    if (token) {
+    if (accessToken) {
       // Use the access token for authentication
-      headers.set("Authorization", `Bearer ${token}`);
+      headers.set("Authorization", `Bearer ${accessToken}`);
     } else {
       // Use the API key and secret for authentication
       headers.set("APCA-API-KEY-ID", key);
@@ -196,22 +121,17 @@ export const createClient = <T extends keyof ClientFactoryMap>(
   };
 
   // Create a context object to pass to the client factory
-  const _context: ClientContext = {
+  const context: ClientContext = {
     options,
     request,
-    websocket: ws as WebSocket,
   };
 
-  // Get the client factory function based on the base URL
-  const factory = clientFactoryMap[options.baseURL as T];
-
-  // The factory will be undefined if the base URL is invalid
-  if (!factory) {
-    throw new Error("Invalid base URL");
-  }
-
-  // Create the client using the client factory function
-  return Object.assign(factory(_context) as ClientFactoryMap[T], {
-    _context,
-  });
+  // Return an object with all methods
+  return [...Object.values(trade), ...Object.values(marketData)].reduce(
+    (prev, fn) => ({
+      ...prev,
+      [fn.name]: fn(context),
+    }),
+    {} as Client
+  );
 };
