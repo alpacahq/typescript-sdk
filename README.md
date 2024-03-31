@@ -1,3 +1,6 @@
+> 🚧 **WARNING** 🚧  
+> This SDK is currently in development and not yet stable. The API may change. Please report any issues you find. Thank you! 🙏 When the version number loses the `-preview` suffix, the SDK is ready for production use. You can track progress and join the discussion [here](https://github.com/alpacahq/typescript-sdk/issues/1) 😃.
+
 # typescript-sdk
 
 ![version](https://img.shields.io/badge/dynamic/json?label=version&query=$[0].name&url=https://api.github.com/repos/alpacahq/typescript-sdk/tags&style=flat&color=FF33A0)
@@ -43,9 +46,6 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 Feel free to contribute and PR to your 💖's content.
 
 ## Install
-
-> 🚧 **WARNING** 🚧  
-> This SDK is currently in development and not yet stable. The API may change. Please report any issues you find. Thank you! 🙏 When the version number loses the `-preview` suffix, the SDK is ready for production use.
 
 From NPM:
 
