@@ -16,13 +16,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
     - [Base URLs](#base-urls)
     - [Rate Limiting](#rate-limiting)
   - [REST](#rest)
-    - [How It Works](#how-it-works)
     - [Methods](#methods)
-    - [Examples](#example)
-      - [Account](#account)
-      - [Orders](#orders)
-      - [Assets](#assets)
-      - [Market Data](#market-data)
   - [WebSocket](#websocket)
     - [How It Works](#how-it-works)
     - [Channels](#channels)
@@ -124,20 +118,6 @@ tokenBucket: {
 Bursting is allowed, but the client will block requests if the token bucket is empty. The token bucket is shared across all requests. If you have multiple clients they will not share the same bucket.
 
 ### REST
-
-#### How It Works
-
-The methods are named to reflect the structure of their API paths.
-
-```ts
-{version}.{resource}.{method}()
-```
-
-- `version` is the API version (ex. `v2`)
-- `resource` is the REST resource (ex. `account`, `orders`, `assets`, etc.)
-- `method` is the HTTP method (ex. `get`, `post`, `put`, `delete`, etc.)
-
-Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. They are also documented below.
 
 ### Methods
 
