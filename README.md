@@ -196,7 +196,7 @@ client.getOrders(options).then(console.log);
 
 ```typescript
 const options: GetOrderOptions = {
-  order_id: "123abc",
+  order_id: "xxxxxxxx",
 };
 
 client.getOrder(options).then(console.log);
@@ -206,7 +206,7 @@ client.getOrder(options).then(console.log);
 
 ```typescript
 const options: ReplaceOrderOptions = {
-  order_id: "123abc",
+  order_id: "xxxxxxxx",
   qty: 2,
   limit_price: 150,
 };
@@ -224,7 +224,7 @@ client.cancelOrders().then(console.log);
 
 ```typescript
 const options: CancelOrderOptions = {
-  order_id: "123abc",
+  order_id: "xxxxxxxx",
 };
 
 client.cancelOrder(options).then(console.log);
@@ -348,7 +348,7 @@ client.getCorporateActionsAnnouncements(options).then(console.log);
 
 ```typescript
 const options: GetCorporateActionsAnnouncementOptions = {
-  id: "123abc",
+  id: "xxxxxxxx",
 };
 
 client.getCorporateActionsAnnouncement(options).then(console.log);
@@ -364,7 +364,7 @@ client.getWatchlists().then(console.log);
 
 ```typescript
 const options: GetWatchlistOptions = {
-  watchlist_id: "123abc",
+  watchlist_id: "xxxxxxxx",
 };
 
 client.getWatchlist(options).then(console.log);
@@ -385,7 +385,7 @@ client.createWatchlist(options).then(console.log);
 
 ```typescript
 const options: UpdateWatchlistOptions = {
-  watchlist_id: "123abc",
+  watchlist_id: "xxxxxxxx",
   name: "Updated Watchlist",
   symbols: ["AAPL", "MSFT"],
 };
@@ -397,7 +397,7 @@ client.updateWatchlist(options).then(console.log);
 
 ```typescript
 const options: DeleteWatchlistOptions = {
-  watchlist_id: "123abc",
+  watchlist_id: "xxxxxxxx",
 };
 
 client.deleteWatchlist(options).then(console.log);
@@ -468,7 +468,7 @@ client.getWallet(options).then(console.log);
 ```typescript
 const options: GetFeeEstimateOptions = {
   asset: "BTC",
-  from_address: "abc123",
+  from_address: "xxxxxxxx",
   to_address: "def456",
   amount: "0.1",
 };
@@ -490,7 +490,7 @@ client.getTransfers(options).then(console.log);
 
 ```typescript
 const options: GetTransferOptions = {
-  transfer_id: "123abc",
+  transfer_id: "xxxxxxxx",
 };
 
 client.getTransfer(options).then(console.log);
@@ -502,7 +502,7 @@ client.getTransfer(options).then(console.log);
 const options: CreateTransferOptions = {
   asset: "BTC",
   amount: "0.1",
-  address: "abc123",
+  address: "xxxxxxxx",
 };
 
 client.createTransfer(options).then(console.log);
@@ -513,7 +513,7 @@ client.createTransfer(options).then(console.log);
 ```typescript
 const options: GetWhitelistsOptions = {
   asset: "BTC",
-  address: "abc123",
+  address: "xxxxxxxx",
 };
 
 client.getWhitelists(options).then(console.log);
@@ -524,7 +524,7 @@ client.getWhitelists(options).then(console.log);
 ```typescript
 const options: CreateWhitelistOptions = {
   asset: "BTC",
-  address: "abc123",
+  address: "xxxxxxxx",
 };
 
 client.createWhitelist(options).then(console.log);
@@ -534,7 +534,7 @@ client.createWhitelist(options).then(console.log);
 
 ```typescript
 const options: RemoveWhitelistOptions = {
-  whitelisted_address_id: "123abc",
+  whitelisted_address_id: "xxxxxxxx",
 };
 
 client.removeWhitelist(options).then(console.log);
