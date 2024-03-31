@@ -139,64 +139,426 @@ The methods are named to reflect the structure of their API paths.
 
 Since the client is fully-typed 😁, you can use your IDE to explore the available methods and their parameters. They are also documented below.
 
-#### Methods
+### Methods
 
-These are available on `api` and `paper-api` `baseURL`'s:
+- [getAccount](#getaccount)
+- [createOrder](#createorder)
+- [getOrders](#getorders)
+- [getOrder](#getorder)
+- [replaceOrder](#replaceorder)
+- [cancelOrders](#cancelorders)
+- [cancelOrder](#cancelorder)
+- [getPositions](#getpositions)
+- [getPosition](#getposition)
+- [closePositions](#closepositions)
+- [closePosition](#closeposition)
+- [exerciseOption](#exerciseoption)
+- [getMarketCalendar](#getmarketcalendar)
+- [getMarketClock](#getmarketclock)
+- [getAssets](#getassets)
+- [getAsset](#getasset)
+- [getOptionsContracts](#getoptionscontracts)
+- [getOptionsContract](#getoptionscontract)
+- [getCorporateActionsAnnouncements](#getcorporateactionsannouncements)
+- [getCorporateActionsAnnouncement](#getcorporateactionsannouncement)
+- [getWatchlists](#getwatchlists)
+- [getWatchlist](#getwatchlist)
+- [createWatchlist](#createwatchlist)
+- [updateWatchlist](#updatewatchlist)
+- [deleteWatchlist](#deletewatchlist)
+- [getPortfolioHistory](#getportfoliohistory)
+- [getAccountConfigurations](#getaccountconfigurations)
+- [updateAccountConfigurations](#updateaccountconfigurations)
+- [getAccountActivities](#getaccountactivities)
+- [getAccountActivity](#getaccountactivity)
+- [getWallets](#getwallets)
+- [getWallet](#getwallet)
+- [getFeeEstimate](#getfeeestimate)
+- [getTransfers](#gettransfers)
+- [getTransfer](#gettransfer)
+- [createTransfer](#createtransfer)
+- [getWhitelists](#getwhitelists)
+- [createWhitelist](#createwhitelist)
+- [removeWhitelist](#removewhitelist)
 
-| Path                                 | Method(s)                        |
-| :----------------------------------- | :------------------------------- |
-| `v2.account`                         | `get`                            |
-| `v2.account.portfolio.history`       | `get`                            |
-| `v2.account.configurations`          | `get`, `patch`                   |
-| `v2.account.activities`              | `get`                            |
-| `v2.orders`                          | `get`, `post`, `patch`, `delete` |
-| `v2.positions`                       | `get`, `delete`                  |
-| `v2.positions.exercise`              | `post`                           |
-| `v2.watchlists`                      | `get`, `post`, `patch`, `delete` |
-| `v2.calendar`                        | `get`                            |
-| `v2.clock`                           | `get`                            |
-| `v2.assets`                          | `get`                            |
-| `v2.options.contracts`               | `get`                            |
-| `v2.corporate_actions.announcements` | `get`                            |
-| `v2.wallets`                         | `get`                            |
-| `v2.wallets.whitelists`              | `get`, `post`, `delete`          |
-| `v2.wallets.fees.estimate`           | `get`                            |
-| `v2.wallets.transfers`               | `get`, `post`, `delete`          |
+##### Get Account
 
-These are available on the `https://data.alpaca.markets` `baseURL`:
+```typescript
+client.getAccount().then(console.log);
+```
 
-| Path                                   | Method(s) |
-| :------------------------------------- | :-------- |
-| `v1beta1.corporate_actions`            | `get`     |
-| `v1beta1.forex.latest.rates`           | `get`     |
-| `v1beta1.forex.rates`                  | `get`     |
-| `v1beta1.logos`                        | `get`     |
-| `v1beta1.news`                         | `get`     |
-| `v1beta1.options.bars`                 | `get`     |
-| `v1beta1.options.meta.exchanges`       | `get`     |
-| `v1beta1.options.quotes.latest`        | `get`     |
-| `v1beta1.options.trades.latest`        | `get`     |
-| `v1beta1.options.trades`               | `get`     |
-| `v1beta1.options.snapshots`            | `get`     |
-| `v1beta1.screener.stocks.most_actives` | `get`     |
-| `v1beta1.screener.movers`              | `get`     |
-| `v1beta3.crypto.bars`                  | `get`     |
-| `v1beta3.crypto.latest.bars`           | `get`     |
-| `v1beta3.crypto.latest.orderbooks`     | `get`     |
-| `v1beta3.crypto.latest.quotes`         | `get`     |
-| `v1beta3.crypto.latest.trades`         | `get`     |
-| `v1beta3.crypto.quotes`                | `get`     |
-| `v1beta3.crypto.snapshots`             | `get`     |
-| `v1beta3.crypto.trades`                | `get`     |
-| `v2.stocks.auctions`                   | `get`     |
-| `v2.stocks.bars`                       | `get`     |
-| `v2.stocks.bars.latest`                | `get`     |
-| `v2.stocks.meta.conditions`            | `get`     |
-| `v2.stocks.meta.exchanges`             | `get`     |
-| `v2.stocks.meta.quotes`                | `get`     |
-| `v2.stocks.snapshots`                  | `get`     |
-| `v2.stocks.trades`                     | `get`     |
-| `v2.stocks.trades.latest`              | `get`     |
+##### Create Order
+
+```typescript
+const options: CreateOrderOptions = {
+  symbol: "AAPL",
+  qty: 1,
+  side: "buy",
+  type: "market",
+  time_in_force: "day",
+};
+
+client.createOrder(options).then(console.log);
+```
+
+##### Get Orders
+
+```typescript
+const options: GetOrdersOptions = {
+  status: "open",
+  limit: 10,
+};
+
+client.getOrders(options).then(console.log);
+```
+
+##### Get Order
+
+```typescript
+const options: GetOrderOptions = {
+  order_id: "123abc",
+};
+
+client.getOrder(options).then(console.log);
+```
+
+##### Replace Order
+
+```typescript
+const options: ReplaceOrderOptions = {
+  order_id: "123abc",
+  qty: 2,
+  limit_price: 150,
+};
+
+client.replaceOrder(options).then(console.log);
+```
+
+##### Cancel Orders
+
+```typescript
+client.cancelOrders().then(console.log);
+```
+
+##### Cancel Order
+
+```typescript
+const options: CancelOrderOptions = {
+  order_id: "123abc",
+};
+
+client.cancelOrder(options).then(console.log);
+```
+
+##### Get Positions
+
+```typescript
+client.getPositions().then(console.log);
+```
+
+##### Get Position
+
+```typescript
+const options: GetPositionOptions = {
+  symbol_or_asset_id: "AAPL",
+};
+
+client.getPosition(options).then(console.log);
+```
+
+##### Close Positions
+
+```typescript
+client.closePositions().then(console.log);
+```
+
+##### Close Position
+
+```typescript
+const options: ClosePositionOptions = {
+  symbol_or_asset_id: "AAPL",
+};
+
+client.closePosition(options).then(console.log);
+```
+
+##### Exercise Option
+
+```typescript
+const option: ExerciseOption = {
+  symbol_or_contract_id: "AAPL230623C00130000",
+};
+
+client.exerciseOption(option).then(console.log);
+```
+
+##### Get Market Calendar
+
+```typescript
+const options: GetCalendarOptions = {
+  start: "2023-01-01",
+  end: "2023-12-31",
+};
+
+client.getMarketCalendar(options).then(console.log);
+```
+
+##### Get Market Clock
+
+```typescript
+client.getMarketClock().then(console.log);
+```
+
+##### Get Assets
+
+```typescript
+const options: GetAssetsOptions = {
+  status: "active",
+  asset_class: "us_equity",
+};
+
+client.getAssets(options).then(console.log);
+```
+
+##### Get Asset
+
+```typescript
+const options: GetAssetOptions = {
+  symbol_or_asset_id: "AAPL",
+};
+
+client.getAsset(options).then(console.log);
+```
+
+##### Get Options Contracts
+
+```typescript
+const options: GetOptionsContractsOptions = {
+  underlying_symbols: "AAPL",
+  expiration_date_gte: "2023-06-01",
+  expiration_date_lte: "2023-06-30",
+};
+
+client.getOptionsContracts(options).then(console.log);
+```
+
+##### Get Options Contract
+
+```typescript
+const options: GetOptionsContractOptions = {
+  symbol_or_contract_id: "AAPL230623C00130000",
+};
+
+client.getOptionsContract(options).then(console.log);
+```
+
+##### Get Corporate Actions Announcements
+
+```typescript
+const options: GetCorporateActionsAnnouncementsOptions = {
+  ca_types: "dividend",
+  since: "2023-01-01",
+  until: "2023-12-31",
+};
+
+client.getCorporateActionsAnnouncements(options).then(console.log);
+```
+
+##### Get Corporate Actions Announcement
+
+```typescript
+const options: GetCorporateActionsAnnouncementOptions = {
+  id: "123abc",
+};
+
+client.getCorporateActionsAnnouncement(options).then(console.log);
+```
+
+##### Get Watchlists
+
+```typescript
+client.getWatchlists().then(console.log);
+```
+
+##### Get Watchlist
+
+```typescript
+const options: GetWatchlistOptions = {
+  watchlist_id: "123abc",
+};
+
+client.getWatchlist(options).then(console.log);
+```
+
+##### Create Watchlist
+
+```typescript
+const options: CreateWatchlistOptions = {
+  name: "My Watchlist",
+  symbols: ["AAPL", "AMZN", "GOOG"],
+};
+
+client.createWatchlist(options).then(console.log);
+```
+
+##### Update Watchlist
+
+```typescript
+const options: UpdateWatchlistOptions = {
+  watchlist_id: "123abc",
+  name: "Updated Watchlist",
+  symbols: ["AAPL", "MSFT"],
+};
+
+client.updateWatchlist(options).then(console.log);
+```
+
+##### Delete Watchlist
+
+```typescript
+const options: DeleteWatchlistOptions = {
+  watchlist_id: "123abc",
+};
+
+client.deleteWatchlist(options).then(console.log);
+```
+
+##### Get Portfolio History
+
+```typescript
+const options: GetPortfolioHistoryOptions = {
+  period: "1M",
+  timeframe: "1D",
+};
+
+client.getPortfolioHistory(options).then(console.log);
+```
+
+##### Get Account Configurations
+
+```typescript
+client.getAccountConfigurations().then(console.log);
+```
+
+##### Update Account Configurations
+
+```typescript
+const options: UpdateAccountConfigurationsOptions = {
+  dtbp_check: "both",
+  no_shorting: true,
+};
+
+client.updateAccountConfigurations(options).then(console.log);
+```
+
+##### Get Account Activities
+
+```typescript
+client.getAccountActivities().then(console.log);
+```
+
+##### Get Account Activity
+
+```typescript
+const options: GetAccountActivityOptions = {
+  activity_type: "FILL",
+};
+
+client.getAccountActivity(options).then(console.log);
+```
+
+##### Get Wallets
+
+```typescript
+client.getWallets().then(console.log);
+```
+
+##### Get Wallet
+
+```typescript
+const options: GetWalletOptions = {
+  asset: "BTC",
+};
+
+client.getWallet(options).then(console.log);
+```
+
+##### Get Fee Estimate
+
+```typescript
+const options: GetFeeEstimateOptions = {
+  asset: "BTC",
+  from_address: "abc123",
+  to_address: "def456",
+  amount: "0.1",
+};
+
+client.getFeeEstimate(options).then(console.log);
+```
+
+##### Get Transfers
+
+```typescript
+const options: GetTransfersOptions = {
+  asset: "BTC",
+};
+
+client.getTransfers(options).then(console.log);
+```
+
+##### Get Transfer
+
+```typescript
+const options: GetTransferOptions = {
+  transfer_id: "123abc",
+};
+
+client.getTransfer(options).then(console.log);
+```
+
+##### Create Transfer
+
+```typescript
+const options: CreateTransferOptions = {
+  asset: "BTC",
+  amount: "0.1",
+  address: "abc123",
+};
+
+client.createTransfer(options).then(console.log);
+```
+
+##### Get Whitelists
+
+```typescript
+const options: GetWhitelistsOptions = {
+  asset: "BTC",
+  address: "abc123",
+};
+
+client.getWhitelists(options).then(console.log);
+```
+
+##### Create Whitelist
+
+```typescript
+const options: CreateWhitelistOptions = {
+  asset: "BTC",
+  address: "abc123",
+};
+
+client.createWhitelist(options).then(console.log);
+```
+
+##### Remove Whitelist
+
+```typescript
+const options: RemoveWhitelistOptions = {
+  whitelisted_address_id: "123abc",
+};
+
+client.removeWhitelist(options).then(console.log);
+```
 
 ### WebSocket
 
