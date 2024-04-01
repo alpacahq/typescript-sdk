@@ -86,8 +86,7 @@ export type BaseOrder = {
   stop_price: UnstableNumber;
   status: string;
   extended_hours: boolean;
-  // deno-lint-ignore no-explicit-any
-  legs?: any;
+  legs?: object;
   trail_percent: UnstableNumber;
   trail_price: UnstableNumber;
   hwm: UnstableNumber;
@@ -166,6 +165,18 @@ export const createOrder =
       data,
     });
 
+export type GetOrderOptions = {
+  order_id: string;
+};
+
+export const getOrder =
+  ({ request }: ClientContext) =>
+  ({ order_id }: GetOrderOptions) =>
+    request<Order>({
+      path: `/v2/orders/${order_id}`,
+      method: "GET",
+    });
+
 export type GetOrdersOptions = {
   status?: string;
   limit?: UnstableNumber;
@@ -187,18 +198,6 @@ export const getOrders =
       params,
     });
 
-export type GetOrderOptions = {
-  order_id: string;
-};
-
-export const getOrder =
-  ({ request }: ClientContext) =>
-  ({ order_id }: GetOrderOptions) =>
-    request<Order>({
-      path: `/v2/orders/${order_id}`,
-      method: "GET",
-    });
-
 export type ReplaceOrderOptions = {
   qty?: UnstableNumber;
   time_in_force?: string;
@@ -218,14 +217,6 @@ export const replaceOrder =
       data,
     });
 
-export const cancelOrders =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Order>({
-      path: "/v2/orders",
-      method: "DELETE",
-    });
-
 export type CancelOrderOptions = {
   order_id: string;
 };
@@ -238,12 +229,12 @@ export const cancelOrder =
       method: "DELETE",
     });
 
-export const getPositions =
+export const cancelOrders =
   ({ request }: ClientContext) =>
   () =>
     request<Order>({
-      path: "/v2/positions",
-      method: "GET",
+      path: "/v2/orders",
+      method: "DELETE",
     });
 
 export type GetPositionOptions = {
@@ -258,12 +249,12 @@ export const getPosition =
       method: "GET",
     });
 
-export const closePositions =
+export const getPositions =
   ({ request }: ClientContext) =>
   () =>
     request<Order>({
       path: "/v2/positions",
-      method: "DELETE",
+      method: "GET",
     });
 
 export type ClosePositionOptions = {
@@ -275,6 +266,14 @@ export const closePosition =
   ({ symbol_or_asset_id }: ClosePositionOptions) =>
     request<Order>({
       path: `/v2/positions/${symbol_or_asset_id}`,
+      method: "DELETE",
+    });
+
+export const closePositions =
+  ({ request }: ClientContext) =>
+  () =>
+    request<Order>({
+      path: "/v2/positions",
       method: "DELETE",
     });
 
@@ -309,7 +308,7 @@ export type Calendar = {
   settlement_date: string;
 };
 
-export const getMarketCalendar =
+export const getCalendar =
   ({ request }: ClientContext) =>
   (params: GetCalendarOptions = {}) =>
     request<Calendar[]>({
@@ -325,11 +324,23 @@ export type Clock = {
   next_close: string;
 };
 
-export const getMarketClock =
+export const getClock =
   ({ request }: ClientContext) =>
   () =>
     request<Clock>({
       path: "/v2/clock",
+    });
+
+export type GetAssetOptions = {
+  symbol_or_asset_id: string;
+};
+
+export const getAsset =
+  ({ request }: ClientContext) =>
+  ({ symbol_or_asset_id }: GetAssetOptions) =>
+    request<Asset>({
+      path: `/v2/assets/${symbol_or_asset_id}`,
+      method: "GET",
     });
 
 export type Asset = {
@@ -359,133 +370,6 @@ export const getAssets =
       params,
     });
 
-export type GetAssetOptions = {
-  symbol_or_asset_id: string;
-};
-
-export const getAsset =
-  ({ request }: ClientContext) =>
-  ({ symbol_or_asset_id }: GetAssetOptions) =>
-    request<Asset>({
-      path: `/v2/assets/${symbol_or_asset_id}`,
-      method: "GET",
-    });
-
-export type OptionsContract = {
-  id: string;
-  symbol: string;
-  name: string;
-  status: string;
-  tradable: boolean;
-  tradability: string;
-  chain_id: string;
-  type: string;
-  option_type: string;
-  expiration_date: string;
-  strike_price: string;
-  min_ticks: {
-    above_tick: string;
-    below_tick: string;
-    cutoff_price: string;
-  };
-  option_style: string;
-  created_at: string;
-  updated_at: string;
-  last_trade_date: string;
-  underlying: string;
-  tradable_chain_id: string;
-  chain_symbol: string;
-  description: string;
-  asset_id: string;
-};
-
-export type GetOptionsContractsOptions = {
-  underlying_symbols?: string;
-  status?: string;
-  active?: boolean;
-  expiration_date?: string;
-  expiration_date_gte?: string;
-  expiration_date_lte?: string;
-  root_symbol?: string;
-  type?: string;
-  style?: string;
-  strike_price_gte?: UnstableNumber;
-  strike_price_lte?: UnstableNumber;
-  page_token?: string;
-  limit?: UnstableNumber;
-  symbol_or_contract_id: string;
-};
-
-export const getOptionsContracts =
-  ({ request }: ClientContext) =>
-  (params: GetOptionsContractsOptions) =>
-    request<OptionsContract[]>({
-      path: "/v2/options/contracts",
-      method: "GET",
-      params,
-    });
-
-export type GetOptionsContractOptions = {
-  symbol_or_contract_id: string;
-};
-
-export const getOptionsContract =
-  ({ request }: ClientContext) =>
-  ({ symbol_or_contract_id }: GetOptionsContractOptions) =>
-    request<OptionsContract>({
-      path: `/v2/options/contracts/${symbol_or_contract_id}`,
-      method: "GET",
-    });
-
-export type CorporateActionAnnouncement = {
-  id: string;
-  corporate_actions_id: string;
-  ca_type: string;
-  ca_sub_type: string;
-  initiating_symbol: string;
-  initiating_original_cusip: string;
-  target_symbol: string;
-  target_original_cusip: string;
-  declaration_date: string;
-  expiration_date: string;
-  record_date: string;
-  payable_date: string;
-  cash: string;
-  old_rate: string;
-  new_rate: string;
-};
-
-export type GetCorporateActionsAnnouncementsOptions = {
-  ca_types: string;
-  since: string;
-  until: string;
-  symbol?: string;
-  cusip?: string;
-  date_type?: string;
-  id: string;
-};
-
-export const getCorporateActionsAnnouncements =
-  ({ request }: ClientContext) =>
-  (params: GetCorporateActionsAnnouncementsOptions) =>
-    request<CorporateActionAnnouncement[]>({
-      path: "/v2/corporate_actions/announcements",
-      method: "GET",
-      params,
-    });
-
-export type GetCorporateActionsAnnouncementOptions = {
-  id: string;
-};
-
-export const getCorporateActionsAnnouncement =
-  ({ request }: ClientContext) =>
-  ({ id }: GetCorporateActionsAnnouncementOptions) =>
-    request<CorporateActionAnnouncement>({
-      path: `/v2/corporate_actions/announcements/${id}`,
-      method: "GET",
-    });
-
 export type Watchlist = {
   id: string;
   account_id: string;
@@ -494,13 +378,6 @@ export type Watchlist = {
   name: string;
   assets: Asset[];
 };
-
-export const getWatchlists =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Watchlist>({
-      path: "/v2/watchlists",
-    });
 
 export type GetWatchlistOptions = {
   watchlist_id: string;
@@ -511,6 +388,13 @@ export const getWatchlist =
   ({ watchlist_id }: GetWatchlistOptions) =>
     request<Watchlist>({
       path: `/v2/watchlists/${watchlist_id}`,
+    });
+
+export const getWatchlists =
+  ({ request }: ClientContext) =>
+  () =>
+    request<Watchlist[]>({
+      path: "/v2/watchlists",
     });
 
 export type CreateWatchlistOptions = {
@@ -582,7 +466,7 @@ export const getPortfolioHistory =
       params,
     });
 
-export type AccountConfigurations = {
+export type Configurations = {
   dtbp_check: string;
   trade_confirm_email: string;
   suspend_trade: boolean;
@@ -594,14 +478,14 @@ export type AccountConfigurations = {
   ptp_no_exception_entry: boolean;
 };
 
-export const getAccountConfigurations =
+export const getConfigurations =
   ({ request }: ClientContext) =>
   () =>
-    request<AccountConfigurations>({
+    request<Configurations>({
       path: "/v2/account/configurations",
     });
 
-export type UpdateAccountConfigurationsOptions = {
+export type UpdateConfigurationsOptions = {
   dtbp_check?: string;
   trade_confirm_email?: string;
   suspend_trade?: boolean;
@@ -613,16 +497,16 @@ export type UpdateAccountConfigurationsOptions = {
   ptp_no_exception_entry?: boolean;
 };
 
-export const updateAccountConfigurations =
+export const updateConfigurations =
   ({ request }: ClientContext) =>
-  (data: UpdateAccountConfigurationsOptions) =>
-    request<AccountConfigurations>({
+  (data: UpdateConfigurationsOptions) =>
+    request<Configurations>({
       path: "/v2/account/configurations",
       method: "PATCH",
       data,
     });
 
-export type AccountTradingActivity = {
+export type TradingActivity = {
   activity_type: string;
   id: string;
   cum_qty: string;
@@ -637,7 +521,7 @@ export type AccountTradingActivity = {
   order_status: string;
 };
 
-export type AccountNonTradeActivity = {
+export type NonTradeActivity = {
   activity_type: string;
   id: string;
   date: string;
@@ -647,17 +531,9 @@ export type AccountNonTradeActivity = {
   per_share_amount?: string;
 };
 
-export type AccountActivity = AccountTradingActivity | AccountNonTradeActivity;
+export type Activity = TradingActivity | NonTradeActivity;
 
-export const getAccountActivities =
-  ({ request }: ClientContext) =>
-  () =>
-    request<AccountActivity[]>({
-      path: "/v2/account/activities",
-      method: "GET",
-    });
-
-export type GetAccountActivityOptions = {
+export type GetActivityOptions = {
   activity_type: string;
   activity_types?: string;
   date?: string;
@@ -669,12 +545,134 @@ export type GetAccountActivityOptions = {
   category?: string;
 };
 
-export const getAccountActivity =
+export const getActivity =
   ({ request }: ClientContext) =>
-  ({ activity_type }: GetAccountActivityOptions) =>
-    request<AccountActivity[]>({
+  ({ activity_type }: GetActivityOptions) =>
+    request<Activity[]>({
       path: `/v2/account/activities/${activity_type}`,
       method: "GET",
+    });
+
+export const getActivities =
+  ({ request }: ClientContext) =>
+  () =>
+    request<Activity[]>({
+      path: "/v2/account/activities",
+      method: "GET",
+    });
+
+export type OptionsContract = {
+  id: string;
+  symbol: string;
+  name: string;
+  status: string;
+  tradable: boolean;
+  tradability: string;
+  chain_id: string;
+  type: string;
+  option_type: string;
+  expiration_date: string;
+  strike_price: string;
+  min_ticks: {
+    above_tick: string;
+    below_tick: string;
+    cutoff_price: string;
+  };
+  option_style: string;
+  created_at: string;
+  updated_at: string;
+  last_trade_date: string;
+  underlying: string;
+  tradable_chain_id: string;
+  chain_symbol: string;
+  description: string;
+  asset_id: string;
+};
+
+export type GetOptionsContractOptions = {
+  symbol_or_contract_id: string;
+};
+
+export const getOptionsContract =
+  ({ request }: ClientContext) =>
+  ({ symbol_or_contract_id }: GetOptionsContractOptions) =>
+    request<OptionsContract>({
+      path: `/v2/options/contracts/${symbol_or_contract_id}`,
+      method: "GET",
+    });
+
+export type GetOptionsContractsOptions = {
+  underlying_symbols?: string;
+  status?: string;
+  active?: boolean;
+  expiration_date?: string;
+  expiration_date_gte?: string;
+  expiration_date_lte?: string;
+  root_symbol?: string;
+  type?: string;
+  style?: string;
+  strike_price_gte?: UnstableNumber;
+  strike_price_lte?: UnstableNumber;
+  page_token?: string;
+  limit?: UnstableNumber;
+  symbol_or_contract_id: string;
+};
+
+export const getOptionsContracts =
+  ({ request }: ClientContext) =>
+  (params: GetOptionsContractsOptions) =>
+    request<OptionsContract[]>({
+      path: "/v2/options/contracts",
+      method: "GET",
+      params,
+    });
+
+export type CorporateAction = {
+  id: string;
+  corporate_actions_id: string;
+  ca_type: string;
+  ca_sub_type: string;
+  initiating_symbol: string;
+  initiating_original_cusip: string;
+  target_symbol: string;
+  target_original_cusip: string;
+  declaration_date: string;
+  expiration_date: string;
+  record_date: string;
+  payable_date: string;
+  cash: string;
+  old_rate: string;
+  new_rate: string;
+};
+
+export type GetCorporateActionOptions = {
+  id: string;
+};
+
+export const getCorporateAction =
+  ({ request }: ClientContext) =>
+  ({ id }: GetCorporateActionOptions) =>
+    request<CorporateAction>({
+      path: `/v2/corporate_actions/announcements/${id}`,
+      method: "GET",
+    });
+
+export type GetCorporateActionsOptions = {
+  ca_types: string;
+  since: string;
+  until: string;
+  symbol?: string;
+  cusip?: string;
+  date_type?: string;
+};
+
+export const getCorporateActions =
+  ({ request }: ClientContext) =>
+  (params: GetCorporateActionsOptions) =>
+    request<CorporateAction[]>({
+      path: "/v2/corporate_actions/announcements",
+      method: "GET",
+      params,
     });
 
 export type CryptoWallet = {
@@ -686,19 +684,11 @@ export type CryptoWallet = {
   profile_id: string;
 };
 
-export const getWallets =
-  ({ request }: ClientContext) =>
-  () =>
-    request<CryptoWallet[]>({
-      path: "/v2/wallets",
-      method: "GET",
-    });
-
 export type GetWalletOptions = {
   asset: string;
 };
 
-export const getWallet =
+export const getCryptoWallet =
   ({ request }: ClientContext) =>
   ({ asset }: GetWalletOptions) =>
     request<CryptoWallet>({
@@ -706,13 +696,21 @@ export const getWallet =
       method: "GET",
     });
 
-export type Fee = {
+export const getCryptoWallets =
+  ({ request }: ClientContext) =>
+  () =>
+    request<CryptoWallet[]>({
+      path: "/v2/wallets",
+      method: "GET",
+    });
+
+export type CryptoFee = {
   fee: string;
   network_fee: string;
   estimated_delivery: string;
 };
 
-export type GetFeeEstimateOptions = {
+export type GetCryptoFeeEstimateOptions = {
   asset: string;
   from_address: string;
   to_address: string;
@@ -721,8 +719,8 @@ export type GetFeeEstimateOptions = {
 
 export const getFeeEstimate =
   ({ request }: ClientContext) =>
-  (params: GetFeeEstimateOptions) =>
-    request<Fee>({
+  (params: GetCryptoFeeEstimateOptions) =>
+    request<CryptoFee>({
       path: "/v2/wallets/fees/estimate",
       method: "GET",
       params,
@@ -749,40 +747,40 @@ export type CryptoTransferResponse = {
   transfers?: CryptoTransfer[];
 };
 
-export type GetTransfersOptions = {
+export type GetCryptoTransferOptions = {
+  transfer_id: string;
+};
+
+export const getCryptoTransfer =
+  ({ request }: ClientContext) =>
+  ({ transfer_id }: GetCryptoTransferOptions) =>
+    request<CryptoTransferResponse | CryptoTransfer>({
+      path: `/v2/wallets/transfers/${transfer_id}`,
+      method: "GET",
+    });
+
+export type GetCryptoTransfersOptions = {
   asset?: string;
 };
 
-export const getTransfers =
+export const getCryptoTransfers =
   ({ request }: ClientContext) =>
-  (params?: GetTransfersOptions) =>
+  (params?: GetCryptoTransfersOptions) =>
     request<CryptoTransfer[]>({
       path: "/v2/wallets/transfers",
       method: "GET",
       params,
     });
 
-export type GetTransferOptions = {
-  transfer_id: string;
-};
-
-export const getTransfer =
-  ({ request }: ClientContext) =>
-  ({ transfer_id }: GetTransferOptions) =>
-    request<CryptoTransferResponse | CryptoTransfer>({
-      path: `/v2/wallets/transfers/${transfer_id}`,
-      method: "GET",
-    });
-
-export type CreateTransferOptions = {
+export type CreateCryptoTransferOptions = {
   amount: string;
   address: string;
   asset: string;
 };
 
-export const createTransfer =
+export const createCryptoTransfer =
   ({ request }: ClientContext) =>
-  (data: CreateTransferOptions) =>
+  (data: CreateCryptoTransferOptions) =>
     request<CryptoTransfer>({
       path: "/v2/wallets/transfers",
       method: "POST",
@@ -798,41 +796,49 @@ export type WhitelistedAddress = {
   created_at: string;
 };
 
-export type GetWhitelistsOptions = {
+export type GetCryptoWhitelistedAddressOptions = {
   address: string;
   asset: string;
 };
 
-export const getWhitelists =
+export const getCryptoWhitelistedAddress =
   ({ request }: ClientContext) =>
-  (params: GetWhitelistsOptions) =>
-    request<WhitelistedAddress[]>({
+  (params: GetCryptoWhitelistedAddressOptions) =>
+    request<WhitelistedAddress>({
       path: "/v2/wallets/whitelists",
       method: "GET",
       params,
     });
 
-export type CreateWhitelistOptions = {
+export const getCryptoWhitelistedAddresses =
+  ({ request }: ClientContext) =>
+  () =>
+    request<WhitelistedAddress[]>({
+      path: "/v2/wallets/whitelists",
+      method: "GET",
+    });
+
+export type RequestCryptoWhitelistedAddressOptions = {
   address: string;
   asset: string;
 };
 
-export const createWhitelist =
+export const requestCryptoWhitelistedAddress =
   ({ request }: ClientContext) =>
-  (data: CreateWhitelistOptions) =>
+  (data: RequestCryptoWhitelistedAddressOptions) =>
     request<WhitelistedAddress>({
       path: "/v2/wallets/whitelists",
       method: "POST",
       data,
     });
 
-export type RemoveWhitelistOptions = {
+export type RemoveCryptoWhitelistedAddressOptions = {
   whitelisted_address_id: string;
 };
 
-export const removeWhitelist =
+export const removeCryptoWhitelistedAddress =
   ({ request }: ClientContext) =>
-  ({ whitelisted_address_id }: RemoveWhitelistOptions) =>
+  ({ whitelisted_address_id }: RemoveCryptoWhitelistedAddressOptions) =>
     request({
       path: `/v2/wallets/whitelists/${whitelisted_address_id}`,
       method: "DELETE",
