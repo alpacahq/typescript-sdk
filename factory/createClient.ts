@@ -3,15 +3,18 @@ import * as trade from "../api/trade.ts";
 
 import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
 
-const baseURLs = {
+export const baseURLs = {
   live: "https://api.alpaca.markets",
   paper: "https://paper-api.alpaca.markets",
   marketData: "https://data.alpaca.markets",
-};
+} as const;
+
+type BaseURLKey = keyof typeof baseURLs;
 
 export type RequestOptions<T> = {
   path: string;
   method?: string;
+  baseURL?: (typeof baseURLs)[BaseURLKey];
   data?: object;
   params?: object;
 };

@@ -1,6 +1,6 @@
-type MockResponse = Response | object | string;
+export type MockResponse = Response | object | string;
 
-type MockFetch = (url: string, init?: RequestInit) => Promise<Response>;
+export type MockFetch = (url: string, init?: RequestInit) => Promise<Response>;
 
 // Used to mock the fetch function in tests
 export const mockFetch: (response: MockResponse) => MockFetch =

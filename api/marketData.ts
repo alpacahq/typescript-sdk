@@ -1,4 +1,4 @@
-import { ClientContext } from "../factory/createClient.ts";
+import { ClientContext, baseURLs } from "../factory/createClient.ts";
 
 export type ReverseSplit = {
   symbol: string;
@@ -148,6 +148,7 @@ export type GetStocksCorporateActionsOptions = {
 export const getStocksCorporateActions =
   (context: ClientContext) => (params: GetStocksCorporateActionsOptions) =>
     context.request<CorporateActions>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/corporate-actions",
       method: "GET",
       params,
@@ -162,6 +163,7 @@ export type GetLogoOptions = {
 
 export const getLogo = (context: ClientContext) => (params: GetLogoOptions) =>
   context.request<Logo>({
+    baseURL: baseURLs.marketData,
     path: "/v1beta1/logos/:symbol",
     method: "GET",
     params,
@@ -204,6 +206,7 @@ export type GetNewsOptions = {
 
 export const getNews = (context: ClientContext) => (params: GetNewsOptions) =>
   context.request<News>({
+    baseURL: baseURLs.marketData,
     path: "/v1beta1/news",
     method: "GET",
     params,
@@ -242,6 +245,7 @@ export type GetStocksMostActivesOptions = {
 export const getStocksMostActives =
   (context: ClientContext) => (params: GetStocksMostActivesOptions) =>
     context.request<MostActives>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/screener/stocks/most-actives",
       method: "GET",
       params,
@@ -255,6 +259,7 @@ export type GetStocksMarketMoversOptions = {
 export const getStocksMarketMovers =
   (context: ClientContext) => (params: GetStocksMarketMoversOptions) =>
     context.request<MarketMovers>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/screener/stocks/market-movers",
       method: "GET",
       params,
@@ -280,6 +285,7 @@ export type StocksQuotes = {
 export const getStocksQuotes =
   (context: ClientContext) => (params: GetStocksQuotesOptions) =>
     context.request<StocksQuotes>({
+      baseURL: baseURLs.marketData,
       path: "/v2/stocks/quotes",
       method: "GET",
       params,
@@ -297,6 +303,7 @@ export type StocksQuotesLatest = {
 export const getStocksQuotesLatest =
   (context: ClientContext) => (params: GetStocksQuotesLatestOptions) =>
     context.request<StocksQuotesLatest>({
+      baseURL: baseURLs.marketData,
       path: "/v2/stocks/quotes/latest",
       method: "GET",
       params,
@@ -334,6 +341,7 @@ export type StocksBar = {
 export const getStocksBars =
   (context: ClientContext) => (params: GetStocksBarsOptions) =>
     context.request<StocksBars>({
+      baseURL: baseURLs.marketData,
       path: "/v2/stocks/bars",
       method: "GET",
       params,
@@ -352,6 +360,7 @@ export type StocksBarsLatest = {
 export const getStocksBarsLatest =
   (context: ClientContext) => (params: GetStocksBarsLatestOptions) =>
     context.request<StocksBarsLatest>({
+      baseURL: baseURLs.marketData,
       path: "/v2/stocks/bars/latest",
       method: "GET",
       params,
@@ -384,6 +393,7 @@ export type ForexRates = {
 export const getForexRates =
   (context: ClientContext) => (params: GetForexRatesOptions) =>
     context.request<ForexRates>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/forex/rates",
       method: "GET",
       params,
@@ -402,6 +412,7 @@ export type GetForexRatesLatestOptions = {
 export const getLatestForexRates =
   (context: ClientContext) => (params: GetForexRatesLatestOptions) =>
     context.request<ForexRatesLatest>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/forex/latest/rates",
       method: "GET",
       params,
@@ -460,6 +471,7 @@ export type StockSnapshots = {
 export const getStocksSnapshots =
   (context: ClientContext) => (params: GetStocksSnapshotsOptions) =>
     context.request<StockSnapshots>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/stocks/snapshots",
       method: "GET",
       params,
@@ -497,6 +509,7 @@ export type GetStocksAuctionsOptions = {
 export const getStocksAuctions =
   (context: ClientContext) => (params: GetStocksAuctionsOptions) =>
     context.request<StocksAuctions>({
+      baseURL: baseURLs.marketData,
       path: "/v2/stocks/auctions",
       method: "GET",
       params,
@@ -514,6 +527,7 @@ export type StocksConditions = {
 export const getStocksConditions =
   (context: ClientContext) => (params: GetStocksConditionsOptions) =>
     context.request<StocksConditions>({
+      baseURL: baseURLs.marketData,
       path: `/v2/stocks/meta/conditions/${params.tickType}`,
       method: "GET",
       params: { tape: params.tape },
@@ -525,6 +539,7 @@ export type StocksExchangeCodes = {
 
 export const getStocksExchangeCodes = (context: ClientContext) => () =>
   context.request<StocksExchangeCodes>({
+    baseURL: baseURLs.marketData,
     path: "/v2/stocks/meta/exchanges",
     method: "GET",
   });
@@ -549,6 +564,7 @@ export type StocksTrades = {
 export const getStocksTrades =
   (context: ClientContext) => (params: GetStocksTradesOptions) =>
     context.request<StocksTrades>({
+      baseURL: baseURLs.marketData,
       path: "/v2/stocks/trades",
       method: "GET",
       params,
@@ -567,6 +583,7 @@ export type StocksTradesLatest = {
 export const getStocksTradesLatest =
   (context: ClientContext) => (params: GetStocksTradesLatestOptions) =>
     context.request<StocksTradesLatest>({
+      baseURL: baseURLs.marketData,
       path: "/v2/stocks/trades/latest",
       method: "GET",
       params,
@@ -601,6 +618,7 @@ export type GetOptionsBarsOptions = {
 export const getOptionsBars =
   (context: ClientContext) => (params: GetOptionsBarsOptions) =>
     context.request<OptionsBars>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/options/bars",
       method: "GET",
       params,
@@ -612,6 +630,7 @@ export type OptionsExchanges = {
 
 export const getOptionsExchanges = (context: ClientContext) => () =>
   context.request<OptionsExchanges>({
+    baseURL: baseURLs.marketData,
     path: "/v1beta1/options/meta/exchanges",
     method: "GET",
   });
@@ -652,6 +671,7 @@ export type GetOptionsSnapshotsOptions = {
 export const getOptionsSnapshots =
   (context: ClientContext) => (params: GetOptionsSnapshotsOptions) =>
     context.request<OptionsSnapshots>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/options/snapshots",
       method: "GET",
       params,
@@ -676,6 +696,7 @@ export type OptionsTrades = {
 export const getOptionsTrades =
   (context: ClientContext) => (params: GetOptionsTradesOptions) =>
     context.request<OptionsTrades>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/options/trades",
       method: "GET",
       params,
@@ -696,6 +717,7 @@ export type GetOptionsTradesLatestOptions = {
 export const getOptionsTradesLatest =
   (context: ClientContext) => (params: GetOptionsTradesLatestOptions) =>
     context.request<OptionsTradesLatest>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/options/trades/latest",
       method: "GET",
       params,
@@ -732,6 +754,7 @@ export type CryptoBar = {
 export const getCryptoBars =
   (context: ClientContext) => (params: GetCryptoBarsOptions) =>
     context.request<CryptoBars>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/crypto/bars",
       method: "GET",
       params,
@@ -749,6 +772,7 @@ export type CryptoBarsLatest = {
 export const getLatestCryptoBars =
   (context: ClientContext) => (params: GetCryptoBarsLatestOptions) =>
     context.request<CryptoBarsLatest>({
+      baseURL: baseURLs.marketData,
       path: `/v1beta3/crypto/${params.loc}/latest/bars`,
       method: "GET",
       params: {
@@ -783,6 +807,7 @@ export type CryptoQuotes = {
 export const getCryptoQuotes =
   (context: ClientContext) => (params: GetCryptoQuotesOptions) =>
     context.request<CryptoQuotes>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/crypto/quotes",
       method: "GET",
       params,
@@ -800,6 +825,7 @@ export type GetCryptoQuotesLatestOptions = {
 export const getCryptoQuotesLatest =
   (context: ClientContext) => (params: GetCryptoQuotesLatestOptions) =>
     context.request<CryptoQuotesLatest>({
+      baseURL: baseURLs.marketData,
       path: `/v1beta3/crypto/${params.loc}/latest/quotes`,
       method: "GET",
       params: {
@@ -835,6 +861,7 @@ export type GetCryptoSnapshotsOptions = {
 export const getCryptoSnapshots =
   (context: ClientContext) => (params: GetCryptoSnapshotsOptions) =>
     context.request<CryptoSnapshots>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta1/crypto/snapshots",
       method: "GET",
       params,
@@ -858,6 +885,7 @@ export type CryptoTrades = {
 export const getCryptoTrades =
   (context: ClientContext) => (params: GetCryptoTradesOptions) =>
     context.request<CryptoTrades>({
+      baseURL: baseURLs.marketData,
       path: "/v1beta3/crypto/:loc/trades",
       method: "GET",
       params,
@@ -876,6 +904,7 @@ export type GetCryptoTradesLatestOptions = {
 export const getCryptoTradesLatest =
   (context: ClientContext) => (params: GetCryptoTradesLatestOptions) =>
     context.request<CryptoTradesLatest>({
+      baseURL: baseURLs.marketData,
       path: `/v1beta3/crypto/${params.loc}/latest/trades`,
       method: "GET",
       params: {
@@ -906,6 +935,7 @@ export type GetCryptoOrderbooksLatestOptions = {
 export const getLatestCryptoOrderbooks =
   (context: ClientContext) => (params: GetCryptoOrderbooksLatestOptions) =>
     context.request<CryptoOrderbooksLatest>({
+      baseURL: baseURLs.marketData,
       path: `/v1beta3/crypto/${params.loc}/latest/orderbooks`,
       method: "GET",
       params: {
