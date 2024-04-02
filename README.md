@@ -1026,7 +1026,7 @@ client
 
 #### How It Works
 
-When you create a client with a WebSocket `baseURL` (`wss://`), a connection is automatically established. The SDK provides typed methods on the client for subscribing, unsubscribing, and handling messages. For advanced use cases, you can access the WebSocket client directly through the `_context.websocket` property.
+todo
 
 #### Channels
 
