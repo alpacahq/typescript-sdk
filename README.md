@@ -110,81 +110,81 @@ Bursting is allowed, but the client will block requests if the token bucket is e
 
 #### Trading API
 
-- [getAccount](#getaccount)
-- [createOrder](#createorder)
-- [getOrder](#getorder)
-- [getOrders](#getorders)
-- [replaceOrder](#replaceorder)
-- [cancelOrder](#cancelorder)
-- [cancelOrders](#cancelorders)
-- [getPosition](#getposition)
-- [getPositions](#getpositions)
-- [closePosition](#closeposition)
-- [closePositions](#closepositions)
-- [exerciseOption](#exerciseoption)
-- [getCalendar](#getcalendar)
-- [getClock](#getclock)
-- [getAsset](#getasset)
-- [getAssets](#getassets)
-- [getWatchlist](#getwatchlist)
-- [getWatchlists](#getwatchlists)
-- [createWatchlist](#createwatchlist)
-- [updateWatchlist](#updatewatchlist)
-- [deleteWatchlist](#deletewatchlist)
-- [getPortfolioHistory](#getportfoliohistory)
-- [getConfigurations](#getconfigurations)
-- [updateConfigurations](#updateconfigurations)
-- [getActivity](#getactivity)
-- [getActivities](#getactivities)
-- [getOptionsContract](#getoptionscontract)
-- [getOptionsContracts](#getoptionscontracts)
-- [getCorporateAction](#getcorporateaction)
-- [getCorporateActions](#getcorporateactions)
-- [getCryptoWallet](#getcryptowallet)
-- [getCryptoWallets](#getcryptowallets)
-- [getFeeEstimate](#getfeeestimate)
-- [getCryptoTransfer](#getcryptotransfer)
-- [getCryptoTransfers](#getcryptotransfers)
-- [createCryptoTransfer](#createcryptotransfer)
-- [getCryptoWhitelistedAddress](#getcryptowhitelistedaddress)
-- [getCryptoWhitelistedAddresses](#getcryptowhitelistedaddresses)
-- [requestCryptoWhitelistedAddress](#requestcryptowhitelistedaddress)
-- [removeCryptoWhitelistedAddress](#removecryptowhitelistedaddress)
+- [`getAccount`](#getaccount)
+- [`createOrder`](#createorder)
+- [`getOrder`](#getorder)
+- [`getOrders`](#getorders)
+- [`replaceOrder`](#replaceorder)
+- [`cancelOrder`](#cancelorder)
+- [`cancelOrders`](#cancelorders)
+- [`getPosition`](#getposition)
+- [`getPositions`](#getpositions)
+- [`closePosition`](#closeposition)
+- [`closePositions`](#closepositions)
+- [`exerciseOption`](#exerciseoption)
+- [`getCalendar`](#getcalendar)
+- [`getClock`](#getclock)
+- [`getAsset`](#getasset)
+- [`getAssets`](#getassets)
+- [`getWatchlist`](#getwatchlist)
+- [`getWatchlists`](#getwatchlists)
+- [`createWatchlist`](#createwatchlist)
+- [`updateWatchlist`](#updatewatchlist)
+- [`deleteWatchlist`](#deletewatchlist)
+- [`getPortfolioHistory`](#getportfoliohistory)
+- [`getConfigurations`](#getconfigurations)
+- [`updateConfigurations`](#updateconfigurations)
+- [`getActivity`](#getactivity)
+- [`getActivities`](#getactivities)
+- [`getOptionsContract`](#getoptionscontract)
+- [`getOptionsContracts`](#getoptionscontracts)
+- [`getCorporateAction`](#getcorporateaction)
+- [`getCorporateActions`](#getcorporateactions)
+- [`getCryptoWallet`](#getcryptowallet)
+- [`getCryptoWallets`](#getcryptowallets)
+- [`getFeeEstimate`](#getfeeestimate)
+- [`getCryptoTransfer`](#getcryptotransfer)
+- [`getCryptoTransfers`](#getcryptotransfers)
+- [`createCryptoTransfer`](#createcryptotransfer)
+- [`getCryptoWhitelistedAddress`](#getcryptowhitelistedaddress)
+- [`getCryptoWhitelistedAddresses`](#getcryptowhitelistedaddresses)
+- [`requestCryptoWhitelistedAddress`](#requestcryptowhitelistedaddress)
+- [`removeCryptoWhitelistedAddress`](#removecryptowhitelistedaddress)
 
 #### Market Data API
 
-- [getStocksCorporateActions](#getstockscorporateactions)
-- [getLogo](#getlogo)
-- [getNews](#getnews)
-- [getStocksMostActives](#getstocksmostactives)
-- [getStocksMarketMovers](#getstocksmarketmovers)
-- [getStocksQuotes](#getstocksquotes)
-- [getStocksQuotesLatest](#getstocksquoteslatest)
-- [getStocksBars](#getstocksbars)
-- [getStocksBarsLatest](#getstocksbarslatest)
-- [getForexRates](#getforexrates)
-- [getLatestForexRates](#getlatestforexrates)
-- [getStocksSnapshots](#getstockssnapshots)
-- [getStocksAuctions](#getstocksauctions)
-- [getStocksConditions](#getstocksconditions)
-- [getStocksExchangeCodes](#getstocksexchangecodes)
-- [getStocksTrades](#getstockstrades)
-- [getStocksTradesLatest](#getstockstradeslatest)
-- [getOptionsBars](#getoptionsbars)
-- [getOptionsExchanges](#getoptionsexchanges)
-- [getOptionsSnapshots](#getoptionssnapshots)
-- [getOptionsTrades](#getoptionstrades)
-- [getOptionsTradesLatest](#getoptionstradeslatest)
-- [getCryptoBars](#getcryptobars)
-- [getLatestCryptoBars](#getlatestcryptobars)
-- [getCryptoQuotes](#getcryptoquotes)
-- [getCryptoQuotesLatest](#getcryptoquoteslatest)
-- [getCryptoSnapshots](#getcryptosnapshots)
-- [getCryptoTrades](#getcryptotrades)
-- [getCryptoTradesLatest](#getcryptotradeslatest)
-- [getLatestCryptoOrderbooks](#getlatestcryptoorderbooks)
+- [`getStocksCorporateActions`](#getstockscorporateactions)
+- [`getLogo`](#getlogo)
+- [`getNews`](#getnews)
+- [`getStocksMostActives`](#getstocksmostactives)
+- [`getStocksMarketMovers`](#getstocksmarketmovers)
+- [`getStocksQuotes`](#getstocksquotes)
+- [`getStocksQuotesLatest`](#getstocksquoteslatest)
+- [`getStocksBars`](#getstocksbars)
+- [`getStocksBarsLatest`](#getstocksbarslatest)
+- [`getForexRates`](#getforexrates)
+- [`getLatestForexRates`](#getlatestforexrates)
+- [`getStocksSnapshots`](#getstockssnapshots)
+- [`getStocksAuctions`](#getstocksauctions)
+- [`getStocksConditions`](#getstocksconditions)
+- [`getStocksExchangeCodes`](#getstocksexchangecodes)
+- [`getStocksTrades`](#getstockstrades)
+- [`getStocksTradesLatest`](#getstockstradeslatest)
+- [`getOptionsBars`](#getoptionsbars)
+- [`getOptionsExchanges`](#getoptionsexchanges)
+- [`getOptionsSnapshots`](#getoptionssnapshots)
+- [`getOptionsTrades`](#getoptionstrades)
+- [`getOptionsTradesLatest`](#getoptionstradeslatest)
+- [`getCryptoBars`](#getcryptobars)
+- [`getLatestCryptoBars`](#getlatestcryptobars)
+- [`getCryptoQuotes`](#getcryptoquotes)
+- [`getCryptoQuotesLatest`](#getcryptoquoteslatest)
+- [`getCryptoSnapshots`](#getcryptosnapshots)
+- [`getCryptoTrades`](#getcryptotrades)
+- [`getCryptoTradesLatest`](#getcryptotradeslatest)
+- [`getLatestCryptoOrderbooks`](#getlatestcryptoorderbooks)
 
-#### getAccount
+#### `getAccount`
 
 Retrieves the account information.
 
@@ -192,7 +192,7 @@ Retrieves the account information.
 client.getAccount().then(console.log);
 ```
 
-#### createOrder
+#### `createOrder`
 
 Creates a new order.
 
@@ -208,7 +208,7 @@ client
   .then(console.log);
 ```
 
-#### getOrder
+#### `getOrder`
 
 Retrieves a specific order by its ID.
 
@@ -218,7 +218,7 @@ client
   .then(console.log);
 ```
 
-#### getOrders
+#### `getOrders`
 
 Retrieves a list of orders based on the specified parameters.
 
@@ -232,7 +232,7 @@ client
   .then(console.log);
 ```
 
-#### replaceOrder
+#### `replaceOrder`
 
 Replaces an existing order with updated parameters.
 
@@ -246,7 +246,7 @@ client
   .then(console.log);
 ```
 
-#### cancelOrder
+#### `cancelOrder`
 
 Cancels a specific order by its ID.
 
@@ -256,7 +256,7 @@ client
   .then(console.log);
 ```
 
-#### cancelOrders
+#### `cancelOrders`
 
 Cancels all open orders.
 
@@ -264,7 +264,7 @@ Cancels all open orders.
 client.cancelOrders().then(console.log);
 ```
 
-#### getPosition
+#### `getPosition`
 
 Retrieves a specific position by symbol or asset ID.
 
@@ -276,7 +276,7 @@ client
   .then(console.log);
 ```
 
-#### getPositions
+#### `getPositions`
 
 Retrieves all positions.
 
@@ -284,7 +284,7 @@ Retrieves all positions.
 client.getPositions().then(console.log);
 ```
 
-#### closePosition
+#### `closePosition`
 
 Closes a specific position by symbol or asset ID.
 
@@ -296,7 +296,7 @@ client
   .then(console.log);
 ```
 
-#### closePositions
+#### `closePositions`
 
 Closes all positions.
 
@@ -304,7 +304,7 @@ Closes all positions.
 client.closePositions().then(console.log);
 ```
 
-#### exerciseOption
+#### `exerciseOption`
 
 Exercises an options contract.
 
@@ -316,7 +316,7 @@ client
   .then(console.log);
 ```
 
-#### getCalendar
+#### `getCalendar`
 
 Retrieves the market calendar.
 
@@ -329,7 +329,7 @@ client
   .then(console.log);
 ```
 
-#### getClock
+#### `getClock`
 
 Retrieves the current market clock.
 
@@ -337,7 +337,7 @@ Retrieves the current market clock.
 client.getClock().then(console.log);
 ```
 
-#### getAsset
+#### `getAsset`
 
 Retrieves a specific asset by symbol or asset ID.
 
@@ -349,7 +349,7 @@ client
   .then(console.log);
 ```
 
-#### getAssets
+#### `getAssets`
 
 Retrieves a list of assets based on the specified parameters.
 
@@ -362,7 +362,7 @@ client
   .then(console.log);
 ```
 
-#### getWatchlist
+#### `getWatchlist`
 
 Retrieves a specific watchlist by ID.
 
@@ -374,7 +374,7 @@ client
   .then(console.log);
 ```
 
-#### getWatchlists
+#### `getWatchlists`
 
 Retrieves all watchlists.
 
@@ -382,7 +382,7 @@ Retrieves all watchlists.
 client.getWatchlists().then(console.log);
 ```
 
-#### createWatchlist
+#### `createWatchlist`
 
 Creates a new watchlist.
 
@@ -395,7 +395,7 @@ client
   .then(console.log);
 ```
 
-#### updateWatchlist
+#### `updateWatchlist`
 
 Updates an existing watchlist.
 
@@ -409,7 +409,7 @@ client
   .then(console.log);
 ```
 
-#### deleteWatchlist
+#### `deleteWatchlist`
 
 Deletes a specific watchlist by ID.
 
@@ -421,7 +421,7 @@ client
   .then(console.log);
 ```
 
-#### getPortfolioHistory
+#### `getPortfolioHistory`
 
 Retrieves the portfolio history.
 
@@ -434,7 +434,7 @@ client
   .then(console.log);
 ```
 
-#### getConfigurations
+#### `getConfigurations`
 
 Retrieves the account configurations.
 
@@ -442,7 +442,7 @@ Retrieves the account configurations.
 client.getConfigurations().then(console.log);
 ```
 
-#### updateConfigurations
+#### `updateConfigurations`
 
 Updates the account configurations.
 
@@ -455,7 +455,7 @@ client
   .then(console.log);
 ```
 
-#### getActivity
+#### `getActivity`
 
 Retrieves a specific activity type.
 
@@ -467,7 +467,7 @@ client
   .then(console.log);
 ```
 
-#### getActivities
+#### `getActivities`
 
 Retrieves all activities.
 
@@ -475,7 +475,7 @@ Retrieves all activities.
 client.getActivities().then(console.log);
 ```
 
-#### getOptionsContract
+#### `getOptionsContract`
 
 Retrieves a specific options contract by symbol or contract ID.
 
@@ -487,7 +487,7 @@ client
   .then(console.log);
 ```
 
-#### getOptionsContracts
+#### `getOptionsContracts`
 
 Retrieves a list of options contracts based on the specified parameters.
 
@@ -500,7 +500,7 @@ client
   .then(console.log);
 ```
 
-#### getCorporateAction
+#### `getCorporateAction`
 
 Retrieves a specific corporate action by ID.
 
@@ -512,7 +512,7 @@ client
   .then(console.log);
 ```
 
-#### getCorporateActions
+#### `getCorporateActions`
 
 Retrieves a list of corporate actions based on the specified parameters.
 
@@ -526,7 +526,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoWallet
+#### `getCryptoWallet`
 
 Retrieves a specific crypto wallet by asset.
 
@@ -538,7 +538,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoWallets
+#### `getCryptoWallets`
 
 Retrieves all crypto wallets.
 
@@ -546,7 +546,7 @@ Retrieves all crypto wallets.
 client.getCryptoWallets().then(console.log);
 ```
 
-#### getFeeEstimate
+#### `getFeeEstimate`
 
 Retrieves the fee estimate for a crypto withdrawal.
 
@@ -561,7 +561,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoTransfer
+#### `getCryptoTransfer`
 
 Retrieves a specific crypto transfer by ID.
 
@@ -573,7 +573,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoTransfers
+#### `getCryptoTransfers`
 
 Retrieves a list of crypto transfers based on the specified parameters.
 
@@ -585,7 +585,7 @@ client
   .then(console.log);
 ```
 
-#### createCryptoTransfer
+#### `createCryptoTransfer`
 
 Creates a new crypto withdrawal.
 
@@ -599,7 +599,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoWhitelistedAddress
+#### `getCryptoWhitelistedAddress`
 
 Retrieves a specific whitelisted crypto address.
 
@@ -612,7 +612,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoWhitelistedAddresses
+#### `getCryptoWhitelistedAddresses`
 
 Retrieves all whitelisted crypto addresses.
 
@@ -620,7 +620,7 @@ Retrieves all whitelisted crypto addresses.
 client.getCryptoWhitelistedAddresses().then(console.log);
 ```
 
-#### requestCryptoWhitelistedAddress
+#### `requestCryptoWhitelistedAddress`
 
 Requests a new whitelisted crypto address.
 
@@ -633,7 +633,7 @@ client
   .then(console.log);
 ```
 
-#### removeCryptoWhitelistedAddress
+#### `removeCryptoWhitelistedAddress`
 
 Removes a specific whitelisted crypto address.
 
@@ -645,7 +645,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksCorporateActions
+#### `getStocksCorporateActions`
 
 Retrieves a list of corporate actions based on the specified parameters.
 
@@ -658,7 +658,7 @@ client
   .then(console.log);
 ```
 
-#### getLogo
+#### `getLogo`
 
 Retrieves the logo for a specific symbol.
 
@@ -670,7 +670,7 @@ client
   .then(console.log);
 ```
 
-#### getNews
+#### `getNews`
 
 Retrieves the latest news.
 
@@ -683,7 +683,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksMostActives
+#### `getStocksMostActives`
 
 Retrieves a list of the most active stocks.
 
@@ -696,7 +696,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksMarketMovers
+#### `getStocksMarketMovers`
 
 Retrieves a list of the top market movers.
 
@@ -709,7 +709,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksQuotes
+#### `getStocksQuotes`
 
 Retrieves a list of stock quotes.
 
@@ -722,7 +722,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksQuotesLatest
+#### `getStocksQuotesLatest`
 
 Retrieves the latest stock quotes.
 
@@ -734,7 +734,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksBars
+#### `getStocksBars`
 
 Retrieves a list of stock bars.
 
@@ -748,7 +748,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksBarsLatest
+#### `getStocksBarsLatest`
 
 Retrieves the latest stock bars.
 
@@ -760,7 +760,7 @@ client
   .then(console.log);
 ```
 
-#### getForexRates
+#### `getForexRates`
 
 Retrieves a list of forex rates.
 
@@ -774,7 +774,7 @@ client
   .then(console.log);
 ```
 
-#### getLatestForexRates
+#### `getLatestForexRates`
 
 Retrieves the latest forex rates.
 
@@ -786,7 +786,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksSnapshots
+#### `getStocksSnapshots`
 
 Retrieves a list of stock snapshots.
 
@@ -798,7 +798,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksAuctions
+#### `getStocksAuctions`
 
 Retrieves a list of stock auctions.
 
@@ -811,7 +811,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksConditions
+#### `getStocksConditions`
 
 Retrieves a list of stock conditions.
 
@@ -824,7 +824,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksExchangeCodes
+#### `getStocksExchangeCodes`
 
 Retrieves a list of stock exchange codes.
 
@@ -832,7 +832,7 @@ Retrieves a list of stock exchange codes.
 client.getStocksExchangeCodes().then(console.log);
 ```
 
-#### getStocksTrades
+#### `getStocksTrades`
 
 Retrieves a list of stock trades.
 
@@ -845,7 +845,7 @@ client
   .then(console.log);
 ```
 
-#### getStocksTradesLatest
+#### `getStocksTradesLatest`
 
 Retrieves the latest stock trades.
 
@@ -857,7 +857,7 @@ client
   .then(console.log);
 ```
 
-#### getOptionsBars
+#### `getOptionsBars`
 
 Retrieves a list of options bars.
 
@@ -871,7 +871,7 @@ client
   .then(console.log);
 ```
 
-#### getOptionsExchanges
+#### `getOptionsExchanges`
 
 Retrieves a list of options exchanges.
 
@@ -879,7 +879,7 @@ Retrieves a list of options exchanges.
 client.getOptionsExchanges().then(console.log);
 ```
 
-#### getOptionsSnapshots
+#### `getOptionsSnapshots`
 
 Retrieves a list of options snapshots.
 
@@ -891,7 +891,7 @@ client
   .then(console.log);
 ```
 
-#### getOptionsTrades
+#### `getOptionsTrades`
 
 Retrieves a list of options trades.
 
@@ -904,7 +904,7 @@ client
   .then(console.log);
 ```
 
-#### getOptionsTradesLatest
+#### `getOptionsTradesLatest`
 
 Retrieves the latest options trades.
 
@@ -916,7 +916,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoBars
+#### `getCryptoBars`
 
 Retrieves a list of crypto bars.
 
@@ -930,7 +930,7 @@ client
   .then(console.log);
 ```
 
-#### getLatestCryptoBars
+#### `getLatestCryptoBars`
 
 Retrieves the latest crypto bars.
 
@@ -943,7 +943,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoQuotes
+#### `getCryptoQuotes`
 
 Retrieves a list of crypto quotes.
 
@@ -956,7 +956,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoQuotesLatest
+#### `getCryptoQuotesLatest`
 
 Retrieves the latest crypto quotes.
 
@@ -969,7 +969,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoSnapshots
+#### `getCryptoSnapshots`
 
 Retrieves a list of crypto snapshots.
 
@@ -982,7 +982,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoTrades
+#### `getCryptoTrades`
 
 Retrieves a list of crypto trades.
 
@@ -996,7 +996,7 @@ client
   .then(console.log);
 ```
 
-#### getCryptoTradesLatest
+#### `getCryptoTradesLatest`
 
 Retrieves the latest crypto trades.
 
@@ -1009,7 +1009,7 @@ client
   .then(console.log);
 ```
 
-#### getLatestCryptoOrderbooks
+#### `getLatestCryptoOrderbooks`
 
 Retrieves the latest crypto orderbooks.
 
