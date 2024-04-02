@@ -19,6 +19,8 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
     - [Base URLs](#base-urls)
     - [Rate Limiting](#rate-limiting)
   - [Methods](#methods)
+    - [Trading API](#trading-api)
+    - [Market Data API](#market-data-api)
   - [WebSocket](#websocket)
     - [How It Works](#how-it-works)
     - [Channels](#channels)
@@ -187,15 +189,15 @@ client.getAccount().then(console.log);
 Creates a new order.
 
 ```typescript
-const order: CreateOrderOptions = {
-  symbol: "AAPL",
-  qty: 1,
-  side: "buy",
-  type: "market",
-  time_in_force: "day",
-};
-
-client.createOrder(order).then(console.log);
+client
+  .createOrder({
+    symbol: "AAPL",
+    qty: 1,
+    side: "buy",
+    type: "market",
+    time_in_force: "day",
+  })
+  .then(console.log);
 ```
 
 #### getOrder
@@ -203,9 +205,9 @@ client.createOrder(order).then(console.log);
 Retrieves a specific order by its ID.
 
 ```typescript
-const orderId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-
-client.getOrder({ order_id: orderId }).then(console.log);
+client
+  .getOrder({ order_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" })
+  .then(console.log);
 ```
 
 #### getOrders
@@ -213,13 +215,13 @@ client.getOrder({ order_id: orderId }).then(console.log);
 Retrieves a list of orders based on the specified parameters.
 
 ```typescript
-const options: GetOrdersOptions = {
-  status: "open",
-  limit: 10,
-  direction: "desc",
-};
-
-client.getOrders(options).then(console.log);
+client
+  .getOrders({
+    status: "open",
+    limit: 10,
+    direction: "desc",
+  })
+  .then(console.log);
 ```
 
 #### replaceOrder
@@ -227,14 +229,13 @@ client.getOrders(options).then(console.log);
 Replaces an existing order with updated parameters.
 
 ```typescript
-const orderId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-const replaceOptions: ReplaceOrderOptions = {
-  qty: 2,
-  limit_price: 150.0,
-  order_id: orderId,
-};
-
-client.replaceOrder(replaceOptions).then(console.log);
+client
+  .replaceOrder({
+    qty: 2,
+    limit_price: 150.0,
+    order_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  })
+  .then(console.log);
 ```
 
 #### cancelOrder
@@ -242,9 +243,9 @@ client.replaceOrder(replaceOptions).then(console.log);
 Cancels a specific order by its ID.
 
 ```typescript
-const orderId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-
-client.cancelOrder({ order_id: orderId }).then(console.log);
+client
+  .cancelOrder({ order_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" })
+  .then(console.log);
 ```
 
 #### cancelOrders
@@ -260,9 +261,11 @@ client.cancelOrders().then(console.log);
 Retrieves a specific position by symbol or asset ID.
 
 ```typescript
-const symbolOrAssetId = "AAPL";
-
-client.getPosition({ symbol_or_asset_id: symbolOrAssetId }).then(console.log);
+client
+  .getPosition({
+    symbol_or_asset_id: "AAPL",
+  })
+  .then(console.log);
 ```
 
 #### getPositions
@@ -278,9 +281,11 @@ client.getPositions().then(console.log);
 Closes a specific position by symbol or asset ID.
 
 ```typescript
-const symbolOrAssetId = "AAPL";
-
-client.closePosition({ symbol_or_asset_id: symbolOrAssetId }).then(console.log);
+client
+  .closePosition({
+    symbol_or_asset_id: "AAPL",
+  })
+  .then(console.log);
 ```
 
 #### closePositions
@@ -296,9 +301,11 @@ client.closePositions().then(console.log);
 Exercises an options contract.
 
 ```typescript
-const contractId = "xxxxxxxx";
-
-client.exerciseOption({ symbol_or_contract_id: contractId }).then(console.log);
+client
+  .exerciseOption({
+    symbol_or_contract_id: "xxxxxxxx",
+  })
+  .then(console.log);
 ```
 
 #### getCalendar
@@ -306,12 +313,12 @@ client.exerciseOption({ symbol_or_contract_id: contractId }).then(console.log);
 Retrieves the market calendar.
 
 ```typescript
-const options: GetCalendarOptions = {
-  start: "2023-01-01",
-  end: "2023-12-31",
-};
-
-client.getCalendar(options).then(console.log);
+client
+  .getCalendar({
+    start: "2023-01-01",
+    end: "2023-12-31",
+  })
+  .then(console.log);
 ```
 
 #### getClock
@@ -327,9 +334,11 @@ client.getClock().then(console.log);
 Retrieves a specific asset by symbol or asset ID.
 
 ```typescript
-const symbolOrAssetId = "AAPL";
-
-client.getAsset({ symbol_or_asset_id: symbolOrAssetId }).then(console.log);
+client
+  .getAsset({
+    symbol_or_asset_id: "AAPL",
+  })
+  .then(console.log);
 ```
 
 #### getAssets
@@ -337,12 +346,12 @@ client.getAsset({ symbol_or_asset_id: symbolOrAssetId }).then(console.log);
 Retrieves a list of assets based on the specified parameters.
 
 ```typescript
-const options: GetAssetsOptions = {
-  status: "active",
-  asset_class: "us_equity",
-};
-
-client.getAssets(options).then(console.log);
+client
+  .getAssets({
+    status: "active",
+    asset_class: "us_equity",
+  })
+  .then(console.log);
 ```
 
 #### getWatchlist
@@ -350,9 +359,11 @@ client.getAssets(options).then(console.log);
 Retrieves a specific watchlist by ID.
 
 ```typescript
-const watchlistId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-
-client.getWatchlist({ watchlist_id: watchlistId }).then(console.log);
+client
+  .getWatchlist({
+    watchlist_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  })
+  .then(console.log);
 ```
 
 #### getWatchlists
@@ -368,12 +379,12 @@ client.getWatchlists().then(console.log);
 Creates a new watchlist.
 
 ```typescript
-const options: CreateWatchlistOptions = {
-  name: "My Watchlist",
-  symbols: ["AAPL", "GOOGL", "AMZN"],
-};
-
-client.createWatchlist(options).then(console.log);
+client
+  .createWatchlist({
+    name: "My Watchlist",
+    symbols: ["AAPL", "GOOGL", "AMZN"],
+  })
+  .then(console.log);
 ```
 
 #### updateWatchlist
@@ -381,14 +392,13 @@ client.createWatchlist(options).then(console.log);
 Updates an existing watchlist.
 
 ```typescript
-const watchlistId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-const options: UpdateWatchlistOptions = {
-  name: "Updated Watchlist",
-  symbols: ["AAPL", "GOOGL", "MSFT"],
-  watchlist_id: watchlistId,
-};
-
-client.updateWatchlist(options).then(console.log);
+client
+  .updateWatchlist({
+    name: "Updated Watchlist",
+    symbols: ["AAPL", "GOOGL", "MSFT"],
+    watchlist_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  })
+  .then(console.log);
 ```
 
 #### deleteWatchlist
@@ -396,9 +406,11 @@ client.updateWatchlist(options).then(console.log);
 Deletes a specific watchlist by ID.
 
 ```typescript
-const watchlistId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-
-client.deleteWatchlist({ watchlist_id: watchlistId }).then(console.log);
+client
+  .deleteWatchlist({
+    watchlist_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  })
+  .then(console.log);
 ```
 
 #### getPortfolioHistory
@@ -406,12 +418,12 @@ client.deleteWatchlist({ watchlist_id: watchlistId }).then(console.log);
 Retrieves the portfolio history.
 
 ```typescript
-const options: GetPortfolioHistoryOptions = {
-  period: "1M",
-  timeframe: "1D",
-};
-
-client.getPortfolioHistory(options).then(console.log);
+client
+  .getPortfolioHistory({
+    period: "1M",
+    timeframe: "1D",
+  })
+  .then(console.log);
 ```
 
 #### getConfigurations
@@ -427,12 +439,12 @@ client.getConfigurations().then(console.log);
 Updates the account configurations.
 
 ```typescript
-const options: UpdateConfigurationsOptions = {
-  trade_confirm_email: "all",
-  suspend_trade: false,
-};
-
-client.updateConfigurations(options).then(console.log);
+client
+  .updateConfigurations({
+    trade_confirm_email: "all",
+    suspend_trade: false,
+  })
+  .then(console.log);
 ```
 
 #### getActivity
@@ -440,11 +452,11 @@ client.updateConfigurations(options).then(console.log);
 Retrieves a specific activity type.
 
 ```typescript
-const options: GetActivityOptions = {
-  activity_type: "FILL",
-};
-
-client.getActivity(options).then(console.log);
+client
+  .getActivity({
+    activity_type: "FILL",
+  })
+  .then(console.log);
 ```
 
 #### getActivities
@@ -460,10 +472,10 @@ client.getActivities().then(console.log);
 Retrieves a specific options contract by symbol or contract ID.
 
 ```typescript
-const symbolOrContractId = "AAPL230616C00150000";
-
 client
-  .getOptionsContract({ symbol_or_contract_id: symbolOrContractId })
+  .getOptionsContract({
+    symbol_or_contract_id: "AAPL230616C00150000",
+  })
   .then(console.log);
 ```
 
@@ -472,12 +484,12 @@ client
 Retrieves a list of options contracts based on the specified parameters.
 
 ```typescript
-const options: GetOptionsContractsOptions = {
-  underlying_symbols: "AAPL",
-  expiration_date: "2023-06-16",
-};
-
-client.getOptionsContracts(options).then(console.log);
+client
+  .getOptionsContracts({
+    underlying_symbols: "AAPL",
+    expiration_date: "2023-06-16",
+  })
+  .then(console.log);
 ```
 
 #### getCorporateAction
@@ -485,9 +497,11 @@ client.getOptionsContracts(options).then(console.log);
 Retrieves a specific corporate action by ID.
 
 ```typescript
-const corporateActionId = "xxxxxxxx";
-
-client.getCorporateAction({ id: corporateActionId }).then(console.log);
+client
+  .getCorporateAction({
+    id: "xxxxxxxx",
+  })
+  .then(console.log);
 ```
 
 #### getCorporateActions
@@ -495,13 +509,13 @@ client.getCorporateAction({ id: corporateActionId }).then(console.log);
 Retrieves a list of corporate actions based on the specified parameters.
 
 ```typescript
-const options: GetCorporateActionsOptions = {
-  ca_types: "MERGER",
-  since: "2023-01-01",
-  until: "2023-12-31",
-};
-
-client.getCorporateActions(options).then(console.log);
+client
+  .getCorporateActions({
+    ca_types: "MERGER",
+    since: "2023-01-01",
+    until: "2023-12-31",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoWallet
@@ -509,9 +523,11 @@ client.getCorporateActions(options).then(console.log);
 Retrieves a specific crypto wallet by asset.
 
 ```typescript
-const asset = "BTCUSD";
-
-client.getCryptoWallet({ asset }).then(console.log);
+client
+  .getCryptoWallet({
+    asset: "BTCUSD",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoWallets
@@ -527,14 +543,14 @@ client.getCryptoWallets().then(console.log);
 Retrieves the fee estimate for a crypto withdrawal.
 
 ```typescript
-const options: GetCryptoFeeEstimateOptions = {
-  asset: "BTCUSD",
-  from_address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-  to_address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-  amount: "0.1",
-};
-
-client.getFeeEstimate(options).then(console.log);
+client
+  .getFeeEstimate({
+    asset: "BTCUSD",
+    from_address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    to_address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    amount: "0.1",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoTransfer
@@ -542,9 +558,11 @@ client.getFeeEstimate(options).then(console.log);
 Retrieves a specific crypto transfer by ID.
 
 ```typescript
-const transferId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-
-client.getCryptoTransfer({ transfer_id: transferId }).then(console.log);
+client
+  .getCryptoTransfer({
+    transfer_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoTransfers
@@ -552,11 +570,11 @@ client.getCryptoTransfer({ transfer_id: transferId }).then(console.log);
 Retrieves a list of crypto transfers based on the specified parameters.
 
 ```typescript
-const options: GetCryptoTransfersOptions = {
-  asset: "BTCUSD",
-};
-
-client.getCryptoTransfers(options).then(console.log);
+client
+  .getCryptoTransfers({
+    asset: "BTCUSD",
+  })
+  .then(console.log);
 ```
 
 #### createCryptoTransfer
@@ -564,13 +582,13 @@ client.getCryptoTransfers(options).then(console.log);
 Creates a new crypto withdrawal.
 
 ```typescript
-const options: CreateCryptoTransferOptions = {
-  amount: "0.1",
-  address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-  asset: "BTCUSD",
-};
-
-client.createCryptoTransfer(options).then(console.log);
+client
+  .createCryptoTransfer({
+    amount: "0.1",
+    address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    asset: "BTCUSD",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoWhitelistedAddress
@@ -578,12 +596,12 @@ client.createCryptoTransfer(options).then(console.log);
 Retrieves a specific whitelisted crypto address.
 
 ```typescript
-const options: GetCryptoWhitelistedAddressOptions = {
-  address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-  asset: "BTCUSD",
-};
-
-client.getCryptoWhitelistedAddress(options).then(console.log);
+client
+  .getCryptoWhitelistedAddress({
+    address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    asset: "BTCUSD",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoWhitelistedAddresses
@@ -599,12 +617,12 @@ client.getCryptoWhitelistedAddresses().then(console.log);
 Requests a new whitelisted crypto address.
 
 ```typescript
-const options: RequestCryptoWhitelistedAddressOptions = {
-  address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-  asset: "BTCUSD",
-};
-
-client.requestCryptoWhitelistedAddress(options).then(console.log);
+client
+  .requestCryptoWhitelistedAddress({
+    address: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    asset: "BTCUSD",
+  })
+  .then(console.log);
 ```
 
 #### removeCryptoWhitelistedAddress
@@ -612,11 +630,9 @@ client.requestCryptoWhitelistedAddress(options).then(console.log);
 Removes a specific whitelisted crypto address.
 
 ```typescript
-const whitelistedAddressId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-
 client
   .removeCryptoWhitelistedAddress({
-    whitelisted_address_id: whitelistedAddressId,
+    whitelisted_address_id: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
   })
   .then(console.log);
 ```
@@ -624,138 +640,152 @@ client
 #### getStocksCorporateActions
 
 ```typescript
-const options = {
-  symbols: "AAPL",
-  types: "cash_dividends",
-};
-client.getStocksCorporateActions(options).then(console.log);
+client
+  .getStocksCorporateActions({
+    symbols: "AAPL",
+    types: "cash_dividends",
+  })
+  .then(console.log);
 ```
 
 #### getLogo
 
 ```typescript
-const options = {
-  symbol: "AAPL",
-};
-client.getLogo(options).then(console.log);
+client
+  .getLogo({
+    symbol: "AAPL",
+  })
+  .then(console.log);
 ```
 
 #### getNews
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-  limit: 10,
-};
-client.getNews(options).then(console.log);
+client
+  .getNews({
+    symbols: "AAPL,TSLA",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getStocksMostActives
 
 ```typescript
-const options = {
-  by: "volume",
-  top: 10,
-};
-client.getStocksMostActives(options).then(console.log);
+client
+  .getStocksMostActives({
+    by: "volume",
+    top: 10,
+  })
+  .then(console.log);
 ```
 
 #### getStocksMarketMovers
 
 ```typescript
-const options = {
-  by: "change",
-  top: 10,
-};
-client.getStocksMarketMovers(options).then(console.log);
+client
+  .getStocksMarketMovers({
+    by: "change",
+    top: 10,
+  })
+  .then(console.log);
 ```
 
 #### getStocksQuotes
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-  limit: 10,
-};
-client.getStocksQuotes(options).then(console.log);
+client
+  .getStocksQuotes({
+    symbols: "AAPL,TSLA",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getStocksQuotesLatest
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-};
-client.getStocksQuotesLatest(options).then(console.log);
+client
+  .getStocksQuotesLatest({
+    symbols: "AAPL,TSLA",
+  })
+  .then(console.log);
 ```
 
 #### getStocksBars
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-  timeframe: "1Day",
-  limit: 10,
-};
-client.getStocksBars(options).then(console.log);
+client
+  .getStocksBars({
+    symbols: "AAPL,TSLA",
+    timeframe: "1Day",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getStocksBarsLatest
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-};
-client.getStocksBarsLatest(options).then(console.log);
+client
+  .getStocksBarsLatest({
+    symbols: "AAPL,TSLA",
+  })
+  .then(console.log);
 ```
 
 #### getForexRates
 
 ```typescript
-const options = {
-  currency_pairs: "EURUSD,GBPUSD",
-  timeframe: "1Min",
-  limit: 10,
-};
-client.getForexRates(options).then(console.log);
+client
+  .getForexRates({
+    currency_pairs: "EURUSD,GBPUSD",
+    timeframe: "1Min",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getLatestForexRates
 
 ```typescript
-const options = {
-  currency_pairs: "EURUSD,GBPUSD",
-};
-client.getLatestForexRates(options).then(console.log);
+client
+  .getLatestForexRates({
+    currency_pairs: "EURUSD,GBPUSD",
+  })
+  .then(console.log);
 ```
 
 #### getStocksSnapshots
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-};
-client.getStocksSnapshots(options).then(console.log);
+client
+  .getStocksSnapshots({
+    symbols: "AAPL,TSLA",
+  })
+  .then(console.log);
 ```
 
 #### getStocksAuctions
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-  limit: 10,
-};
-client.getStocksAuctions(options).then(console.log);
+client
+  .getStocksAuctions({
+    symbols: "AAPL,TSLA",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getStocksConditions
 
 ```typescript
-const options = {
-  tickType: "trades",
-  tape: "xxx",
-};
-client.getStocksConditions(options).then(console.log);
+client
+  .getStocksConditions({
+    tickType: "trades",
+    tape: "xxx",
+  })
+  .then(console.log);
 ```
 
 #### getStocksExchangeCodes
@@ -767,31 +797,34 @@ client.getStocksExchangeCodes().then(console.log);
 #### getStocksTrades
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-  limit: 10,
-};
-client.getStocksTrades(options).then(console.log);
+client
+  .getStocksTrades({
+    symbols: "AAPL,TSLA",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getStocksTradesLatest
 
 ```typescript
-const options = {
-  symbols: "AAPL,TSLA",
-};
-client.getStocksTradesLatest(options).then(console.log);
+client
+  .getStocksTradesLatest({
+    symbols: "AAPL,TSLA",
+  })
+  .then(console.log);
 ```
 
 #### getOptionsBars
 
 ```typescript
-const options = {
-  symbols: "AAPL220617C00270000,TSLA220617C01000000",
-  timeframe: "1Day",
-  limit: 10,
-};
-client.getOptionsBars(options).then(console.log);
+client
+  .getOptionsBars({
+    symbols: "AAPL220617C00270000,TSLA220617C01000000",
+    timeframe: "1Day",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getOptionsExchanges
@@ -803,111 +836,122 @@ client.getOptionsExchanges().then(console.log);
 #### getOptionsSnapshots
 
 ```typescript
-const options = {
-  symbols: "AAPL220617C00270000,TSLA220617C01000000",
-};
-client.getOptionsSnapshots(options).then(console.log);
+client
+  .getOptionsSnapshots({
+    symbols: "AAPL220617C00270000,TSLA220617C01000000",
+  })
+  .then(console.log);
 ```
 
 #### getOptionsTrades
 
 ```typescript
-const options = {
-  symbols: "AAPL220617C00270000,TSLA220617C01000000",
-  limit: 10,
-};
-client.getOptionsTrades(options).then(console.log);
+client
+  .getOptionsTrades({
+    symbols: "AAPL220617C00270000,TSLA220617C01000000",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getOptionsTradesLatest
 
 ```typescript
-const options = {
-  symbols: "AAPL220617C00270000,TSLA220617C01000000",
-};
-client.getOptionsTradesLatest(options).then(console.log);
+client
+  .getOptionsTradesLatest({
+    symbols: "AAPL220617C00270000,TSLA220617C01000000",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoBars
 
 ```typescript
-const options = {
-  symbols: "BTCUSD,ETHUSD",
-  timeframe: "1Min",
-  limit: 10,
-};
-client.getCryptoBars(options).then(console.log);
+client
+  .getCryptoBars({
+    symbols: "BTCUSD,ETHUSD",
+    timeframe: "1Min",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getLatestCryptoBars
 
 ```typescript
-const options = {
-  loc: "US",
-  symbols: "BTCUSD,ETHUSD",
-};
-client.getLatestCryptoBars(options).then(console.log);
+client
+  .getLatestCryptoBars({
+    loc: "US",
+    symbols: "BTCUSD,ETHUSD",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoQuotes
 
 ```typescript
-const options = {
-  symbols: "BTCUSD,ETHUSD",
-  limit: 10,
-};
-client.getCryptoQuotes(options).then(console.log);
+client
+  .getCryptoQuotes({
+    symbols: "BTCUSD,ETHUSD",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getCryptoQuotesLatest
 
 ```typescript
-const options = {
-  loc: "US",
-  symbols: "BTCUSD,ETHUSD",
-};
-client.getCryptoQuotesLatest(options).then(console.log);
+client
+  .getCryptoQuotesLatest({
+    loc: "US",
+    symbols: "BTCUSD,ETHUSD",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoSnapshots
 
 ```typescript
-const options = {
-  loc: "US",
-  symbols: "BTCUSD,ETHUSD",
-};
-client.getCryptoSnapshots(options).then(console.log);
+client
+  .getCryptoSnapshots({
+    loc: "US",
+    symbols: "BTCUSD,ETHUSD",
+  })
+  .then(console.log);
 ```
 
 #### getCryptoTrades
 
 ```typescript
-const options = {
-  loc: "US",
-  symbols: "BTCUSD,ETHUSD",
-  limit: 10,
-};
-client.getCryptoTrades(options).then(console.log);
+client
+  .getCryptoTrades({
+    loc: "US",
+    symbols: "BTCUSD,ETHUSD",
+    limit: 10,
+  })
+  .then(console.log);
 ```
 
 #### getCryptoTradesLatest
 
 ```typescript
-const options = {
-  loc: "US",
-  symbols: "BTCUSD,ETHUSD",
-};
-client.getCryptoTradesLatest(options).then(console.log);
+client
+  .getCryptoTradesLatest({
+    loc: "US",
+    symbols: "BTCUSD,ETHUSD",
+  })
+  .then(console.log);
 ```
 
 #### getLatestCryptoOrderbooks
 
 ```typescript
-const options = {
-  loc: "US",
-  symbols: "BTCUSD,ETHUSD",
-};
-client.getLatestCryptoOrderbooks(options).then(console.log);
+client
+  .getLatestCryptoOrderbooks({
+    loc: "US",
+    symbols: "BTCUSD,ETHUSD",
+  })
+  .then(console.log);
 ```
 
 ### WebSocket
