@@ -28,7 +28,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
       - [Subscribe](#subscribe)
       - [Unsubscribe](#unsubscribe)
       - [Handle Messages](#handle-messages)
-  - [Need Help?](#need-help)
+- [Need Help?](#need-help)
 
 ## Features
 
