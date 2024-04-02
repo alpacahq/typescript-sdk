@@ -16,7 +16,7 @@ A TypeScript SDK for the https://alpaca.markets REST API and WebSocket streams.
 - [Usage](#getting-started)
   - [Create a Client](#create-a-client)
   - [Configuration](#configuration)
-    - [Base URLs](#base-urls)
+    - [Environment Variables](#environment-variables)
     - [Rate Limiting](#rate-limiting)
   - [Methods](#methods)
     - [Trading API](#trading-api)
@@ -77,11 +77,19 @@ const client = createClient({
 });
 ```
 
-You can also use the `ALPACA_KEY` and `ALPACA_SECRET` environment variables to set your API key and secret. The client will automatically use these values if they are set. They will not override any credentials explicitly passed to `createClient`.
-
-> Note: By default, the client will make requests to the paper trading environment (`https://paper-api.alpaca.markets`). This is a safety measure to prevent accidental trades.
+By default, the client will make requests to the paper trading environment (`https://paper-api.alpaca.markets`). This is a safety measure to prevent accidental trades.
 
 ### Configuration
+
+#### Environment Variables
+
+You can set the following environment variables to configure the client:
+
+- `APCA_KEY_ID`: Your API key.
+- `APCA_KEY_SECRET`: Your API secret.
+- `APCA_ACCESS_TOKEN`: Your access token (if using OAuth).
+
+The client will automatically use these values if they are set. They will not override any credentials explicitly passed to `createClient`.
 
 #### Rate Limiting
 
