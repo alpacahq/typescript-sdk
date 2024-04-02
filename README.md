@@ -73,7 +73,7 @@ const client = createClient({
   key: "YOUR_API_KEY_ID",
   secret: "YOUR_API_SECRET_KEY",
   // Or, provide an access token if you're using OAuth.
-  // token: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  // accessToken: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
 });
 ```
 
@@ -639,6 +639,8 @@ client
 
 #### getStocksCorporateActions
 
+Retrieves a list of corporate actions based on the specified parameters.
+
 ```typescript
 client
   .getStocksCorporateActions({
@@ -650,6 +652,8 @@ client
 
 #### getLogo
 
+Retrieves the logo for a specific symbol.
+
 ```typescript
 client
   .getLogo({
@@ -659,6 +663,8 @@ client
 ```
 
 #### getNews
+
+Retrieves the latest news.
 
 ```typescript
 client
@@ -671,6 +677,8 @@ client
 
 #### getStocksMostActives
 
+Retrieves a list of the most active stocks.
+
 ```typescript
 client
   .getStocksMostActives({
@@ -681,6 +689,8 @@ client
 ```
 
 #### getStocksMarketMovers
+
+Retrieves a list of the top market movers.
 
 ```typescript
 client
@@ -693,6 +703,8 @@ client
 
 #### getStocksQuotes
 
+Retrieves a list of stock quotes.
+
 ```typescript
 client
   .getStocksQuotes({
@@ -704,6 +716,8 @@ client
 
 #### getStocksQuotesLatest
 
+Retrieves the latest stock quotes.
+
 ```typescript
 client
   .getStocksQuotesLatest({
@@ -713,6 +727,8 @@ client
 ```
 
 #### getStocksBars
+
+Retrieves a list of stock bars.
 
 ```typescript
 client
@@ -726,6 +742,8 @@ client
 
 #### getStocksBarsLatest
 
+Retrieves the latest stock bars.
+
 ```typescript
 client
   .getStocksBarsLatest({
@@ -735,6 +753,8 @@ client
 ```
 
 #### getForexRates
+
+Retrieves a list of forex rates.
 
 ```typescript
 client
@@ -748,6 +768,8 @@ client
 
 #### getLatestForexRates
 
+Retrieves the latest forex rates.
+
 ```typescript
 client
   .getLatestForexRates({
@@ -758,6 +780,8 @@ client
 
 #### getStocksSnapshots
 
+Retrieves a list of stock snapshots.
+
 ```typescript
 client
   .getStocksSnapshots({
@@ -767,6 +791,8 @@ client
 ```
 
 #### getStocksAuctions
+
+Retrieves a list of stock auctions.
 
 ```typescript
 client
@@ -779,6 +805,8 @@ client
 
 #### getStocksConditions
 
+Retrieves a list of stock conditions.
+
 ```typescript
 client
   .getStocksConditions({
@@ -790,11 +818,15 @@ client
 
 #### getStocksExchangeCodes
 
+Retrieves a list of stock exchange codes.
+
 ```typescript
 client.getStocksExchangeCodes().then(console.log);
 ```
 
 #### getStocksTrades
+
+Retrieves a list of stock trades.
 
 ```typescript
 client
@@ -807,6 +839,8 @@ client
 
 #### getStocksTradesLatest
 
+Retrieves the latest stock trades.
+
 ```typescript
 client
   .getStocksTradesLatest({
@@ -816,6 +850,8 @@ client
 ```
 
 #### getOptionsBars
+
+Retrieves a list of options bars.
 
 ```typescript
 client
@@ -829,11 +865,15 @@ client
 
 #### getOptionsExchanges
 
+Retrieves a list of options exchanges.
+
 ```typescript
 client.getOptionsExchanges().then(console.log);
 ```
 
 #### getOptionsSnapshots
+
+Retrieves a list of options snapshots.
 
 ```typescript
 client
@@ -844,6 +884,8 @@ client
 ```
 
 #### getOptionsTrades
+
+Retrieves a list of options trades.
 
 ```typescript
 client
@@ -856,6 +898,8 @@ client
 
 #### getOptionsTradesLatest
 
+Retrieves the latest options trades.
+
 ```typescript
 client
   .getOptionsTradesLatest({
@@ -865,6 +909,8 @@ client
 ```
 
 #### getCryptoBars
+
+Retrieves a list of crypto bars.
 
 ```typescript
 client
@@ -878,6 +924,8 @@ client
 
 #### getLatestCryptoBars
 
+Retrieves the latest crypto bars.
+
 ```typescript
 client
   .getLatestCryptoBars({
@@ -888,6 +936,8 @@ client
 ```
 
 #### getCryptoQuotes
+
+Retrieves a list of crypto quotes.
 
 ```typescript
 client
@@ -900,6 +950,8 @@ client
 
 #### getCryptoQuotesLatest
 
+Retrieves the latest crypto quotes.
+
 ```typescript
 client
   .getCryptoQuotesLatest({
@@ -911,6 +963,8 @@ client
 
 #### getCryptoSnapshots
 
+Retrieves a list of crypto snapshots.
+
 ```typescript
 client
   .getCryptoSnapshots({
@@ -921,6 +975,8 @@ client
 ```
 
 #### getCryptoTrades
+
+Retrieves a list of crypto trades.
 
 ```typescript
 client
@@ -934,6 +990,8 @@ client
 
 #### getCryptoTradesLatest
 
+Retrieves the latest crypto trades.
+
 ```typescript
 client
   .getCryptoTradesLatest({
@@ -944,6 +1002,8 @@ client
 ```
 
 #### getLatestCryptoOrderbooks
+
+Retrieves the latest crypto orderbooks.
 
 ```typescript
 client
