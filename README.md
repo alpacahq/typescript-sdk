@@ -77,29 +77,9 @@ const client = createClient({
 
 You can also use the `ALPACA_KEY` and `ALPACA_SECRET` environment variables to set your API key and secret. The client will automatically use these values if they are set. They will not override any credentials explicitly passed to `createClient`.
 
+> Note: By default, the client will make requests to the paper trading environment (`https://paper-api.alpaca.markets`). This is a safety measure to prevent accidental trades.
+
 ### Configuration
-
-#### Base URLs
-
-By default, the client will make requests to the paper trading environment (`https://paper-api.alpaca.markets`). This is a safety measure to prevent accidental trades.
-
-You can change this by passing the `baseURL` option to the `createClient` function. Depending on the environment, you may need to use a different API key. Types will be inferred based on the base URL you provide.
-
-```ts
-baseURL: "https://paper-api.alpaca.markets",
-```
-
-Here are the possible `baseURL` values:
-
-| URL                                        | Type               |
-| :----------------------------------------- | :----------------- |
-| `https://api.alpaca.markets`               | REST               |
-| `https://paper-api.alpaca.markets`         | REST               |
-| `https://data.alpaca.markets`              | REST               |
-| `wss://api.alpaca.markets/stream`          | WebSocket (binary) |
-| `wss://paper-api.alpaca.markets/stream`    | WebSocket (binary) |
-| `wss://data.alpaca.markets/stream`         | WebSocket (JSON)   |
-| `wss://stream.data.alpaca.markets/v2/test` | WebSocket (JSON)   |
 
 #### Rate Limiting
 
