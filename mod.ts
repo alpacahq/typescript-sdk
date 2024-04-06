@@ -1,3 +1,13 @@
+// If `APCA_DEBUG` false, console.debug() should not log anything.
+if (JSON.parse(Deno.env.get("APCA_DEBUG") || "false")) {
+  console.debug = () => {};
+} else {
+  // Prefix all debug logs with "@alpacahq/typescript-sdk" to make it easier to
+  // for users to filter out debug logs from this SDK.
+  console.debug = (...args) =>
+    console.log("@alpacahq/typescript-sdk:debug", ...args);
+}
+
 export {
   getCryptoBars,
   getCryptoQuotes,
