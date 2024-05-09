@@ -14,7 +14,7 @@ await build({
   typeCheck: false,
   test: false,
   scriptModule: false,
-  declaration: "separate",
+  declaration: "inline",
   package: {
     name: "@alpacahq/typescript-sdk",
     version: Deno.args[0],

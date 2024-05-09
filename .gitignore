@@ -5,3 +5,4 @@ playground.ts
 dist
 node_modules
 npm
+npm-test

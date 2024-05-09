@@ -1,7 +1,7 @@
 import * as marketData from "../api/marketData.ts";
 import * as trade from "../api/trade.ts";
 
-import { TokenBucketOptions, createTokenBucket } from "./createTokenBucket.ts";
+import { createTokenBucket, TokenBucketOptions } from "./createTokenBucket.ts";
 
 export const baseURLs = {
   live: "https://api.alpaca.markets",
@@ -19,15 +19,13 @@ export type RequestOptions<T> = {
   params?: object;
 };
 
-type Client = {
-  [K in keyof typeof trade]: (
-    context: ClientContext
-  ) => ReturnType<(typeof trade)[K]>;
-} & {
-  [K in keyof typeof marketData]: (
-    context: ClientContext
-  ) => ReturnType<(typeof marketData)[K]>;
-};
+type Client =
+  & {
+    [K in keyof typeof trade]: ReturnType<(typeof trade)[K]>;
+  }
+  & {
+    [K in keyof typeof marketData]: ReturnType<(typeof marketData)[K]>;
+  };
 
 export type ClientContext = {
   options: CreateClientOptions;
@@ -89,7 +87,7 @@ export const createClient = (options: CreateClientOptions) => {
     if (params) {
       // Append query parameters to the URL
       url.search = new URLSearchParams(
-        Object.entries(params) as [string, string][]
+        Object.entries(params) as [string, string][],
       ).toString();
     }
 
@@ -135,6 +133,6 @@ export const createClient = (options: CreateClientOptions) => {
       ...prev,
       [fn.name]: fn(context),
     }),
-    {} as Client
+    {} as Client,
   );
 };
