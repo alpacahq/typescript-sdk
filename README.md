@@ -88,6 +88,7 @@ You can set the following environment variables to configure the client:
 - `APCA_KEY_ID`: Your API key.
 - `APCA_KEY_SECRET`: Your API secret.
 - `APCA_ACCESS_TOKEN`: Your access token (if using OAuth).
+- `APCA_DEBUG`: Enables debug logging.
 
 The client will automatically use these values if they are set. They will not override any credentials explicitly passed to `createClient`.
 
