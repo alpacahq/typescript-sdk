@@ -9,7 +9,7 @@ export const baseURLs = {
   marketData: "https://data.alpaca.markets",
 } as const;
 
-type BaseURLKey = keyof typeof baseURLs;
+export type BaseURLKey = keyof typeof baseURLs;
 
 export type RequestOptions<T> = {
   path: string;
@@ -19,7 +19,7 @@ export type RequestOptions<T> = {
   params?: object;
 };
 
-type Client =
+export type Client =
   & {
     [K in keyof typeof trade]: ReturnType<(typeof trade)[K]>;
   }
