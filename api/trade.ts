@@ -65,33 +65,33 @@ export type BaseOrder = {
   created_at: string;
   updated_at: string;
   submitted_at: string;
-  filled_at: UnstableNumber;
-  expired_at: UnstableNumber;
-  canceled_at: UnstableNumber;
-  failed_at: UnstableNumber;
-  replaced_at: UnstableNumber;
-  replaced_by: UnstableNumber;
-  replaces: UnstableNumber;
+  filled_at: UnstableNumber | null;
+  expired_at: UnstableNumber | null;
+  canceled_at: UnstableNumber | null;
+  failed_at: UnstableNumber | null;
+  replaced_at: UnstableNumber | null;
+  replaced_by: UnstableNumber | null;
+  replaces: UnstableNumber | null;
   asset_id: string;
-  notional: UnstableNumber;
+  notional: UnstableNumber | null;
   qty: string;
   filled_qty: string;
-  filled_avg_price: UnstableNumber;
+  filled_avg_price: UnstableNumber | null;
   order_class: string;
   order_type: string;
-  type: string;
+  type: Type;
   side: string;
   time_in_force: string;
-  limit_price: UnstableNumber;
-  stop_price: UnstableNumber;
+  limit_price: UnstableNumber | null;
+  stop_price: UnstableNumber | null;
   status: string;
   extended_hours: boolean;
-  legs?: object;
-  trail_percent: UnstableNumber;
-  trail_price: UnstableNumber;
-  hwm: UnstableNumber;
-  subtag: UnstableNumber;
-  source: UnstableNumber;
+  legs?: object | null;
+  trail_percent: UnstableNumber | null;
+  trail_price: UnstableNumber | null;
+  hwm: UnstableNumber | null;
+  subtag: UnstableNumber | null;
+  source: UnstableNumber | null;
 };
 
 export type EquityOrder = BaseOrder & {
@@ -111,6 +111,27 @@ export type CryptoOrder = BaseOrder & {
 };
 
 export type Order = EquityOrder | OptionsOrder | CryptoOrder;
+
+export type Position = {
+	asset_id: string;
+	exchange: string;
+  asset_class: string;
+  symbol: string;
+	asset_marginable: boolean;
+	qty: string;
+	avg_entry_price: string;
+	side: Direction;
+	market_value: string;
+	cost_basis: string;
+	unrealized_pl: string;
+	unrealized_plpc: string;
+	unrealized_intraday_pl: string;
+	unrealized_intraday_plpc: string;
+	current_price: string;
+	lastday_price: string;
+	change_today: string;
+	qty_available: string;
+};
 
 export type TimeInForce = "day" | "gtc" | "opg" | "cls" | "ioc" | "fok";
 
@@ -244,7 +265,7 @@ export type GetPositionOptions = {
 export const getPosition =
   ({ request }: ClientContext) =>
   ({ symbol_or_asset_id }: GetPositionOptions) =>
-    request<Order>({
+    request<Position>({
       path: `/v2/positions/${symbol_or_asset_id}`,
       method: "GET",
     });
@@ -252,7 +273,7 @@ export const getPosition =
 export const getPositions =
   ({ request }: ClientContext) =>
   () =>
-    request<Order>({
+    request<Array<Position>>({
       path: "/v2/positions",
       method: "GET",
     });
@@ -272,7 +293,7 @@ export const closePosition =
 export const closePositions =
   ({ request }: ClientContext) =>
   () =>
-    request<Order>({
+    request<Array<Order | null>>({
       path: "/v2/positions",
       method: "DELETE",
     });
