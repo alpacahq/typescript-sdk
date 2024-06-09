@@ -3,6 +3,8 @@ import { ClientContext } from "../factory/createClient.ts";
 // Used for fields where the type may change based on the context, such as prices.
 export type UnstableNumber = string | number;
 
+export type Nullable<T> = T | null;
+
 export type AccountStatus =
   | "ONBOARDING"
   | "SUBMISSION_FAILED"
@@ -52,12 +54,10 @@ export type Account = {
   options_trading_level: OptionsTradingLevel;
 };
 
-export const getAccount =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Account>({
-      path: "/v2/account",
-    });
+export const getAccount = ({ request }: ClientContext) => () =>
+  request<Account>({
+    path: "/v2/account",
+  });
 
 export type BaseOrder = {
   id: string;
@@ -65,33 +65,33 @@ export type BaseOrder = {
   created_at: string;
   updated_at: string;
   submitted_at: string;
-  filled_at: UnstableNumber | null;
-  expired_at: UnstableNumber | null;
-  canceled_at: UnstableNumber | null;
-  failed_at: UnstableNumber | null;
-  replaced_at: UnstableNumber | null;
-  replaced_by: UnstableNumber | null;
-  replaces: UnstableNumber | null;
+  filled_at: Nullable<UnstableNumber>;
+  expired_at: Nullable<UnstableNumber>;
+  canceled_at: Nullable<UnstableNumber>;
+  failed_at: Nullable<UnstableNumber>;
+  replaced_at: Nullable<UnstableNumber>;
+  replaced_by: Nullable<UnstableNumber>;
+  replaces: Nullable<UnstableNumber>;
   asset_id: string;
-  notional: UnstableNumber | null;
+  notional: Nullable<UnstableNumber>;
   qty: string;
   filled_qty: string;
-  filled_avg_price: UnstableNumber | null;
+  filled_avg_price: Nullable<UnstableNumber>;
   order_class: string;
   order_type: string;
   type: Type;
   side: string;
   time_in_force: string;
-  limit_price: UnstableNumber | null;
-  stop_price: UnstableNumber | null;
+  limit_price: Nullable<UnstableNumber>;
+  stop_price: Nullable<UnstableNumber>;
   status: string;
   extended_hours: boolean;
-  legs?: object | null;
-  trail_percent: UnstableNumber | null;
-  trail_price: UnstableNumber | null;
-  hwm: UnstableNumber | null;
-  subtag: UnstableNumber | null;
-  source: UnstableNumber | null;
+  legs?: Nullable<object>;
+  trail_percent: Nullable<UnstableNumber>;
+  trail_price: Nullable<UnstableNumber>;
+  hwm: Nullable<UnstableNumber>;
+  subtag: Nullable<UnstableNumber>;
+  source: Nullable<UnstableNumber>;
 };
 
 export type EquityOrder = BaseOrder & {
@@ -113,24 +113,24 @@ export type CryptoOrder = BaseOrder & {
 export type Order = EquityOrder | OptionsOrder | CryptoOrder;
 
 export type Position = {
-	asset_id: string;
-	exchange: string;
+  asset_id: string;
+  exchange: string;
   asset_class: string;
   symbol: string;
-	asset_marginable: boolean;
-	qty: string;
-	avg_entry_price: string;
-	side: Direction;
-	market_value: string;
-	cost_basis: string;
-	unrealized_pl: string;
-	unrealized_plpc: string;
-	unrealized_intraday_pl: string;
-	unrealized_intraday_plpc: string;
-	current_price: string;
-	lastday_price: string;
-	change_today: string;
-	qty_available: string;
+  asset_marginable: boolean;
+  qty: string;
+  avg_entry_price: string;
+  side: Direction;
+  market_value: string;
+  cost_basis: string;
+  unrealized_pl: string;
+  unrealized_plpc: string;
+  unrealized_intraday_pl: string;
+  unrealized_intraday_plpc: string;
+  current_price: string;
+  lastday_price: string;
+  change_today: string;
+  qty_available: string;
 };
 
 export type TimeInForce = "day" | "gtc" | "opg" | "cls" | "ioc" | "fok";
@@ -178,8 +178,7 @@ export type CreateOrderOptions = {
 };
 
 export const createOrder =
-  ({ request }: ClientContext) =>
-  (data: CreateOrderOptions) =>
+  ({ request }: ClientContext) => (data: CreateOrderOptions) =>
     request<Order>({
       path: "/v2/orders",
       method: "POST",
@@ -191,8 +190,7 @@ export type GetOrderOptions = {
 };
 
 export const getOrder =
-  ({ request }: ClientContext) =>
-  ({ order_id }: GetOrderOptions) =>
+  ({ request }: ClientContext) => ({ order_id }: GetOrderOptions) =>
     request<Order>({
       path: `/v2/orders/${order_id}`,
       method: "GET",
@@ -211,8 +209,7 @@ export type GetOrdersOptions = {
 };
 
 export const getOrders =
-  ({ request }: ClientContext) =>
-  (params: GetOrdersOptions) =>
+  ({ request }: ClientContext) => (params: GetOrdersOptions) =>
     request<Order>({
       path: "/v2/orders",
       method: "GET",
@@ -230,8 +227,7 @@ export type ReplaceOrderOptions = {
 };
 
 export const replaceOrder =
-  ({ request }: ClientContext) =>
-  (data: ReplaceOrderOptions) =>
+  ({ request }: ClientContext) => (data: ReplaceOrderOptions) =>
     request<Order>({
       path: `/v2/orders/${data.order_id}`,
       method: "PATCH",
@@ -243,20 +239,17 @@ export type CancelOrderOptions = {
 };
 
 export const cancelOrder =
-  ({ request }: ClientContext) =>
-  ({ order_id }: CancelOrderOptions) =>
+  ({ request }: ClientContext) => ({ order_id }: CancelOrderOptions) =>
     request<Order>({
       path: `/v2/orders/${order_id}`,
       method: "DELETE",
     });
 
-export const cancelOrders =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Order>({
-      path: "/v2/orders",
-      method: "DELETE",
-    });
+export const cancelOrders = ({ request }: ClientContext) => () =>
+  request<Order>({
+    path: "/v2/orders",
+    method: "DELETE",
+  });
 
 export type GetPositionOptions = {
   symbol_or_asset_id: string;
@@ -270,13 +263,11 @@ export const getPosition =
       method: "GET",
     });
 
-export const getPositions =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Array<Position>>({
-      path: "/v2/positions",
-      method: "GET",
-    });
+export const getPositions = ({ request }: ClientContext) => () =>
+  request<Array<Position>>({
+    path: "/v2/positions",
+    method: "GET",
+  });
 
 export type ClosePositionOptions = {
   symbol_or_asset_id: string;
@@ -290,13 +281,11 @@ export const closePosition =
       method: "DELETE",
     });
 
-export const closePositions =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Array<Order | null>>({
-      path: "/v2/positions",
-      method: "DELETE",
-    });
+export const closePositions = ({ request }: ClientContext) => () =>
+  request<Array<Nullable<Order>>>({
+    path: "/v2/positions",
+    method: "DELETE",
+  });
 
 export type GetAssetsOptions = {
   status?: string;
@@ -309,8 +298,7 @@ export type ExerciseOption = {
 };
 
 export const exerciseOption =
-  ({ request }: ClientContext) =>
-  ({ symbol_or_contract_id }: ExerciseOption) =>
+  ({ request }: ClientContext) => ({ symbol_or_contract_id }: ExerciseOption) =>
     request<Order>({
       path: `/v2/positions/${symbol_or_contract_id}/exercise`,
       method: "POST",
@@ -330,8 +318,7 @@ export type Calendar = {
 };
 
 export const getCalendar =
-  ({ request }: ClientContext) =>
-  (params: GetCalendarOptions = {}) =>
+  ({ request }: ClientContext) => (params: GetCalendarOptions = {}) =>
     request<Calendar[]>({
       path: "/v2/calendar",
       method: "GET",
@@ -345,20 +332,17 @@ export type Clock = {
   next_close: string;
 };
 
-export const getClock =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Clock>({
-      path: "/v2/clock",
-    });
+export const getClock = ({ request }: ClientContext) => () =>
+  request<Clock>({
+    path: "/v2/clock",
+  });
 
 export type GetAssetOptions = {
   symbol_or_asset_id: string;
 };
 
 export const getAsset =
-  ({ request }: ClientContext) =>
-  ({ symbol_or_asset_id }: GetAssetOptions) =>
+  ({ request }: ClientContext) => ({ symbol_or_asset_id }: GetAssetOptions) =>
     request<Asset>({
       path: `/v2/assets/${symbol_or_asset_id}`,
       method: "GET",
@@ -383,8 +367,7 @@ export type Asset = {
 };
 
 export const getAssets =
-  ({ request }: ClientContext) =>
-  (params: GetAssetsOptions = {}) =>
+  ({ request }: ClientContext) => (params: GetAssetsOptions = {}) =>
     request<Asset[]>({
       path: "/v2/assets",
       method: "GET",
@@ -405,27 +388,23 @@ export type GetWatchlistOptions = {
 };
 
 export const getWatchlist =
-  ({ request }: ClientContext) =>
-  ({ watchlist_id }: GetWatchlistOptions) =>
+  ({ request }: ClientContext) => ({ watchlist_id }: GetWatchlistOptions) =>
     request<Watchlist>({
       path: `/v2/watchlists/${watchlist_id}`,
     });
 
-export const getWatchlists =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Watchlist[]>({
-      path: "/v2/watchlists",
-    });
+export const getWatchlists = ({ request }: ClientContext) => () =>
+  request<Watchlist[]>({
+    path: "/v2/watchlists",
+  });
 
 export type CreateWatchlistOptions = {
   name: string;
-  symbols: string[] | null;
+  symbols: Nullable<string[]>;
 };
 
 export const createWatchlist =
-  ({ request }: ClientContext) =>
-  (data: CreateWatchlistOptions) =>
+  ({ request }: ClientContext) => (data: CreateWatchlistOptions) =>
     request<Watchlist>({
       path: "/v2/watchlists",
       method: "POST",
@@ -434,13 +413,12 @@ export const createWatchlist =
 
 export type UpdateWatchlistOptions = {
   name: string;
-  symbols: string[] | null;
+  symbols: Nullable<string[]>;
   watchlist_id: string;
 };
 
 export const updateWatchlist =
-  ({ request }: ClientContext) =>
-  (data: UpdateWatchlistOptions) =>
+  ({ request }: ClientContext) => (data: UpdateWatchlistOptions) =>
     request<Watchlist>({
       path: `/v2/watchlists/${data.watchlist_id}`,
       method: "PATCH",
@@ -452,8 +430,7 @@ export type DeleteWatchlistOptions = {
 };
 
 export const deleteWatchlist =
-  ({ request }: ClientContext) =>
-  ({ watchlist_id }: DeleteWatchlistOptions) =>
+  ({ request }: ClientContext) => ({ watchlist_id }: DeleteWatchlistOptions) =>
     request({
       path: `/v2/watchlists/${watchlist_id}`,
       method: "DELETE",
@@ -479,8 +456,7 @@ export type GetPortfolioHistoryOptions = {
 };
 
 export const getPortfolioHistory =
-  ({ request }: ClientContext) =>
-  (params: GetPortfolioHistoryOptions) =>
+  ({ request }: ClientContext) => (params: GetPortfolioHistoryOptions) =>
     request<PortfolioHistory>({
       path: "/v2/account/portfolio/history",
       method: "GET",
@@ -499,12 +475,10 @@ export type Configurations = {
   ptp_no_exception_entry: boolean;
 };
 
-export const getConfigurations =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Configurations>({
-      path: "/v2/account/configurations",
-    });
+export const getConfigurations = ({ request }: ClientContext) => () =>
+  request<Configurations>({
+    path: "/v2/account/configurations",
+  });
 
 export type UpdateConfigurationsOptions = {
   dtbp_check?: string;
@@ -519,8 +493,7 @@ export type UpdateConfigurationsOptions = {
 };
 
 export const updateConfigurations =
-  ({ request }: ClientContext) =>
-  (data: UpdateConfigurationsOptions) =>
+  ({ request }: ClientContext) => (data: UpdateConfigurationsOptions) =>
     request<Configurations>({
       path: "/v2/account/configurations",
       method: "PATCH",
@@ -567,20 +540,17 @@ export type GetActivityOptions = {
 };
 
 export const getActivity =
-  ({ request }: ClientContext) =>
-  ({ activity_type }: GetActivityOptions) =>
+  ({ request }: ClientContext) => ({ activity_type }: GetActivityOptions) =>
     request<Activity[]>({
       path: `/v2/account/activities/${activity_type}`,
       method: "GET",
     });
 
-export const getActivities =
-  ({ request }: ClientContext) =>
-  () =>
-    request<Activity[]>({
-      path: "/v2/account/activities",
-      method: "GET",
-    });
+export const getActivities = ({ request }: ClientContext) => () =>
+  request<Activity[]>({
+    path: "/v2/account/activities",
+    method: "GET",
+  });
 
 export type OptionsContract = {
   id: string;
@@ -640,8 +610,7 @@ export type GetOptionsContractsOptions = {
 };
 
 export const getOptionsContracts =
-  ({ request }: ClientContext) =>
-  (params: GetOptionsContractsOptions) =>
+  ({ request }: ClientContext) => (params: GetOptionsContractsOptions) =>
     request<OptionsContract[]>({
       path: "/v2/options/contracts",
       method: "GET",
@@ -671,8 +640,7 @@ export type GetCorporateActionOptions = {
 };
 
 export const getCorporateAction =
-  ({ request }: ClientContext) =>
-  ({ id }: GetCorporateActionOptions) =>
+  ({ request }: ClientContext) => ({ id }: GetCorporateActionOptions) =>
     request<CorporateAction>({
       path: `/v2/corporate_actions/announcements/${id}`,
       method: "GET",
@@ -688,8 +656,7 @@ export type GetCorporateActionsOptions = {
 };
 
 export const getCorporateActions =
-  ({ request }: ClientContext) =>
-  (params: GetCorporateActionsOptions) =>
+  ({ request }: ClientContext) => (params: GetCorporateActionsOptions) =>
     request<CorporateAction[]>({
       path: "/v2/corporate_actions/announcements",
       method: "GET",
@@ -710,20 +677,17 @@ export type GetWalletOptions = {
 };
 
 export const getCryptoWallet =
-  ({ request }: ClientContext) =>
-  ({ asset }: GetWalletOptions) =>
+  ({ request }: ClientContext) => ({ asset }: GetWalletOptions) =>
     request<CryptoWallet>({
       path: `/v2/wallets/${asset}`,
       method: "GET",
     });
 
-export const getCryptoWallets =
-  ({ request }: ClientContext) =>
-  () =>
-    request<CryptoWallet[]>({
-      path: "/v2/wallets",
-      method: "GET",
-    });
+export const getCryptoWallets = ({ request }: ClientContext) => () =>
+  request<CryptoWallet[]>({
+    path: "/v2/wallets",
+    method: "GET",
+  });
 
 export type CryptoFee = {
   fee: string;
@@ -739,8 +703,7 @@ export type GetCryptoFeeEstimateOptions = {
 };
 
 export const getFeeEstimate =
-  ({ request }: ClientContext) =>
-  (params: GetCryptoFeeEstimateOptions) =>
+  ({ request }: ClientContext) => (params: GetCryptoFeeEstimateOptions) =>
     request<CryptoFee>({
       path: "/v2/wallets/fees/estimate",
       method: "GET",
@@ -773,8 +736,7 @@ export type GetCryptoTransferOptions = {
 };
 
 export const getCryptoTransfer =
-  ({ request }: ClientContext) =>
-  ({ transfer_id }: GetCryptoTransferOptions) =>
+  ({ request }: ClientContext) => ({ transfer_id }: GetCryptoTransferOptions) =>
     request<CryptoTransferResponse | CryptoTransfer>({
       path: `/v2/wallets/transfers/${transfer_id}`,
       method: "GET",
@@ -785,8 +747,7 @@ export type GetCryptoTransfersOptions = {
 };
 
 export const getCryptoTransfers =
-  ({ request }: ClientContext) =>
-  (params?: GetCryptoTransfersOptions) =>
+  ({ request }: ClientContext) => (params?: GetCryptoTransfersOptions) =>
     request<CryptoTransfer[]>({
       path: "/v2/wallets/transfers",
       method: "GET",
@@ -800,8 +761,7 @@ export type CreateCryptoTransferOptions = {
 };
 
 export const createCryptoTransfer =
-  ({ request }: ClientContext) =>
-  (data: CreateCryptoTransferOptions) =>
+  ({ request }: ClientContext) => (data: CreateCryptoTransferOptions) =>
     request<CryptoTransfer>({
       path: "/v2/wallets/transfers",
       method: "POST",
@@ -832,8 +792,7 @@ export const getCryptoWhitelistedAddress =
     });
 
 export const getCryptoWhitelistedAddresses =
-  ({ request }: ClientContext) =>
-  () =>
+  ({ request }: ClientContext) => () =>
     request<WhitelistedAddress[]>({
       path: "/v2/wallets/whitelists",
       method: "GET",
