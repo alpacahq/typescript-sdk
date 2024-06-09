@@ -1,5 +1,7 @@
 // NOT CLEANED UP; TYPES MISSING FOR CALLBACKS
 
+import { Nullable } from "../api/trade.ts";
+
 const baseURLs = {
   data: "wss://stream.data.alpaca.markets",
   data_sandbox: "wss://stream.data.sandbox.alpaca.markets",
@@ -53,7 +55,7 @@ export const createStream = (options: CreateStreamOptions): void => {
     url = `${baseURLs[type]}/stream`;
   }
 
-  let socket: WebSocket | null = null;
+  let socket: Nullable<WebSocket> = null;
   let retries = 0;
 
   // Handle incoming messages
@@ -75,7 +77,7 @@ export const createStream = (options: CreateStreamOptions): void => {
 
     socket.onopen = () => {
       console.debug(
-        "WebSocket connection established. Sending authentication message."
+        "WebSocket connection established. Sending authentication message.",
       );
 
       socket?.send(
@@ -83,7 +85,7 @@ export const createStream = (options: CreateStreamOptions): void => {
           action: "auth",
           key: key,
           secret: secret,
-        })
+        }),
       );
     };
 
