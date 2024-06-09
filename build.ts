@@ -24,6 +24,7 @@ await build({
       type: "git",
       url: "git+https://github.com/@alpacahq/typescript-sdk.git",
     },
+    types: "mod.d.ts",
     keywords: [
       "alpaca",
       "alpaca.markets",
