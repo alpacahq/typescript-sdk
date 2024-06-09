@@ -1,4 +1,5 @@
-import { ClientContext, baseURLs } from "../factory/createClient.ts";
+import { baseURLs, ClientContext } from "../factory/createClient.ts";
+import { Nullable } from "./trade.ts";
 
 export type ReverseSplit = {
   symbol: string;
@@ -131,7 +132,7 @@ export type CorporateActions = {
     redemptions?: Redemption[];
     name_changes?: NameChange[];
     worthless_removals?: WorthlessRemoval[];
-    next_page_token: string | null;
+    next_page_token: Nullable<string>;
   };
 };
 
@@ -171,7 +172,7 @@ export const getLogo = (context: ClientContext) => (params: GetLogoOptions) =>
 
 export interface News {
   news: NewsArticle[];
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 }
 
 export interface NewsArticleImage {
@@ -187,7 +188,7 @@ export interface NewsArticle {
   updated_at: string;
   summary: string;
   content: string;
-  url: string | null;
+  url: Nullable<string>;
   images: NewsArticleImage[];
   symbols: string[];
   source: string;
@@ -279,7 +280,7 @@ export type GetStocksQuotesOptions = {
 
 export type StocksQuotes = {
   quotes: { [symbol: string]: StockQuote[] };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export const getStocksQuotes =
@@ -324,7 +325,7 @@ export type GetStocksBarsOptions = {
 
 export type StocksBars = {
   bars: { [symbol: string]: StocksBar[] };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export type StocksBar = {
@@ -479,7 +480,7 @@ export const getStocksSnapshots =
 
 export type StocksAuctions = {
   auctions: { [symbol: string]: StocksAuction[] };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export type StocksAuction = {
@@ -558,7 +559,7 @@ export type GetStocksTradesOptions = {
 
 export type StocksTrades = {
   trades: { [symbol: string]: StockTrade[] };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export const getStocksTrades =
@@ -591,7 +592,7 @@ export const getStocksTradesLatest =
 
 export type OptionsBars = {
   bars: OptionBar[];
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export type OptionBar = {
@@ -690,7 +691,7 @@ export type OptionsTrades = {
   trades: {
     [symbol: string]: OptionsSnapshotsTrade[];
   };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export const getOptionsTrades =
@@ -706,7 +707,7 @@ export type OptionsTradesLatest = {
   trades: {
     [symbol: string]: OptionsSnapshotsTrade[];
   };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export type GetOptionsTradesLatestOptions = {
@@ -737,7 +738,7 @@ export type CryptoBars = {
   bars: {
     [symbol: string]: CryptoBar[];
   };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export type CryptoBar = {
@@ -801,7 +802,7 @@ export type CryptoQuotes = {
   quotes: {
     [symbol: string]: CryptoQuote[];
   };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export const getCryptoQuotes =
@@ -879,7 +880,7 @@ export type GetCryptoTradesOptions = {
 
 export type CryptoTrades = {
   trades: { [symbol: string]: CryptoTrade[] };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export const getCryptoTrades =
@@ -893,7 +894,7 @@ export const getCryptoTrades =
 
 export type CryptoTradesLatest = {
   trades: { [symbol: string]: CryptoTrade[] };
-  next_page_token: string | null;
+  next_page_token: Nullable<string>;
 };
 
 export type GetCryptoTradesLatestOptions = {
