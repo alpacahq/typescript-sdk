@@ -10,7 +10,7 @@ Deno.test(
     });
 
     assert(tokenBucket.take(50) === true);
-  }
+  },
 );
 
 Deno.test(
@@ -22,7 +22,7 @@ Deno.test(
     });
 
     assert(tokenBucket.take(300) === false);
-  }
+  },
 );
 
 Deno.test(
@@ -38,7 +38,7 @@ Deno.test(
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     assert(tokenBucket.take(50) === true);
-  }
+  },
 );
 
 Deno.test(
@@ -55,5 +55,5 @@ Deno.test(
     }
 
     assert(successfulRequests === 200);
-  }
+  },
 );

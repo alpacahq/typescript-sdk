@@ -1,4 +1,4 @@
-// NOT CLEANED UP; TYPES MISSING FOR CALLBACKS
+// NOT CLEANED UP; TYPES MISSING FOR CALLBACKS; BARELY FUNCTIONAL
 
 import { Nullable } from "../api/trade.ts";
 
@@ -23,7 +23,16 @@ type CreateStreamOptions = {
   retryDelay?: number;
 };
 
-export const createStream = (options: CreateStreamOptions): void => {
+type EventCallback = (data: any) => void;
+
+type TradeUpdate = {
+  event: string;
+  price: string;
+  qty: string;
+  timestamp: string;
+};
+
+export const createStream = (options: CreateStreamOptions) => {
   const {
     type,
     version = "v2",
@@ -33,7 +42,6 @@ export const createStream = (options: CreateStreamOptions): void => {
     retryDelay = 3000,
   } = options;
 
-  // Default to environment variables if key or secret are not provided
   const key = options.key || Deno.env.get("APCA_KEY_ID");
   const secret = options.secret || Deno.env.get("APCA_KEY_SECRET");
 
@@ -45,28 +53,30 @@ export const createStream = (options: CreateStreamOptions): void => {
   let url: string;
 
   if (type === "data" || type === "data_sandbox") {
-    // Modify the URL to include version and feed
     url = `${baseURLs[type]}/${version}/${feed}`;
   } else if (type === "data_test") {
-    // Test data URL is already fine
     url = baseURLs[type];
   } else {
-    // Otherwise, we're dealing with an account stream
     url = `${baseURLs[type]}/stream`;
   }
 
+  console.log(url);
   let socket: Nullable<WebSocket> = null;
   let retries = 0;
+  const eventCallbacks: { [event: string]: EventCallback[] } = {};
+  const activeStreams: Set<string> = new Set();
+  let isAuthenticated = false;
 
-  // Handle incoming messages
-  const handle = (message: object) => {
-    // @todo: will be passed to a callback with proper typing
-    console.debug(message);
+  const handle = (message: any) => {
+    const event = message.stream;
+    if (event && eventCallbacks[event]) {
+      eventCallbacks[event].forEach((callback) => callback(message));
+    } else {
+      console.debug("Unhandled message:", message);
+    }
   };
 
   const connect = () => {
-    // If auto-reconnect is disabled or max retries reached, stop trying to reconnect
-    // and close the WebSocket connection.
     if (!autoReconnect || (maxRetries !== undefined && retries >= maxRetries)) {
       console.debug("Auto-reconnect is disabled or max retries reached.");
       socket?.close();
@@ -101,39 +111,103 @@ export const createStream = (options: CreateStreamOptions): void => {
     };
 
     socket.onmessage = ({ data }) => {
-      try {
-        const messages = JSON.parse(data);
-
-        // Only the data stream sends an array of messages
-        if (Array.isArray(messages)) {
-          messages.forEach(handle);
-          return;
-        }
-
-        // deno-lint-ignore no-empty
-      } catch (_) {}
-
-      const blob = new Blob([data]);
-      const reader = new FileReader();
-
-      reader.onload = function () {
-        if (typeof reader.result === "string") {
-          try {
-            const result = JSON.parse(reader.result);
-            if (Array.isArray(result)) {
-              result.forEach(handle);
-            } else {
-              handle(result);
-            }
-          } catch (error) {
-            console.debug("Error parsing message:", error);
+      if (typeof data === "string") {
+        console.log("Received text message:", data);
+        try {
+          const result = JSON.parse(data);
+          if (
+            result.stream === "authorization" &&
+            result.data.status === "authorized"
+          ) {
+            isAuthenticated = true;
+            sendListenMessage();
           }
+          handle(result);
+        } catch (error) {
+          console.debug("Error parsing text message:", error);
         }
-      };
-
-      reader.readAsText(blob);
+      } else if (data instanceof Blob) {
+        console.log("Received binary message:", data);
+        const reader = new FileReader();
+        reader.onload = function () {
+          if (typeof reader.result === "string") {
+            try {
+              const result = JSON.parse(reader.result);
+              if (
+                result.stream === "authorization" &&
+                result.data.status === "authorized"
+              ) {
+                isAuthenticated = true;
+                sendListenMessage();
+              }
+              handle(result);
+            } catch (error) {
+              console.debug("Error parsing binary message:", error);
+            }
+          }
+        };
+        reader.readAsText(data);
+      } else {
+        console.debug("Unknown message type:", data);
+      }
     };
   };
 
   connect();
+
+  const sendListenMessage = () => {
+    if (socket && socket.readyState === WebSocket.OPEN && isAuthenticated) {
+      console.log("Sending listen message:", Array.from(activeStreams));
+      socket.send(
+        JSON.stringify({
+          action: "listen",
+          data: {
+            streams: Array.from(activeStreams),
+          },
+        }),
+      );
+    } else {
+      console.debug(
+        "Socket is not open or not authenticated. Cannot send listen message.",
+      );
+    }
+  };
+
+  const subscribe = (event: string, callback: EventCallback) => {
+    console.log("Subscribing to event:", event);
+    if (!eventCallbacks[event]) {
+      eventCallbacks[event] = [];
+    }
+    eventCallbacks[event].push(callback);
+    activeStreams.add(event);
+    sendListenMessage();
+  };
+
+  const unsubscribe = (event: string) => {
+    if (eventCallbacks[event]) {
+      delete eventCallbacks[event];
+      activeStreams.delete(event);
+      sendListenMessage();
+    }
+  };
+
+  return {
+    socket,
+    close: () => socket?.close(),
+    subscribe,
+    unsubscribe,
+  };
 };
+
+// const stream = createStream({
+//   type: "account_paper",
+//   key: "key",
+//   secret: "secret",
+//   autoReconnect: true,
+//   maxRetries: 5,
+//   retryDelay: 3000,
+// });
+
+// stream.subscribe("trade_updates", (data) => {
+//   // trade update received
+// });

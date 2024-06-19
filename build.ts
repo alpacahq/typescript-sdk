@@ -52,6 +52,7 @@ await build({
       url: "https://github.com/@alpacahq/typescript-sdk/issues",
     },
     homepage: "https://github.com/@alpacahq/typescript-sdk#readme",
+    main: "mod.js",
   },
   postBuild() {
     // Copy the README to the npm directory (for npmjs.com)

@@ -20,12 +20,8 @@ export type RequestOptions<T> = {
 };
 
 export type Client =
-  & {
-    [K in keyof typeof trade]: ReturnType<(typeof trade)[K]>;
-  }
-  & {
-    [K in keyof typeof marketData]: ReturnType<(typeof marketData)[K]>;
-  };
+  & { [K in keyof typeof trade]: ReturnType<(typeof trade)[K]> }
+  & { [K in keyof typeof marketData]: ReturnType<(typeof marketData)[K]> };
 
 export type ClientContext = {
   options: CreateClientOptions;
@@ -122,17 +118,11 @@ export const createClient = (options: CreateClientOptions) => {
   };
 
   // Create a context object to pass to the client factory
-  const context: ClientContext = {
-    options,
-    request,
-  };
+  const context: ClientContext = { options, request };
 
   // Return an object with all methods
   return [...Object.values(trade), ...Object.values(marketData)].reduce(
-    (prev, fn) => ({
-      ...prev,
-      [fn.name]: fn(context),
-    }),
+    (prev, fn) => ({ ...prev, [fn.name]: fn(context) }),
     {} as Client,
   );
 };
