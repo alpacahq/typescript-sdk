@@ -210,7 +210,7 @@ export type GetOrdersOptions = {
 
 export const getOrders =
   ({ request }: ClientContext) => (params: GetOrdersOptions) =>
-    request<Order>({
+    request<Array<Position>>({
       path: "/v2/orders",
       method: "GET",
       params,
