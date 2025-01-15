@@ -32,7 +32,7 @@ export type CreateClientOptions = {
   key?: string;
   secret?: string;
   accessToken?: string;
-  baseURL?: string;
+  baseURL?: (typeof baseURLs)[BaseURLKey];
   paper?: boolean;
   tokenBucket?: TokenBucketOptions;
 };
@@ -54,7 +54,7 @@ export const createClient = (options: CreateClientOptions) => {
     throw new Error("Missing credentials (need accessToken or key/secret)");
   }
 
-  const baseURL = options.baseURL || (paper ? baseURLs.paper : baseURLs.live);
+  const defaultBaseURL = options.baseURL || (paper ? baseURLs.paper : baseURLs.live);
 
   // Create a token bucket for rate limiting
   const bucket = createTokenBucket(options.tokenBucket);
@@ -65,6 +65,7 @@ export const createClient = (options: CreateClientOptions) => {
     path,
     params,
     data,
+    baseURL = defaultBaseURL
   }: RequestOptions<T>): Promise<T> => {
     await new Promise((resolve) => {
       // Poll the token bucket every second
