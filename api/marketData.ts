@@ -253,7 +253,6 @@ export const getStocksMostActives =
     });
 
 export type GetStocksMarketMoversOptions = {
-  by?: string;
   top?: number;
 };
 

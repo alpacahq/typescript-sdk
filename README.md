@@ -704,7 +704,6 @@ Retrieves a list of the top market movers.
 ```typescript
 client
   .getStocksMarketMovers({
-    by: "change",
     top: 10,
   })
   .then(console.log);
