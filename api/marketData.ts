@@ -261,7 +261,7 @@ export const getStocksMarketMovers =
   (context: ClientContext) => (params: GetStocksMarketMoversOptions) =>
     context.request<MarketMovers>({
       baseURL: baseURLs.marketData,
-      path: "/v1beta1/screener/stocks/market-movers",
+      path: "/v1beta1/screener/stocks/movers",
       method: "GET",
       params,
     });
