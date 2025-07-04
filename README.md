@@ -1,5 +1,5 @@
 > 🚧 **WARNING** 🚧  
-> This SDK is currently in development and not yet stable. The API may change. Please report any issues you find. Thank you! 🙏 When the version number loses the `-preview` suffix, the SDK is ready for production use. You can track progress and join the discussion [here](https://github.com/alpacahq/typescript-sdk/issues/1) 😃.
+> This SDK is going to be in development forever because i gave up. The API will not change bc of that so consider it stable ig. Please report any issues you find altho i wont do anything about them. thank you but no thank you, please dont bother me! 🙏 When the version number loses the `-preview` suffix (which it'll never do), the SDK is ready for production use (LOL GOOD FUCKING LUCK). You can track progress and join the discussion [here](https://github.com/alpacahq/typescript-sdk/issues/1) 😃.
 
 # typescript-sdk
 
