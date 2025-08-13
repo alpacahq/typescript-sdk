@@ -1,5 +1,6 @@
-> 🚧 **WARNING** 🚧  
-> This SDK is currently in development and not yet stable. The API may change. Please report any issues you find. Thank you! 🙏 When the version number loses the `-preview` suffix, the SDK is ready for production use. You can track progress and join the discussion [here](https://github.com/alpacahq/typescript-sdk/issues/1) 😃.
+> This SDK is no longer in development and is not maintained by Alpaca.
+>
+> Please see [alpaca-trade-api-js](https://github.com/alpacahq/alpaca-trade-api-js/) for our official JavaScript/TypesScript Client SDK.
 
 # typescript-sdk
 
